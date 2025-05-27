@@ -62,6 +62,7 @@ const isDark = ref(false);
 const colorMode = useColorMode();
 const loginStore = useLoginStore();
 const { isLogin, userInfo } = storeToRefs(loginStore);
+import { toast } from 'vue-sonner';
 
 const links = [
   { title: '首页', path: '/' },
