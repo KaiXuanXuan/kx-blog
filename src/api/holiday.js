@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const request = axios.create({
-  baseURL: 'http://timor.tech/api/holiday',
+  baseURL: 'https://timor.tech/api/holiday',
   timeout: 15000
 });
 
