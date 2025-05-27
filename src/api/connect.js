@@ -1,10 +1,10 @@
 import request from '@/utils/request';
 
-const testEgg = () => {
+const connect = () => {
   return request({
-    url: '/test',
+    url: '/',
     method: 'get',
   });
 };
 
-export { testEgg };
+export { connect };

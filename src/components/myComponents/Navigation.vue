@@ -57,6 +57,7 @@ import Login from '@/components/myComponents/Login.vue';
 import UserControl from '@/components/myComponents/UserControl.vue';
 import { useLoginStore } from '@/stores/login';
 import { storeToRefs } from 'pinia';
+import { connect } from '@/api/connect.js'
 
 const isDark = ref(false);
 const colorMode = useColorMode();
@@ -81,9 +82,9 @@ onMounted(() => {
     const id = sessionStorage.getItem('id') || localStorage.getItem('id');
     loginStore.setUserInfo({ username, id })
   }
-  if (!loginStore.getLogin()){
-    toast.error('请先登录');
-  }
+
+  // 获取csrfToken
+  connect()
 });
 
 // 防抖
