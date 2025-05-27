@@ -4,7 +4,8 @@ import { toast } from 'vue-sonner';
 import { useLoginStore } from '@/stores/login';
 
 const service = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? '/api' : '/dev-api',
+  // baseURL: process.env.NODE_ENV === 'production' ? '/api' : '/dev-api',
+  baseURL: '/api',
   timeout: 10000,
 });
 
