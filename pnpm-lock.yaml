@@ -65,6 +65,9 @@ importers:
       tw-animate-css:
         specifier: ^1.3.0
         version: 1.3.0
+      vaul-vue:
+        specifier: ^0.4.1
+        version: 0.4.1(reka-ui@2.2.1(typescript@5.8.3)(vue@3.5.14(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3))
       vee-validate:
         specifier: ^4.15.0
         version: 4.15.0(vue@3.5.14(typescript@5.8.3))
@@ -2514,6 +2517,12 @@ packages:
     resolution: {integrity: sha512-9pZao0NEeZQ0ZEb6N7SZxtqcdTp24o8IizhZS1G+FtStlXeKOFzCl+Nf1pIWRneQ9Kn+K+mNrfi2eiIZjVVppw==, tarball: https://registry.npmmirror.com/vant/-/vant-3.6.16.tgz}
     peerDependencies:
       vue: ^3.0.0
+
+  vaul-vue@0.4.1:
+    resolution: {integrity: sha512-A6jOWOZX5yvyo1qMn7IveoWN91mJI5L3BUKsIwkg6qrTGgHs1Sb1JF/vyLJgnbN1rH4OOOxFbtqL9A46bOyGUQ==, tarball: https://registry.npmmirror.com/vaul-vue/-/vaul-vue-0.4.1.tgz}
+    peerDependencies:
+      reka-ui: ^2.0.0
+      vue: ^3.3.0
 
   vee-validate@4.15.0:
     resolution: {integrity: sha512-PGJh1QCFwCBjbHu5aN6vB8macYVWrajbDvgo1Y/8fz9n/RVIkLmZCJDpUgu7+mUmCOPMxeyq7vXUOhbwAqdXcA==, tarball: https://registry.npmmirror.com/vee-validate/-/vee-validate-4.15.0.tgz}
@@ -5125,6 +5134,14 @@ snapshots:
       '@vant/popperjs': 1.3.0
       '@vant/use': 1.6.0(vue@3.5.14(typescript@5.8.3))
       vue: 3.5.14(typescript@5.8.3)
+
+  vaul-vue@0.4.1(reka-ui@2.2.1(typescript@5.8.3)(vue@3.5.14(typescript@5.8.3)))(vue@3.5.14(typescript@5.8.3)):
+    dependencies:
+      '@vueuse/core': 10.11.1(vue@3.5.14(typescript@5.8.3))
+      reka-ui: 2.2.1(typescript@5.8.3)(vue@3.5.14(typescript@5.8.3))
+      vue: 3.5.14(typescript@5.8.3)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
 
   vee-validate@4.15.0(vue@3.5.14(typescript@5.8.3)):
     dependencies:
