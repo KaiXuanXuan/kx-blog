@@ -64,12 +64,14 @@ const colorMode = useColorMode();
 const loginStore = useLoginStore();
 const { isLogin, userInfo } = storeToRefs(loginStore);
 import { toast } from 'vue-sonner';
+import routes from '@/router/routes';
 
-const links = [
-  { title: '首页', path: '/' },
-  { title: '友链', path: '/friendsLink' },
-  { title: '摸鱼', path: '/relax' },
-];
+const links = routes.map(route => {
+  return {
+    title: route.meta.title,
+    path: route.path,
+  };
+});
 
 onMounted(() => {
   const token = localStorage.getItem('token');

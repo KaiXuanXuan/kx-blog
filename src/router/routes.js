@@ -16,6 +16,12 @@ const routes = [
     name: 'Relax',
     component: () => import('@/views/Relax.vue'),
     meta: { title: '摸鱼' }
+  },
+  {
+    path: '/editor',
+    name: 'Editor',
+    component: () => import('@/views/Editor.vue'),
+    meta: { title: '写文章' }
   }
 ];
 
