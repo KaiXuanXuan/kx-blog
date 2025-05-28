@@ -36,7 +36,7 @@
                 </FormControl>
                 <!-- 封面预览 -->
                 <div class="flex items-center justify-center">
-                  <img v-if="previewUrl" :src="previewUrl" class="mt-2 max-w-2xs" alt="封面预览" />
+                  <img v-if="formData.cover" :src="formData.cover" class="mt-2 max-w-2xs" alt="封面预览" />
                 </div>
                 <FormDescription></FormDescription>
                 <FormMessage />
@@ -59,7 +59,7 @@
         </SheetContent>
       </Sheet>
     </div>
-    <v-md-editor v-model="formData.text" left-toolbar="undo redo | image link code hr bold italic strikethrough quote  tip " height="45rem" @save="handleSave"></v-md-editor>
+    <v-md-editor v-model="formData.text" left-toolbar="undo redo | image link code hr bold italic strikethrough quote  tip " height="45rem" @save="handleSave('保存成功')"></v-md-editor>
   </div>
 </template>
 
@@ -78,7 +78,6 @@ import { toTypedSchema } from '@vee-validate/zod';
 import * as z from 'zod';
 
 const editDisabled = ref(false);
-const previewUrl = ref('');
 const formData = ref({
   title: '',
   text: '',
@@ -94,6 +93,7 @@ onMounted(() => {
   for (const key in formData.value) {
     formData.value[key] = localStorage.getItem(key);
   }
+
   timer = setInterval(() => {
     handleSave('自动保存成功');
   }, 60000);
@@ -166,8 +166,6 @@ const handleCoverChange = async (e) => {
   reader.onload = (event) => {
     const base64 = event.target.result;
     formData.value.cover = base64;
-    // 生成预览链接
-    previewUrl.value = URL.createObjectURL(file);
   };
   reader.readAsDataURL(file);
 };
