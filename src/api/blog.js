@@ -1,44 +1,51 @@
-import request from '@/utils/request'
+import request from '@/utils/request';
 
 const getBlogList = (params) => {
   return request({
     url: '/blog/list',
     method: 'get',
-    params
-  })
-}
+    params,
+  });
+};
 
 const getBlogDetail = (params) => {
   return request({
     url: '/blog/detail',
     method: 'get',
-    params
-  })
-}
+    params,
+  });
+};
 
-const addBlog = (data, files) => {
+const addBlog = (data, blob) => {
+  const formData = new FormData();
+  formData.append('file', blob);
+  formData.append('data', JSON.stringify(data));
+
   return request({
     url: '/blog/add',
     method: 'post',
-    data,
-    files
-  })
-}
+    data: formData,
+  });
+};
 
-const updateBlog = (data, files) => {
+const updateBlog = (data, blob) => {
+  const formData = new FormData();
+  formData.append('file', blob);
+  formData.append('data', JSON.stringify(data));
+
   return request({
     url: '/blog/update',
     method: 'post',
-    data,
-  })
-}
+    data: formData,
+  });
+};
 
 const deleteBlog = (data) => {
   return request({
     url: '/blog/delete',
     method: 'post',
     data,
-  })
-}
+  });
+};
 
-export { getBlogList, getBlogDetail, addBlog, updateBlog, deleteBlog }
+export { getBlogList, getBlogDetail, addBlog, updateBlog, deleteBlog };

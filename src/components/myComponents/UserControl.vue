@@ -72,6 +72,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { vAutoAnimate } from '@formkit/auto-animate/vue';
 import { updatePassword } from '@/api/user';
+import { toast } from 'vue-sonner';
 import * as z from 'zod';
 
 const userStore = useLoginStore();
@@ -89,7 +90,7 @@ const formSchema = toTypedSchema(
       message: '新密码不能与旧密码相同',
       path: ['newPassword'], // 将错误关联到 newPassword 字段
     })
-    .refine((data) => data.username === userInfo.value.username,{
+    .refine((data) => data.username === userInfo.value.username, {
       message: '请确保用户名与当前用户一致',
       path: ['username'],
     })

@@ -46,7 +46,7 @@ service.interceptors.response.use(
       toastWarningMessage(res.message);
       return Promise.reject(new Error(res.message || 'Error'));
     }
-    toast.success(res.message);
+    // toast.success(res.message);
     return res;
   },
   (error) => {
