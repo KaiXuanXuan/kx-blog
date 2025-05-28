@@ -1,14 +1,41 @@
 <template>
-  <Card class="p-6 rounded-sm">
-    <div class="flex gap-4">
-      <img :src="cover" class="w-32 h-32 rounded-lg object-cover" />
-      <div class="flex-1">
-        <h2 class="text-xl font-bold mb-2">{{ title }}</h2>
-        <p class="text-gray-600 mb-4 line-clamp-3">{{ summary }}</p>
-        <div class="flex items-center text-sm text-gray-500">
-          <span>{{ date }}</span>
-          <span class="mx-2">•</span>
-          <span>10分钟阅读</span>
+  <Card class="p-4 px-6 rounded-sm">
+    <div class="flex items-center">
+      <img :src="cover" class="w-24 h-24 rounded-sm object-cover mr-10" />
+      <div class="flex-1 flex flex-col gap-3">
+        <div class="text-2xl font-bold mb-2 text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer">{{ title }}</div>
+        <div class="flex items-center text-sm gap-4">
+          <span class="text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
+            </svg>
+            {{ author }}
+          </span>
+          <span class="text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer flex items-center"
+            ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
+              />
+            </svg>
+            {{ update_time }}
+          </span>
+          <span class="text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"
+              />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
+            </svg>
+            {{ category }}
+          </span>
         </div>
       </div>
     </div>
@@ -17,10 +44,11 @@
 
 <script setup>
 import { Card } from '@/components/ui/card';
-defineProps({
+const props = defineProps({
   title: String,
-  summary: String,
-  date: String,
-  cover: String
-})
+  cover: String,
+  author: String,
+  update_time: String,
+  category: String,
+});
 </script>

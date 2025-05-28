@@ -26,7 +26,7 @@
 
       <!-- 主内容区 -->
       <main class="lg:col-span-7 space-y-4">
-        <ArticleCard v-for="(article, index) in articles" :key="index" :title="article.title" :summary="article.summary" :date="article.date" :cover="article.cover" />
+        <ArticleCard v-for="(article, index) in articles" :key="index" :title="article.title" :cover="article.cover" :author="article.author" :update_time="article.update_time" :category="article.category"  />
       </main>
 
       <!-- 右侧边栏 -->
@@ -69,34 +69,11 @@ const songList = [
 const articles = [
   {
     title: 'Vue3最佳实践',
-    summary: '深度解析Vue3组合式API的使用技巧...',
-    date: '2024-03-20',
-    cover: '/article1.png',
+    update_time: '2024-03-20',
+    author: 'KaiXuanXuan',
+    cover: '/article1.jpg',
+    category: '前端开发',
   },
-  {
-    title: 'Tailwind技巧',
-    summary: '掌握Tailwind高级布局与响应式设计...',
-    date: '2024-03-19',
-    cover: '/article2.png',
-  },
-  {
-    title: 'Tailwind技巧',
-    summary: '掌握Tailwind高级布局与响应式设计...',
-    date: '2024-03-19',
-    cover: '/article3.png',
-  },
-  // {
-  //   title: 'Tailwind技巧',
-  //   summary: '掌握Tailwind高级布局与响应式设计...',
-  //   date: '2024-03-19',
-  //   cover: '/article4.png',
-  // },
-  // {
-  //   title: 'Tailwind技巧',
-  //   summary: '掌握Tailwind高级布局与响应式设计...',
-  //   date: '2024-03-19',
-  //   cover: '/article4.png',
-  // },
 ];
 
 init();
