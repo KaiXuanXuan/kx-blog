@@ -66,7 +66,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { toast } from 'vue-sonner';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -75,6 +75,9 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHe
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { vAutoAnimate } from '@formkit/auto-animate/vue';
 import { addBlog } from '@/api/blog';
+import { useForm } from 'vee-validate';
+import { toTypedSchema } from '@vee-validate/zod';
+import * as z from 'zod';
 
 const editDisabled = ref(false);
 const previewUrl = ref('');
@@ -85,6 +88,31 @@ const formData = ref({
   cover: null,
   coverType: '',
 });
+let timer = '';
+
+onMounted(() => {
+  // 从本地存储中读取数据
+  for (const key in formData.value) {
+    formData.value[key] = localStorage.getItem(key);
+  }
+  timer = setInterval(() => {
+    handleSave('自动保存成功');
+  }, 60000);
+});
+
+onUnmounted(() => {
+  clearInterval(timer);
+});
+
+const formSchema = toTypedSchema(
+  z.object({
+    title: z.string({ required_error: '标题必填' }),
+    cover: z.string({ required_error: '封面得有' }),
+    category: z.string({ required_error: '分类加上' }),
+  })
+);
+
+const form = useForm({ validationSchema: formSchema });
 
 const onSubmit = () => {
   if (formData.value.title === '') {
@@ -144,12 +172,12 @@ const handleCoverChange = async (e) => {
   reader.readAsDataURL(file);
 };
 
-const handleSave = (val) => {
+const handleSave = (msg = '保存成功') => {
   // 遍历formData，将所有值都保存到本地存储中
   for (const key in formData.value) {
     localStorage.setItem(key, formData.value[key]);
   }
-  toast.success('保存成功');
+  toast.success(msg);
 };
 </script>
 
