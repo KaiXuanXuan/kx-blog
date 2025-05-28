@@ -8,7 +8,7 @@
         <Button @click="editTitle" v-else>编辑</Button>
       </div>
       <Button variant="outline">导入markdown</Button>
-      <Sheet>
+      <Sheet v-model:open="open">
         <SheetTrigger as-child>
           <Button> 发布文章 </Button>
         </SheetTrigger>
@@ -53,9 +53,7 @@
               </FormItem>
             </FormField>
             <SheetFooter class="p-0 mt-8">
-              <SheetClose as-child>
-                <Button type="submit"> 确认发布 </Button>
-              </SheetClose>
+              <Button type="submit"> 确认发布 </Button>
             </SheetFooter>
           </form>
         </SheetContent>
@@ -89,6 +87,7 @@ const formData = ref({
   coverType: '',
 });
 let timer = '';
+const open = ref(false);
 
 onMounted(() => {
   // 从本地存储中读取数据
@@ -114,7 +113,8 @@ const formSchema = toTypedSchema(
 
 const form = useForm({ validationSchema: formSchema });
 
-const onSubmit = () => {
+const onSubmit = (e) => {
+  e.preventDefault();
   if (formData.value.title === '') {
     toast.warning('标题不能为空');
     return;
@@ -133,8 +133,8 @@ const onSubmit = () => {
   }
 
   const { title, text, category, cover, coverType } = formData.value;
-  const Blob = new Blob([cover], { type: coverType });
-  addBlog({ title, text, category }, Blob).then((res) => {
+  const blob = new Blob([cover], { type: coverType });
+  addBlog({ title, text, category }, blob).then((res) => {
     console.log(res);
   });
 };
