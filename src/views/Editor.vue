@@ -2,10 +2,18 @@
   <div class="p-4">
     <div class="space-x-2 mb-4 inline-flex items-center">
       <div class="space-x-4 mr-30 items-center inline-flex">
-        <Label class="inline-flex text-xl font-bold items-center">标题:</Label>
-        <Input class="inline w-80" :disabled="editDisabled" v-model="formData.title" placeholder="请输入标题" />
-        <Button @click="confirmTile" v-if="!editDisabled">确认</Button>
-        <Button @click="editTitle" v-else>编辑</Button>
+        <Label class="inline-flex text-xl font-bold items-center">标题</Label>
+        <Input class="inline w-80" v-model="formData.title" placeholder="请输入标题" />
+        <Label class="inline-flex text-xl font-bold items-center ml-8">自动保存间隔</Label>
+        <NumberField class="w-25" :default-value="timeInterval" :step="1" :min="30" v-model="timeInterval">
+          <NumberFieldContent>
+            <NumberFieldDecrement />
+            <NumberFieldInput :disabled="editDisabled" />
+            <NumberFieldIncrement />
+          </NumberFieldContent>
+        </NumberField>
+        <Button @click="confirmTimeInterval" v-if="!editDisabled">确认</Button>
+        <Button @click="editTimeInterval" v-else>编辑</Button>
       </div>
       <Button variant="outline">导入markdown</Button>
       <Sheet v-model:open="open">
@@ -22,7 +30,7 @@
               <FormItem v-auto-animate>
                 <FormLabel>标题</FormLabel>
                 <FormControl>
-                  <Input :disabled="editDisabled" type="text" placeholder="请输入标题" v-model="formData.title" autocomplete="off" />
+                  <Input type="text" placeholder="请输入标题" v-model="formData.title" autocomplete="off" />
                 </FormControl>
                 <FormDescription></FormDescription>
                 <FormMessage />
@@ -71,13 +79,15 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { NumberField, NumberFieldContent, NumberFieldDecrement, NumberFieldIncrement, NumberFieldInput } from '@/components/ui/number-field';
 import { vAutoAnimate } from '@formkit/auto-animate/vue';
 import { addBlog } from '@/api/blog';
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import * as z from 'zod';
 
-const editDisabled = ref(false);
+const editDisabled = ref(true);
+const timeInterval = ref(60);
 const formData = ref({
   title: '',
   markdown_content: '',
@@ -96,7 +106,7 @@ onMounted(() => {
 
   timer = setInterval(() => {
     handleSave('自动保存成功');
-  }, 60000);
+  }, timeInterval.value * 1000);
 });
 
 onUnmounted(() => {
@@ -139,14 +149,15 @@ const onSubmit = (e) => {
   });
 };
 
-const confirmTile = () => {
-  if (!formData.title.value) {
-    toast.warning('标题不能为空');
-    return;
-  }
+const confirmTimeInterval = () => {
+  clearInterval(timer);
+  timer = setInterval(() => {
+    handleSave('自动保存成功');
+  }, timeInterval.value * 1000);
+  toast.success('时间间隔已修改为' + timeInterval.value + '秒');
   editDisabled.value = true;
 };
-const editTitle = (val) => {
+const editTimeInterval = (val) => {
   editDisabled.value = false;
 };
 
