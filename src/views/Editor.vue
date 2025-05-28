@@ -18,7 +18,7 @@
             <SheetDescription>文章一经发布，本地缓存将清空</SheetDescription>
           </SheetHeader>
           <form @submit="onSubmit" class="space-y-4">
-            <FormField name="title" :validate-on-blur="!form.isFieldDirty">
+            <FormField name="title">
               <FormItem v-auto-animate>
                 <FormLabel>标题</FormLabel>
                 <FormControl>
@@ -28,11 +28,25 @@
                 <FormMessage />
               </FormItem>
             </FormField>
-            <FormField name="cover" :validate-on-blur="!form.isFieldDirty">
+            <FormField name="cover">
               <FormItem v-auto-animate>
                 <FormLabel>封面</FormLabel>
                 <FormControl>
                   <Input type="file" autocomplete="off" @change="handleCoverChange" />
+                </FormControl>
+                <!-- 封面预览 -->
+                <div class="flex items-center justify-center">
+                  <img v-if="previewUrl" :src="previewUrl" class="mt-2 max-w-2xs" alt="封面预览" />
+                </div>
+                <FormDescription></FormDescription>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+            <FormField name="category">
+              <FormItem v-auto-animate>
+                <FormLabel>分类</FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="请输入分类" v-model="formData.category" autocomplete="off" />
                 </FormControl>
                 <FormDescription></FormDescription>
                 <FormMessage />
@@ -60,27 +74,46 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { vAutoAnimate } from '@formkit/auto-animate/vue';
-import { toTypedSchema } from '@vee-validate/zod';
-import { useForm } from 'vee-validate';
-import * as z from 'zod';
+import { addBlog } from '@/api/blog';
 
 const editDisabled = ref(false);
+const previewUrl = ref('');
 const formData = ref({
   title: '',
   text: '',
   category: '',
   cover: null,
+  coverType: '',
 });
 
-const formSchema = toTypedSchema(z.object({}));
+const onSubmit = () => {
+  if (formData.value.title === '') {
+    toast.warning('标题不能为空');
+    return;
+  }
+  if (formData.value.text === '') {
+    toast.warning('内容不能为空');
+    return;
+  }
+  if (formData.value.category === '') {
+    toast.warning('分类不能为空');
+    return;
+  }
+  if (formData.value.cover === null) {
+    toast.warning('封面不能为空');
+    return;
+  }
 
-const form = useForm({
-  validationSchema: formSchema,
-});
+  const { title, text, category, cover, coverType } = formData.value;
+  const Blob = new Blob([cover], { type: coverType });
+  addBlog({ title, text, category }, Blob).then((res) => {
+    console.log(res);
+  });
+};
 
 const confirmTile = () => {
   if (!formData.title.value) {
-    toast.error('标题不能为空');
+    toast.warning('标题不能为空');
     return;
   }
   editDisabled.value = true;
@@ -91,9 +124,24 @@ const editTitle = (val) => {
 
 const handleCoverChange = async (e) => {
   const file = e.target.files[0];
+  if (!file) return;
 
-  // 临时保存到响应式数据
-  cover.value = arrayBuffer;
+  // 检查是否是图片类型
+  if (!file.type.startsWith('image/')) {
+    toast.warning('请选择图片文件（支持jpg、png等格式）');
+    return;
+  }
+  formData.value.coverType = file.type;
+
+  // 读取文件为base64
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const base64 = event.target.result;
+    formData.value.cover = base64;
+    // 生成预览链接
+    previewUrl.value = URL.createObjectURL(file);
+  };
+  reader.readAsDataURL(file);
 };
 
 const handleSave = (val) => {
