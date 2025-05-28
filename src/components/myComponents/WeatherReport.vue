@@ -48,7 +48,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { toast } from 'vue-sonner';
 
 const getDataSuccess = ref(false);
-const isOpen = ref(false);
+const isOpen = ref(true);
 const isLoading = ref(false);
 const weatherData = ref({});
 const weatherReport = ref([]);

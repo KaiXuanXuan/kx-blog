@@ -26,7 +26,18 @@
 
       <!-- 主内容区 -->
       <main class="lg:col-span-7 space-y-4">
-        <ArticleCard v-for="(article, index) in articles" :key="index" :title="article.title" :cover="article.cover" :author="article.author" :update_time="article.update_time" :category="article.category"  />
+        <BlogCard
+          v-for="(blog, index) in blogs"
+          :key="index"
+          @click="openDialog(index)"
+          class="cursor-pointer hover:shadow-lg hover:scale-101 transition-all duration-500"
+          :title="blog.title"
+          :cover="blog.cover"
+          :author="blog.author"
+          :update_time="blog.update_time"
+          :category="blog.category"
+        />
+        <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" @closeDialog="closeDialog" />
       </main>
 
       <!-- 右侧边栏 -->
@@ -45,16 +56,29 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ref, computed, onMounted } from 'vue';
 import { getLocalTimeZone, today } from '@internationalized/date';
-import ArticleCard from '@/components/myComponents/ArticleCard.vue';
+import BlogCard from '@/components/myComponents/BlogCard.vue';
 import AudioPlayer from '@/components/myComponents/AudioPlayer.vue';
 import WorkTimeProgress from '@/components/myComponents/WorkTimeProgress.vue';
 import WeatherReport from '@/components/myComponents/WeatherReport.vue';
+import BlogDialog from '@/components/myComponents/BlogDialog.vue';
 
 const todayValue = ref(today(getLocalTimeZone()));
 const song = ref({});
+const dialogOpen = ref(false);
+const dialogId = ref('');
+
 function init() {
   changeSong(0);
 }
+
+const openDialog = (index) => {
+  dialogOpen.value = true;
+  dialogId.value = blogs[index].id;
+};
+const closeDialog = () => {
+  dialogOpen.value = false;
+};
+
 function changeSong(index) {
   if (index < 0 || index > songList.length - 1) return;
   song.value = songList[index];
@@ -66,13 +90,22 @@ const songList = [
   { src: '/mp3/Die_For_You.mp3', title: 'Die For You', index: 1 },
 ];
 
-const articles = [
+const blogs = [
   {
     title: 'Vue3最佳实践',
     update_time: '2024-03-20',
     author: 'KaiXuanXuan',
-    cover: '/article1.jpg',
+    cover: '/blog1.jpg',
     category: '前端开发',
+    id: '1',
+  },
+  {
+    title: '测试项目2',
+    update_time: '2025-03-21',
+    author: 'KaiXuan',
+    cover: '/blog1.jpg',
+    category: '测试',
+    id: '2',
   },
 ];
 

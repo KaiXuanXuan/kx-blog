@@ -59,7 +59,7 @@
         </SheetContent>
       </Sheet>
     </div>
-    <v-md-editor v-model="formData.text" left-toolbar="undo redo | image link code hr bold italic strikethrough quote  tip " height="45rem" @save="handleSave('保存成功')"></v-md-editor>
+    <v-md-editor v-model="formData.markdown_content" left-toolbar="undo redo | image link code hr bold italic strikethrough quote  tip " height="45rem" @save="handleSave('保存成功')" />
   </div>
 </template>
 
@@ -80,7 +80,7 @@ import * as z from 'zod';
 const editDisabled = ref(false);
 const formData = ref({
   title: '',
-  text: '',
+  markdown_content: '',
   category: '',
   cover: null,
   coverType: '',
@@ -119,7 +119,7 @@ const onSubmit = (e) => {
     toast.warning('标题不能为空');
     return;
   }
-  if (formData.value.text === '') {
+  if (formData.value.markdown_content === '') {
     toast.warning('内容不能为空');
     return;
   }
@@ -132,9 +132,9 @@ const onSubmit = (e) => {
     return;
   }
 
-  const { title, text, category, cover, coverType } = formData.value;
+  const { title, markdown_content, category, cover, coverType } = formData.value;
   const blob = new Blob([cover], { type: coverType });
-  addBlog({ title, text, category }, blob).then((res) => {
+  addBlog({ title, markdown_content, category }, blob).then((res) => {
     console.log(res);
   });
 };
