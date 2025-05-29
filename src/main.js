@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import './style.css';
+import './assets/fonts/font.css'
 import App from './App.vue';
 import router from './router';
 import request from '@/utils/request';
