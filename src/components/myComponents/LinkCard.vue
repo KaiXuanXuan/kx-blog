@@ -1,12 +1,12 @@
 <template>
   <div
-    class="link-card cursor-pointer w-full p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-transform opacity-0"
+    class="link-card cursor-pointer w-full p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-transform -translate-y-5 opacity-0"
     @click="openLink(item.item_url)"
     :style="{ transitionDelay: `${delay}s` }"
-    :class="{ 'translate-y-0 opacity-100': animated }"
+    :class="{ 'opacity-100 translate-y-0': animated }"
   >
-    <div class="flex items-start gap-3">
-      <div class="text-2xl">{{ item.icon }}</div>
+    <div class="flex items-center gap-3">
+      <img :src="item.icon" class="w-10 h-10"/>
       <div class="flex-1 text-nowrap overflow-hidden">
         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ item.title }}</h3>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 truncate">{{ item.item_desc }}</p>
@@ -36,6 +36,6 @@ const openLink = (url) => {
 
 <style scoped>
 .link-card {
-  transition: opacity 0.6s ease;
+  transition: all 0.6s ease;
 }
 </style>

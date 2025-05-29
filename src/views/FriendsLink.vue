@@ -23,7 +23,7 @@
 
         <Input v-model="folderForm.title" placeholder="收藏夹名称" class="mb-4" />
         <DialogFooter>
-          <Button class="w-full" @click="addFolder">确认添加</Button>
+          <Button class="w-full" @click="addFolder" :disabled="isLoading">确认添加</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -37,14 +37,13 @@
           <DialogTitle>添加网站</DialogTitle>
           <DialogDescription>请输入网站信息</DialogDescription>
         </DialogHeader>
-        <Select v-model="itemForm.categoryId" placeholder="选择分类" class="mb-4">
-          <SelectTrigger class="w-full">
+        <Select v-model="itemForm.category_id" placeholder="选择分类" class="mb-4">
+          <SelectTrigger class="w-full cursor-pointer">
             <SelectValue placeholder="选择分类" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="1">技术社区</SelectItem>
-            <SelectItem value="2">学习资源</SelectItem>
-            <SelectItem value="3">工具网站</SelectItem>
+            <SelectItem class="cursor-pointer" v-for="item in categoryList" :key="item.id" :value="item.id">
+              {{ item.title }}</SelectItem>
           </SelectContent>
         </Select>
 
@@ -52,18 +51,20 @@
         <Input v-model="itemForm.item_desc" placeholder="网站描述" class="" />
         <Input v-model="itemForm.item_url" placeholder="网站地址" class="" />
         <Input placeholder="网站图标" type="file" @change="changeIcon" class="" />
-        <img :src="itemForm.icon" ></img>
+        <img :src="itemForm.icon"></img>
 
         <DialogFooter>
-          <Button class="w-full" @click="addItem">确认添加</Button>
+          <Button class="w-full" @click="addItem" :disabled="isLoading">确认添加</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
 
     <!-- 收藏夹列表 -->
     <div class="space-y-4">
-      <Collapsible v-for="(folder, index) in folders" :key="index" v-model:open="folder.isOpen" class="border rounded-lg">
-        <CollapsibleTrigger class="cursor-pointer flex items-center justify-between w-full p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-800">
+      <Collapsible v-for="(folder, index) in folders" :key="index" v-model:open="folder.isOpen"
+        class="border rounded-lg">
+        <CollapsibleTrigger
+          class="cursor-pointer flex items-center justify-between w-full p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-800">
           <div class="flex items-center gap-2">
             <div class="h-5 w-5 flex items-center">{{ folder.isOpen ? '📂' : '📁' }}</div>
             <span class="text-lg font-medium">{{ folder.title }}</span>
@@ -118,35 +119,21 @@ const folderForm = ref({
 const itemForm = ref({
   open: false,
   title: '',
-  item_desc:'',
+  item_desc: '',
   item_url: '',
-  categoryId: 0,
+  category_id: 0,
   icon: '',
   iconType: '',
   iconName: '',
 });
 // 收藏夹列表
-const folders = ref([
-  {
-    title: '技术社区',
-    isOpen: true,
-    items: [
-      { icon: '🔗', title: 'Vue官方文档', item_desc: 'Vue.js 渐进式JavaScript框架文档', item_url: 'https://vuejs.org' },
-      { icon: '🔗', title: 'React官方文档', item_desc: 'React 用于构建用户界面的JavaScript库', item_url: 'https://react.dev' },
-      { icon: '🔗', title: 'TypeScript文档', item_desc: 'JavaScript的类型超集', item_url: 'https://www.typescriptlang.org' },
-      { icon: '🔗', title: 'TypeScript文档', item_desc: 'JavaScript的类型超集', item_url: 'https://www.typescriptlang.org' },
-      { icon: '🔗', title: 'TypeScript文档', item_desc: 'JavaScript的类型超集', item_url: 'https://www.typescriptlang.org' },
-    ],
-  },
-  {
-    title: '设计资源',
-    isOpen: false,
-    items: [
-      { icon: '🎨', title: 'Dribbble', item_desc: '全球设计师作品分享平台', item_url: 'https://dribbble.com' },
-      { icon: '🎨', title: 'Behance', item_desc: 'Adobe旗下创意作品分享社区', item_url: 'https://www.behance.net' },
-    ],
-  },
-]);
+const folders = ref([]);
+const categoryList = ref([]);
+const isLoading = ref(false);
+
+onMounted(() => {
+  getFolders();
+});
 
 // 折叠按钮组件（shadcn需要自定义触发文本）
 const CollapsibleButton = {
@@ -159,7 +146,8 @@ const addFolder = () => {
     toast.error('收藏夹名称不能为空');
     return;
   }
-  addResourceCategory({ title: folderForm.value.title }).then((res) => {
+  isLoading.value = true;
+  addResourceCategory(folderForm.value.title).then((res) => {
     if (res.code == 200) {
       const msg = res.message;
       toast.success(msg);
@@ -167,35 +155,77 @@ const addFolder = () => {
       folderForm.value.open = false;
       folderForm.value.title = '';
     }
+  }).finally(() => {
+    isLoading.value = false;
+    folderForm.value.open = false;
   });
 };
 
+const addItem = () => {
+  if (itemForm.value.title === '') {
+    toast.error('网站名称不能为空');
+    return;
+  }
+  if (itemForm.value.item_url === '') {
+    toast.error('网站地址不能为空');
+    return;
+  }
+  if (itemForm.value.category_id === 0) {
+    toast.error('请选择分类');
+    return;
+  }
+  if (itemForm.value.icon === '') {
+    toast.error('请上传网站图标');
+    return;
+  }
+
+  isLoading.value = true;
+  const { title, item_url, item_desc, category_id, icon, iconType, iconName } = itemForm.value;
+  const file = new File([icon], iconName, { type: iconType });
+  addResourceItem({ title, item_url, item_desc, category_id }, file).then((res) => {
+    if (res.code == 200) {
+      const msg = res.message;
+      toast.success(msg);
+      getFolders();
+    }
+  }).finally(() => {
+    isLoading.value = false;
+    itemForm.value.open = false;
+  });
+}
+
 const getFolders = () => {
-  let result = [];
   getResourceCategories()
     .then((res) => {
-      if (res.code == 200) {
-        const data = res.data;
-        for (let i = 0; i < data.length; i++) {
-          const item = data[i];
-          result.push({
-            title: item.title,
-            isOpen: false,
-            items: [],
-          });
-        }
-      }
-    })
-    .then(() => {
-      for (let i = 0; i < result.length; i++) {
-        getItemsByCategory(result[i].title).then((res) => {
-          if (res.code == 200) {
-            result[i].items = res.data;
+      if (res.code !== 200) return [];
+      // 初始化分类列表
+      const categories = res.data.map(item => ({
+        id: item.id,
+        title: item.title,
+        isOpen: false,
+        items: []
+      }));
+      categoryList.value = categories;
+      // 收集所有获取条目的Promise
+      const itemPromises = categories.map((folder, index) => {
+        return getItemsByCategory(folder.id).then(res => {
+          if (res.code === 200) {
+            categories[index].items = res.data;
           }
+          return res;
         });
-      }
+      });
+      // 等待所有条目加载完成
+      return Promise.all(itemPromises).then(() => categories);
+    })
+    .then(updatedFolders => {
+      folders.value = updatedFolders; // 所有数据准备好后一次性更新
+      console.log('加载完成的收藏夹数据:', updatedFolders);
+    })
+    .catch(error => {
+      console.error('获取收藏夹数据失败:', error);
+      toast.error('获取收藏夹数据失败');
     });
-  folders.value = result;
 };
 
 const changeIcon = (e) => {

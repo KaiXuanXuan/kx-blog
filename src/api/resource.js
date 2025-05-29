@@ -32,11 +32,15 @@ const deleteResourceCategory = (id) => {
 };
 
 // 资源条目接口
-const addResourceItem = (data) => {
+const addResourceItem = (data, file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('data', JSON.stringify(data));
+
   return request({
     url: '/resource/item/add',
     method: 'post',
-    data
+    data: formData,
   });
 };
 
@@ -48,11 +52,14 @@ const getItemsByCategory = (category_id) => {
   });
 };
 
-const updateResourceItem = (data) => {
+const updateResourceItem = (data, file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('data', JSON.stringify(data));
   return request({
     url: '/resource/item/update',
     method: 'put',
-    data
+    data: formData
   });
 };
 
