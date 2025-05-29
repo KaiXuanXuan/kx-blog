@@ -167,9 +167,7 @@ const editTimeInterval = (val) => {
 };
 
 const handleCoverChange = async (e) => {
-  const file = e.target.files[0];
-  console.log('file', file);
-  
+  const file = e.target.files[0];  
   if (!file) return;
 
   // 检查是否是图片类型
