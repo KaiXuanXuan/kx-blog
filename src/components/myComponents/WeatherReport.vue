@@ -4,11 +4,11 @@
       <div class="p-2">
         <img :src="`/QWeather-Icons-1.6.0/icons/${weatherData.icon}.svg`" alt="" class="w-10 h-10" />
       </div>
-      <div class="text-lg font-bold text-gray-900">{{ weatherData.text }} {{ weatherData.feelsLike }}℃</div>
-      <div class="text-sm font-bold text-gray-800">{{ weatherData.windDir }} {{ weatherData.windSpeed }}<span class="text-xs">km/h</span></div>
+      <div class="text-lg font-medium text-gray-900">{{ weatherData.text }} {{ weatherData.feelsLike }}℃</div>
+      <div class="text-sm font-medium text-gray-800">{{ weatherData.windDir }} {{ weatherData.windSpeed }}<span class="text-xs">km/h</span></div>
     </Card>
     <Card v-else class="items-center justify-center bg-linear-to-br from-cyan-50 to-purple-50">
-      <div class="text-base font-bold text-gray-600">🌤 天气尚未获取</div>
+      <div class="text-base font-medium text-gray-600">🌤 天气尚未获取</div>
     </Card>
 
     <Collapsible v-model:open="isOpen" class="w-full space-y-2">
@@ -18,7 +18,7 @@
       </CollapsibleTrigger>
       <CollapsibleContent class="space-y-2">
         <Card v-for="(item, key) in weatherReport" :key="key" class="p-2 gap-1">
-          <div class="text-sm text-center font-bold">{{ item.date }}</div>
+          <div class="text-sm text-center font-medium">{{ item.date }}</div>
           <div class="flex items-center justify-center gap-4">
             <div class="flex items-center gap-1">
               <img :src="`/QWeather-Icons-1.6.0/icons/${item.iconDay}.svg`" alt="" class="w-4 h-4" />

@@ -24,14 +24,14 @@
         </svg>
 
         <!-- 文本 -->
-        <div class="absolute left-[50%] top-[50%] translate-[-50%] text-center text-lg font-bold text-gray-800 dark:text-white">
+        <div class="absolute left-[50%] top-[50%] translate-[-50%] text-center text-lg font-medium text-gray-800 dark:text-white">
           {{ Math.floor(localProgress * 100) }}
         </div>
       </div>
-      <div class="text-center text-md font-bold text-gray-500 dark:text-gray-200">
+      <div class="text-center text-md font-medium text-gray-500 dark:text-gray-200">
         {{ status }}
       </div>
-      <div v-if="workFlag == 0" class="text-center text-sm font-bold text-gray-500 dark:text-gray-200">下班：{{ timeToGo[0] }} 时 {{ timeToGo[1] }} 分</div>
+      <div v-if="workFlag == 0" class="text-center text-sm font-medium text-gray-500 dark:text-gray-200">下班：{{ timeToGo[0] }} 时 {{ timeToGo[1] }} 分</div>
     </Card>
 
     <Collapsible v-model:open="isOpen" class="w-full">
@@ -86,9 +86,9 @@
     </Collapsible>
 
     <Card v-if="nextHoliday !== null" class="bg-pink gap-1 items-center justify-center text-white">
-      <div class="text-lg font-bold">{{ nextHoliday.name }}</div>
+      <div class="text-lg font-medium">{{ nextHoliday.name }}</div>
       <div class="text-sm">{{ nextHoliday.formateHolidayDate }}</div>
-      <div class="text-md font-bold">还有 {{ nextHoliday.days }} 天 🎉</div>
+      <div class="text-md font-medium">还有 {{ nextHoliday.days }} 天 🎉</div>
     </Card>
     <Card v-else class="bg-pink items-center justify-center text-white">网络繁忙😿</Card>
   </div>
