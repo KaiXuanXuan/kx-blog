@@ -103,7 +103,7 @@ const open = ref(false);
 onMounted(() => {
   // 从本地存储中读取数据
   for (const key in formData.value) {
-    formData.value[key] = localStorage.getItem(key) ??  '';
+    formData.value[key] = localStorage.getItem(key) ?? '';
   }
 
   timer = setInterval(() => {
@@ -128,30 +128,40 @@ const form = useForm({ validationSchema: formSchema });
 const onSubmit = (e) => {
   e.preventDefault();
   if (formData.value.title === '') {
-    toast.warning('标题不能为空');
+    toast.error('标题不能为空');
     return;
   }
   if (formData.value.markdown_content === '') {
-    toast.warning('内容不能为空');
+    toast.error('内容不能为空');
     return;
   }
   if (formData.value.category === '') {
-    toast.warning('分类不能为空');
+    toast.error('分类不能为空');
     return;
   }
   if (formData.value.cover === '') {
-    toast.warning('封面不能为空');
+    toast.error('封面不能为空');
     return;
   }
 
   isLoading.value = true;
   const { title, markdown_content, category, cover, coverType, coverName } = formData.value;
   const file = new File([cover], coverName, { type: coverType });
-  addBlog({ title, markdown_content, category }, file).then((res) => {
-    isLoading.value = false;
-    open.value = false;
-    clearSaveBlog(res.message + '，缓存已清空');
-  });
+  toast.promise(
+    addBlog({ title, markdown_content, category }, file)
+      .then((res) => {
+        clearSaveBlog(res.message + '，缓存已清空');
+      })
+      .finally(() => {
+        isLoading.value = false;
+        open.value = false;
+      }),
+    {
+      loading: '发布中...',
+      success: '发布成功',
+      error: '发布失败',
+    }
+  );
 };
 
 const confirmTimeInterval = () => {
@@ -167,12 +177,12 @@ const editTimeInterval = (val) => {
 };
 
 const handleCoverChange = async (e) => {
-  const file = e.target.files[0];  
+  const file = e.target.files[0];
   if (!file) return;
 
   // 检查是否是图片类型
   if (!file.type.startsWith('image/')) {
-    toast.warning('请选择图片文件（支持jpg、png等格式）');
+    toast.error('请选择图片文件（支持jpg、png等格式）');
     return;
   }
   formData.value.coverType = file.type;
