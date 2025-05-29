@@ -67,7 +67,7 @@
         </SheetContent>
       </Sheet>
     </div>
-    <v-md-editor v-model="formData.markdown_content" left-toolbar="undo redo | image link code hr bold italic strikethrough quote  tip " height="45rem" @save="handleSave('保存成功')" />
+    <v-md-editor v-model="formData.markdown_content" left-toolbar="undo redo clear | image table link code | hr bold italic strikethrough | quote  tip emoji mermaid " height="45rem" @save="handleSave('保存成功')" @copy-code-success="handleCopySuccess" />
   </div>
 </template>
 
@@ -196,6 +196,10 @@ const handleCoverChange = async (e) => {
     console.log(base64);
   };
   reader.readAsDataURL(file);
+};
+
+const handleCopySuccess = (code) => {
+  toast.success('复制成功');
 };
 
 const handleSave = (msg = '保存成功') => {

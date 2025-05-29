@@ -11,12 +11,23 @@ import VueMarkdownPreview from  '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/preview.css';
 import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
 import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
+import createEmojiPlugin from '@kangc/v-md-editor/lib/plugins/emoji/index';
+import '@kangc/v-md-editor/lib/plugins/emoji/emoji.css';
+import createLineNumbertPlugin from '@kangc/v-md-editor/lib/plugins/line-number/index';
+import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
+import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
+// import createMermaidPlugin from '@kangc/v-md-editor/lib/plugins/mermaid/cdn';
+// import '@kangc/v-md-editor/lib/plugins/mermaid/mermaid.css';
 import Prism from 'prismjs';
 
 VueMarkdownEditor.use(vuepressTheme, {
   Prism,
 })
+VueMarkdownEditor.use(createEmojiPlugin());
+VueMarkdownEditor.use(createLineNumbertPlugin());
+VueMarkdownEditor.use(createCopyCodePlugin());
 VueMarkdownPreview.use(vuepressTheme, {
+  // VueMarkdownEditor.use(createMermaidPlugin());
   Prism,
 });
 

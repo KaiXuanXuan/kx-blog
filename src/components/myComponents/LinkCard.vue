@@ -1,6 +1,7 @@
 <template>
   <div
     class="link-card cursor-pointer w-full p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-transform opacity-0"
+    @click="openLink(item.url)"
     :style="{ transitionDelay: `${delay}s` }"
     :class="{ 'translate-y-0 opacity-100': animated }"
   >
@@ -27,6 +28,10 @@ onMounted(() => {
   // 触发Tailwind过渡类切换
   setTimeout(() => (animated.value = true), props.delay * 1000);
 });
+
+const openLink = (url) => {
+  window.open(url, '_blank');
+}
 </script>
 
 <style scoped>
