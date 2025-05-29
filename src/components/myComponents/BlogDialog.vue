@@ -43,7 +43,7 @@
       </DialogHeader>
       <div class="grid gap-4 py-4 overflow-y-auto px-6">
         <div class="flex flex-col justify-between">
-          <img :src="blog.cover" alt="封面" class="w-full h-60 object-cover rounded-lg" />
+          <img :src="blog.cover_image" alt="封面" class="w-full h-60 object-cover rounded-lg" />
           <v-md-preview :text="blog.markdown_content" />
         </div>
       </div>
@@ -89,7 +89,7 @@ watch(open, (newValue) => {
 const mockData = {
   title: 'Vue3 组件库开发',
   markdown_content: '',
-  cover: '/blog1.jpg',
+  cover_image: '/blog1.jpg',
   author: 'KaiXuanXuan',
   update_time: '2024-07-11',
   category: 'Vue3',

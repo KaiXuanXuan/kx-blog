@@ -30,9 +30,9 @@
           v-for="(blog, index) in blogs"
           :key="index"
           @click="openDialog(index)"
-          class="card cursor-pointer"
+          class="card cursor-pointer hover:shadow-md"
           :title="blog.title"
-          :cover="blog.cover"
+          :cover_image="blog.cover_image"
           :author="blog.author"
           :update_time="blog.update_time"
           :category="blog.category"
@@ -80,8 +80,8 @@ onMounted(() => {
   init();
   // 左侧边栏动画（延迟0.2s）
   animateOnScroll(leftAside.value, 0.2);
-  // 右侧边栏动画（延迟0.4s）
-  animateOnScroll(rightAside.value, 0.4);
+  // 右侧边栏动画（延迟0.2s）
+  animateOnScroll(rightAside.value, 0.2);
 });
 
 // 定义通用动画函数
@@ -92,7 +92,7 @@ const animateOnScroll = (element, delay = 0, stagger = 0.1) => {
       start: 'top bottom', // 元素顶部进入视口底部时触发
       end: 'bottom top',
       scrub: false,
-      once: true, // 只播放一次
+      once: false, 
     },
     y: 50, // 初始Y轴偏移50px（下方）
     opacity: 0,

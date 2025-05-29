@@ -1,7 +1,7 @@
 <template>
   <Card class="p-4 px-6 rounded-sm">
     <div class="flex items-center">
-      <img :src="cover" class="w-24 h-24 rounded-sm object-cover mr-10" />
+      <img :src="cover_image" class="w-24 h-24 rounded-sm object-cover mr-10" />
       <div class="flex-1 flex flex-col gap-3">
         <div class="text-2xl font-bold mb-2 text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer">{{ title }}</div>
         <div class="flex items-center text-sm gap-4">
@@ -46,7 +46,7 @@
 import { Card } from '@/components/ui/card';
 const props = defineProps({
   title: String,
-  cover: String,
+  cover_image: String,
   author: String,
   update_time: String,
   category: String,
