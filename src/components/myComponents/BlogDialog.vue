@@ -56,8 +56,9 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ref, onMounted, watch } from 'vue';
+import { getBlogDetail } from '@/api/blog';
 
-const blog = ref('');
+const blog = ref({});
 const open = ref(false);
 
 const props = defineProps({
@@ -67,28 +68,23 @@ const props = defineProps({
 
 const emits = defineEmits(['closeDialog']);
 
-onMounted(() => {
-  getBlogDetail(props.dialogId);
-  blog.value.markdown_content = localStorage.getItem('markdown_content');
-});
-
 watch(
   () => props.dialogOpen,
   (newValue) => {
     open.value = newValue;
   }
 );
-watch(()=>props.dialogId, (newValue) => {
-  getBlogDetail(newValue);
-})
 watch(
-  open,
+  () => props.dialogId,
   (newValue) => {
-    if (!newValue) {
-      emits('closeDialog');
-    }
+    getBlogData(newValue);
   }
-)
+);
+watch(open, (newValue) => {
+  if (!newValue) {
+    emits('closeDialog');
+  }
+});
 
 const mockData = {
   title: 'Vue3 组件库开发',
@@ -97,10 +93,12 @@ const mockData = {
   author: 'KaiXuanXuan',
   update_time: '2024-07-11',
   category: 'Vue3',
-}
-const getBlogDetail = (id)=>{
-  blog.value = mockData;
-}
+};
+const getBlogData = (id) => {
+  getBlogDetail(id).then((res) => {
+    blog.value = res.data;
+  });
+};
 </script>
 
 <style lang="scss" scoped></style>

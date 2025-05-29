@@ -61,6 +61,7 @@ import AudioPlayer from '@/components/myComponents/AudioPlayer.vue';
 import WorkTimeProgress from '@/components/myComponents/WorkTimeProgress.vue';
 import WeatherReport from '@/components/myComponents/WeatherReport.vue';
 import BlogDialog from '@/components/myComponents/BlogDialog.vue';
+import { getBlogList } from '@/api/blog';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -68,6 +69,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const todayValue = ref(today(getLocalTimeZone()));
 const song = ref({});
+const blogs = ref([]);
 const dialogOpen = ref(false);
 const dialogId = ref('');
 const leftAside = ref(null);
@@ -76,43 +78,44 @@ const rightAside = ref(null);
 
 onMounted(() => {
   init();
-  // 定义通用动画函数
-  const animateOnScroll = (element, delay = 0, stagger = 0.1) => {
-    gsap.from(element, {
-      scrollTrigger: {
-        trigger: element,
-        start: 'top bottom', // 元素顶部进入视口底部时触发
-        end: 'bottom top',
-        scrub: false,
-        once: true, // 只播放一次
-      },
-      y: 50, // 初始Y轴偏移50px（下方）
-      opacity: 0,
-      duration: 0.8,
-      delay,
-      stagger,
-      ease: 'power2.out',
-    });
-  };
-
   // 左侧边栏动画（延迟0.2s）
   animateOnScroll(leftAside.value, 0.2);
-
-  // 主内容区BlogCard逐个动画（延迟递增）
-  const blogCards = computed(() => mainContent.value.querySelectorAll('.card'));
-  animateOnScroll(blogCards.value, 0.2);
-
   // 右侧边栏动画（延迟0.4s）
   animateOnScroll(rightAside.value, 0.4);
 });
 
+// 定义通用动画函数
+const animateOnScroll = (element, delay = 0, stagger = 0.1) => {
+  gsap.from(element, {
+    scrollTrigger: {
+      trigger: element,
+      start: 'top bottom', // 元素顶部进入视口底部时触发
+      end: 'bottom top',
+      scrub: false,
+      once: true, // 只播放一次
+    },
+    y: 50, // 初始Y轴偏移50px（下方）
+    opacity: 0,
+    duration: 0.8,
+    delay,
+    stagger,
+    ease: 'power2.out',
+  });
+};
+
 function init() {
   changeSong(0);
+  getBlogList().then((res) => {
+    blogs.value = res.data;
+    // 主内容区BlogCard逐个动画（延迟递增）
+    const blogCards = computed(() => mainContent.value.querySelectorAll('.card'));
+    animateOnScroll(blogCards.value, 0.2);
+  });
 }
 
 const openDialog = (index) => {
-  dialogOpen.value = true;
-  dialogId.value = blogs[index].id;
+  dialogOpen.value = true;  
+  dialogId.value = String(blogs.value[index].id);
 };
 const closeDialog = () => {
   dialogOpen.value = false;
@@ -127,25 +130,6 @@ function changeSong(index) {
 const songList = [
   { src: '/mp3/Underground.mp3', title: 'Underground', index: 0 },
   { src: '/mp3/Die_For_You.mp3', title: 'Die For You', index: 1 },
-];
-
-const blogs = [
-  {
-    title: 'Vue3最佳实践',
-    update_time: '2024-03-20',
-    author: 'KaiXuanXuan',
-    cover: '/blog1.jpg',
-    category: '前端开发',
-    id: '1',
-  },
-  {
-    title: '测试项目2',
-    update_time: '2025-03-21',
-    author: 'KaiXuan',
-    cover: '/blog1.jpg',
-    category: '测试',
-    id: '2',
-  },
 ];
 </script>
 <style scoped></style>

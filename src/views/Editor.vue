@@ -180,7 +180,6 @@ const handleCoverChange = async (e) => {
     const base64 = event.target.result;
     formData.value.cover = base64;
   };
-  reader.readAsDataURL(file);
 };
 
 const handleSave = (msg = '保存成功') => {

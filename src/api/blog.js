@@ -1,18 +1,19 @@
 import request from '@/utils/request';
 
-const getBlogList = (params) => {
+const getBlogList = () => {
   return request({
     url: '/blog/list',
     method: 'get',
-    params,
   });
 };
 
-const getBlogDetail = (params) => {
+const getBlogDetail = (id) => {
   return request({
     url: '/blog/detail',
     method: 'get',
-    params,
+    params: {
+      id,
+    }
   });
 };
 
