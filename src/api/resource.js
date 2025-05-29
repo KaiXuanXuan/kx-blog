@@ -52,17 +52,6 @@ const getItemsByCategory = (category_id) => {
   });
 };
 
-const updateResourceItem = (data, file) => {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('data', JSON.stringify(data));
-  return request({
-    url: '/resource/item/update',
-    method: 'put',
-    data: formData
-  });
-};
-
 const deleteResourceItem = (id) => {
   return request({
     url: '/resource/item/delete',
