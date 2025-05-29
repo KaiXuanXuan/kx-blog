@@ -22,7 +22,7 @@
         </SheetTrigger>
         <SheetContent class="p-10">
           <SheetHeader class="p-0 mb-4">
-            <SheetTitle> 发布文章 </SheetTitle>
+            <SheetTitle class="text-xl"> 发布文章 </SheetTitle>
             <SheetDescription>文章一经发布，本地缓存将清空</SheetDescription>
           </SheetHeader>
           <form @submit="onSubmit" class="space-y-4">
@@ -61,7 +61,7 @@
               </FormItem>
             </FormField>
             <SheetFooter class="p-0 mt-8">
-              <Button type="submit"> 确认发布 </Button>
+              <Button :disabled="isLoading" type="submit"> 确认发布 </Button>
             </SheetFooter>
           </form>
         </SheetContent>
@@ -92,17 +92,18 @@ const formData = ref({
   title: '',
   markdown_content: '',
   category: '',
-  cover: null,
+  cover: '',
   coverType: '',
-  coverName: ''
+  coverName: '',
 });
 let timer = '';
+const isLoading = ref(false);
 const open = ref(false);
 
 onMounted(() => {
   // 从本地存储中读取数据
   for (const key in formData.value) {
-    formData.value[key] = localStorage.getItem(key);
+    formData.value[key] = localStorage.getItem(key) ??  '';
   }
 
   timer = setInterval(() => {
@@ -138,15 +139,18 @@ const onSubmit = (e) => {
     toast.warning('分类不能为空');
     return;
   }
-  if (formData.value.cover === null) {
+  if (formData.value.cover === '') {
     toast.warning('封面不能为空');
     return;
   }
 
+  isLoading.value = true;
   const { title, markdown_content, category, cover, coverType, coverName } = formData.value;
   const file = new File([cover], coverName, { type: coverType });
   addBlog({ title, markdown_content, category }, file).then((res) => {
-    console.log(res);
+    isLoading.value = false;
+    open.value = false;
+    clearSaveBlog(res.message + '，缓存已清空');
   });
 };
 
@@ -164,6 +168,8 @@ const editTimeInterval = (val) => {
 
 const handleCoverChange = async (e) => {
   const file = e.target.files[0];
+  console.log('file', file);
+  
   if (!file) return;
 
   // 检查是否是图片类型
@@ -179,13 +185,30 @@ const handleCoverChange = async (e) => {
   reader.onload = (event) => {
     const base64 = event.target.result;
     formData.value.cover = base64;
+    console.log(base64);
   };
+  reader.readAsDataURL(file);
 };
 
 const handleSave = (msg = '保存成功') => {
   // 遍历formData，将所有值都保存到本地存储中
   for (const key in formData.value) {
     localStorage.setItem(key, formData.value[key]);
+  }
+  toast.success(msg);
+};
+
+const clearSaveBlog = (msg = '缓存已清空') => {
+  formData.value = {
+    title: '',
+    markdown_content: '',
+    category: '',
+    cover: '',
+    coverType: '',
+    coverName: '',
+  };
+  for (const key in formData.value) {
+    localStorage.removeItem(key);
   }
   toast.success(msg);
 };
