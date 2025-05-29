@@ -16,9 +16,9 @@ const getBlogDetail = (params) => {
   });
 };
 
-const addBlog = (data, blob) => {
+const addBlog = (data, file) => {
   const formData = new FormData();
-  formData.append('file', blob);
+  formData.append('file', file);
   formData.append('data', JSON.stringify(data));
 
   return request({
@@ -28,9 +28,9 @@ const addBlog = (data, blob) => {
   });
 };
 
-const updateBlog = (data, blob) => {
+const updateBlog = (data, file) => {
   const formData = new FormData();
-  formData.append('file', blob);
+  formData.append('file', file);
   formData.append('data', JSON.stringify(data));
 
   return request({

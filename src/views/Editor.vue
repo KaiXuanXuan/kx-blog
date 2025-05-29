@@ -94,6 +94,7 @@ const formData = ref({
   category: '',
   cover: null,
   coverType: '',
+  coverName: ''
 });
 let timer = '';
 const open = ref(false);
@@ -142,9 +143,9 @@ const onSubmit = (e) => {
     return;
   }
 
-  const { title, markdown_content, category, cover, coverType } = formData.value;
-  const blob = new Blob([cover], { type: coverType });
-  addBlog({ title, markdown_content, category }, blob).then((res) => {
+  const { title, markdown_content, category, cover, coverType, coverName } = formData.value;
+  const file = new File([cover], coverName, { type: coverType });
+  addBlog({ title, markdown_content, category }, file).then((res) => {
     console.log(res);
   });
 };
@@ -171,6 +172,7 @@ const handleCoverChange = async (e) => {
     return;
   }
   formData.value.coverType = file.type;
+  formData.value.coverName = file.name;
 
   // 读取文件为base64
   const reader = new FileReader();
