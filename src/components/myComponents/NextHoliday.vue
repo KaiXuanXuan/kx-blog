@@ -30,11 +30,14 @@ onMounted(() => {
     const holidayDay = holidayDateList[2];
     const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
+    console.log(nowMonth, holidayMonth, nowDay, holidayDay);
+    
+
     let days = 0;
-    for (let i = nowMonth; i < holidayMonth; i++) {
-      days += monthDays[i];
+    for (let i = Number(nowMonth); i < Number(holidayMonth); i++) {
+      days += monthDays[i-1];
     }
-    days += holidayDay - nowDay;
+    days += holidayDay - Number(nowDay);
     days -= 1;
 
     nextHoliday.value = { name, formateHolidayDate, days };

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HeaderBanner />
+    <!-- <HeaderBanner /> -->
     <div class="max-w-7xl mx-auto px-4">
       <div class="grid lg:grid-cols-7 gap-6">
         <!-- 左侧边栏（添加ref） -->
@@ -39,12 +39,14 @@
         </aside>
 
         <!-- 主内容区（添加ref） -->
-        <main ref="mainContent" class="lg:col-span-5 space-y-4">
-          <BlogCard v-for="(blog, index) in blogs" :key="index" @click="openDialog(index)"
+        <TransitionGroup name="card" tag="div" ref="mainContent" class="lg:col-span-5 space-y-4" appear>
+          <BlogCard v-for="(blog, index) in blogs" :key="blog.id" @click="openDialog(index)"
             class="card cursor-pointer hover:shadow-md" :title="blog.title" :cover_image="blog.cover_image"
-            :author="blog.author" :update_time="blog.update_time" :category="blog.category" />
-          <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" @closeDialog="closeDialog" />
-        </main>
+            :author="blog.author" :update_time="blog.update_time" :category="blog.category"
+            :style="{ '--delay': `${index * 0.1 + 0.2}s` }" />
+        </TransitionGroup>
+        <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" @closeDialog="closeDialog" />
+
       </div>
     </div>
   </div>
@@ -54,7 +56,7 @@ import { Card } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, nextTick } from 'vue';
 import { getLocalTimeZone, today } from '@internationalized/date';
 import BlogCard from '@/components/myComponents/BlogCard.vue';
 import AudioPlayer from '@/components/myComponents/AudioPlayer.vue';
@@ -85,7 +87,7 @@ onMounted(() => {
 });
 
 // 定义通用动画函数
-const animateOnScroll = (element, delay = 0, stagger = 0.1) => {
+const animateOnScroll = (element, delay = 0.3, stagger = 0.1) => {
   gsap.from(element, {
     scrollTrigger: {
       trigger: element,
@@ -94,9 +96,9 @@ const animateOnScroll = (element, delay = 0, stagger = 0.1) => {
       scrub: false,
       once: false,
     },
-    y: 50, // 初始Y轴偏移50px（下方）
+    y: 40,
     opacity: 0,
-    duration: 0.8,
+    duration: 0.6,
     delay,
     stagger,
     ease: 'power2.out',
@@ -107,9 +109,6 @@ function init () {
   changeSong(0);
   getBlogList().then((res) => {
     blogs.value = res.data;
-    // 主内容区BlogCard逐个动画（延迟递增）
-    const blogCards = computed(() => mainContent.value.querySelectorAll('.card'));
-    animateOnScroll(blogCards.value, 0.2);
   });
 }
 
@@ -148,5 +147,20 @@ const songList = [
   z-index: -1;
   transform: skewY(-4deg);
   transform-origin: 0 0;
+}
+
+.card-enter-from {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.card-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition-delay: var(--delay);
 }
 </style>
