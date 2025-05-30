@@ -23,7 +23,7 @@
           </div>
         </Card>
 
-        <div class="space-y-4">
+        <div class="space-y-2">
           <!-- 音乐播放器 -->
           <Card class="p-4 px-6 items-center">
             <AudioPlayer :song="song" @change="changeSong" />

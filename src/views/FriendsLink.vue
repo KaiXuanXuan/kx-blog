@@ -138,7 +138,8 @@
     <div v-if="folders.length > 0"> 
     <TransitionGroup name="folder" tag="div" class="space-y-4 relative" appear>
       <Collapsible v-for="(folder, index) in folders" :key="folder.id" v-model:open="folder.isOpen"
-        class="border rounded-lg relative">
+        class="border rounded-lg relative"
+        :style="{ '--enter-delay': `${index * 0.1}s` }">
         <CollapsibleTrigger
           class="cursor-pointer relative rounded-md flex items-center justify-between w-full p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-900">
           <div class="flex items-center gap-2">
@@ -558,6 +559,12 @@ const changeEditIcon = (e) => {
 }
 .folder-enter-active {
   transition: all 0.5s ease;
+  transition-delay: var(--enter-delay); /* 仅进入动画使用延迟 */
+}
+
+.folder-leave-active {
+  transition: all 0.5s ease;
+  transition-delay: 0s; /* 离开动画无延迟 */
 }
 .folder-enter-to {
   opacity: 1;
