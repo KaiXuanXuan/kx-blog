@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-2">
+  <div class="space-y-4">
     <!-- <img src="/avatar.png" class="w-full rounded-lg" /> -->
     <div class="w-full rounded-lg">{{ song.title }}</div>
     <audio ref="audioEl"></audio>
@@ -15,7 +15,7 @@
     />
     <!-- 按钮 -->
     <div class="flex items-center justify-center space-x-4 h-8">
-      <Button class="size-6 rounded-full" @click="changeSong(-1)">
+      <Button class="size-8 rounded-full" @click="changeSong(-1)">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
           <path
             stroke-linecap="round"
@@ -24,7 +24,7 @@
           />
         </svg>
       </Button>
-      <Button class="size-6 rounded-full" @click="playing = !playing">
+      <Button class="size-8 rounded-full" @click="playing = !playing">
         <svg v-if="playing" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
         </svg>
@@ -32,7 +32,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
         </svg>
       </Button>
-      <Button class="size-6 rounded-full" @click="changeSong(1)">
+      <Button class="size-8 rounded-full" @click="changeSong(1)">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
           <path
             stroke-linecap="round"
@@ -41,7 +41,7 @@
           />
         </svg>
       </Button>
-      <Button class="size-6 rounded-full" @click="toggleMute">
+      <Button class="size-8 rounded-full" @click="toggleMute">
         <svg v-if="isMuted" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
           <path
             stroke-linecap="round"

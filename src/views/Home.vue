@@ -24,12 +24,12 @@
         </Card>
 
         <div class="space-y-2">
-          <!-- 音乐播放器 -->
           <Card class="p-4 px-6 items-center">
             <AudioPlayer :song="song" @change="changeSong" />
           </Card>
-
+          
           <NextHoliday class="h-30"/>
+
           <div class="flex items-start justify-center gap-2 h-40">
             <WeatherReport class="h-full" /> 
             <WorkTimeProgress :size="90" :strokeWidth="10" class="h-full"/>
