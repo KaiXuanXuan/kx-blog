@@ -323,11 +323,11 @@ const addFolder = () => {
       const msg = res.message;
       toast.success(msg);
       getFolders();
-      folderForm.value.open = false;
       folderForm.value.title = '';
     }
   }).finally(() => {
     isLoading.value = false;
+    folderForm.value.open = false;
   });
 };
 
@@ -343,10 +343,10 @@ const updateFolder = () => {
       const msg = res.message;
       toast.success(msg);
       getFolders();
-      folderEditForm.value.open = false;
     }
   }).finally(() => {
     isLoading.value = false;
+    folderEditForm.value.open = false;
   });
 }
 
@@ -358,10 +358,10 @@ const deleteFolder = () => {
       const msg = res.message;
       toast.success(msg);
       getFolders();
-      folderDeleteForm.value.open = false;
     }
   }).finally(() => {
     isLoading.value = false;
+    folderDeleteForm.value.open = false;
   });
 }
 
@@ -397,7 +397,6 @@ const addItem = () => {
       const msg = res.message;
       toast.success(msg);
       getFolders();
-      itemForm.value.open = false;
       itemForm.value.title = '';
       itemForm.value.item_desc = '';
       itemForm.value.item_url = '';
@@ -408,6 +407,7 @@ const addItem = () => {
     }
   }).finally(() => {
     isLoading.value = false;
+    itemForm.value.open = false;
   });
 }
 
@@ -423,10 +423,10 @@ const updateItem = () => {
       const msg = res.message;
       toast.success(msg);
       getFolders();
-      itemEditForm.value.open = false;
     }
   }).finally(() => {
     isLoading.value = false;
+    itemEditForm.value.open = false;
   });
 }
 
@@ -439,9 +439,9 @@ const deleteItem = () => {
       toast.success(msg);
       getFolders();
     }
-    itemDeleteForm.value.open = false;
   }).finally(() => {
     isLoading.value = false;
+    itemDeleteForm.value.open = false;
   });
 }
 
