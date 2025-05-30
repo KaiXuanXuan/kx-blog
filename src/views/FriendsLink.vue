@@ -137,7 +137,7 @@
 
     <!-- 收藏夹列表 -->
     <div v-if="folders.length > 0"> 
-    <TransitionGroup name="folder" tag="div" class="space-y-4">
+    <TransitionGroup name="folder" tag="div" class="space-y-4 relative">
       <Collapsible v-for="(folder, index) in folders" :key="folder.id" v-model:open="folder.isOpen"
         class="border rounded-lg relative">
         <CollapsibleTrigger
@@ -551,9 +551,12 @@ const changeEditIcon = (e) => {
 </script>
 
 <style scoped>
+.folder-move {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 .folder-enter-from {
   opacity: 0;
-  transform: translateX(-80px);
+  transform: translateX(-100px);
 }
 .folder-enter-active {
   transition: all 0.5s ease;
@@ -567,10 +570,13 @@ const changeEditIcon = (e) => {
   transform: translateX(0);
 }
 .folder-leave-active {
+  position: absolute !important;
+  width: 100%;
+  z-index: 0;
   transition: all 0.5s ease;
 }
 .folder-leave-to {
   opacity: 0;
-  transform: translateX(-80px);
+  transform: translateX(-100px);
 }
 </style>
