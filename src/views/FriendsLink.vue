@@ -4,7 +4,7 @@
     <div class="flex justify-center">
       <div class="relative max-w-lg items-center mb-8 transition-all duration-750" :class="{ 'w-full': focusSearch }">
         <Input id="search" type="text" placeholder="搜索..." class="pl-10 " @focus="focusSearch = true"
-          @blur="focusSearch = false" />
+          @blur="focusSearch = false" @input="debounceSearch"  v-model="searchKeyword"/>
         <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
           <Search class="size-6 text-muted-foreground" />
         </span>
@@ -287,6 +287,35 @@ const focusSearch = ref(false);
 onMounted(() => {
   getFolders();
 });
+
+// 防抖
+const debounce = (func, delay) => {
+  let timer;
+  return function (...args) {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+};
+
+const search = () => { 
+  if (searchKeyword.value === "") {
+    getFolders();
+    return;
+  }
+  const keyword = searchKeyword.value;
+  searchResources(keyword).then((res) => { 
+    if (res.code == 200) {
+      const data = res.data;
+      folders.value = data;
+    }
+  });
+};
+
+const debounceSearch = debounce(search, 500);
 
 const openFolderEditDialog = (folder) => {
   const { title, id } = folder;
