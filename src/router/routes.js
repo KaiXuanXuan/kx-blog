@@ -21,7 +21,13 @@ const routes = [
     path: '/editor',
     name: 'Editor',
     component: () => import('@/views/Editor.vue'),
-    meta: { title: '写文章' }
+    meta: { title: '写文' }
+  },
+  {
+    path: '/report',
+    name: 'Report',
+    component: () => import('@/views/Report.vue'),
+    meta: { title: '报告助手' }
   }
 ];
 
