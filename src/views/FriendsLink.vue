@@ -136,7 +136,7 @@
 
     <!-- 收藏夹列表 -->
     <div v-if="folders.length > 0"> 
-    <TransitionGroup name="folder" tag="div" class="space-y-4 relative">
+    <TransitionGroup name="folder" tag="div" class="space-y-4 relative" appear>
       <Collapsible v-for="(folder, index) in folders" :key="folder.id" v-model:open="folder.isOpen"
         class="border rounded-lg relative">
         <CollapsibleTrigger
