@@ -112,7 +112,7 @@ function getWeather () {
     const { text, feelsLike, windDir, windSpeed, icon } = res.now;
     weatherData.value = { text, feelsLike, windDir, windSpeed, icon };
     getDataSuccess.value = true;
-    toast.success('获取天气信息成功');
+    // toast.success('获取天气信息成功');
     isLoading.value = false;
   });
 

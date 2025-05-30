@@ -6,8 +6,9 @@
       <span class="ml-8 font-semibold">个人博客 - 凯旋</span>
     </div>
     <!-- 导航 -->
-    <div class="flex items-center gap-4">
-      <router-link v-for="link in links" :key="link.title" :to="link.path" class="px-4 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+    <div class="relative flex items-center gap-4" ref="navItemsRef" @click="handleNavItemClick">
+      <div class="active-overlay rounded-md" ref="activeOverlay"></div>
+      <router-link v-for="link in links" :key="link.title" :to="link.path" class="nav-item px-4 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
         {{ link.title }}
       </router-link>
     </div>
@@ -58,13 +59,18 @@ import UserControl from '@/components/myComponents/UserControl.vue';
 import { useLoginStore } from '@/stores/login';
 import { storeToRefs } from 'pinia';
 import { connect } from '@/api/connect.js'
+import { toast } from 'vue-sonner';
+import routes from '@/router/routes';
 
 const isDark = ref(false);
+const navItemsRef = ref(null);
+const activeOverlay = ref(null);
+const navItemList = ref([]);
+const currentIndex = ref(0);
 const colorMode = useColorMode();
 const loginStore = useLoginStore();
 const { isLogin, userInfo } = storeToRefs(loginStore);
-import { toast } from 'vue-sonner';
-import routes from '@/router/routes';
+
 
 const links = routes.map(route => {
   return {
@@ -87,6 +93,8 @@ onMounted(() => {
 
   // 获取csrfToken
   connect()
+  navItemList.value = navItemsRef.value.querySelectorAll('.nav-item');
+  updateOverlay(navItemList.value[0]); 
 });
 
 // 防抖
@@ -100,6 +108,27 @@ const debounce = (fn, delay) => {
   };
 };
 
+function updateOverlay(target) {
+  const padding = 24; // 匹配 nav-item 的 padding-x
+  const rect = target.getBoundingClientRect();
+  const parentRect = target.parentElement.getBoundingClientRect();
+
+  activeOverlay.value.style.width = `${rect.width}px`;
+  activeOverlay.value.style.left = `${rect.left - parentRect.left}px`;
+}
+
+function handleNavItemClick(e) {
+  const target = e.target;
+  if (!target.classList.contains('nav-item')) return;
+
+  navItemList.value.forEach((nav) => nav.classList.remove('active'));
+  target.classList.add('active');
+  updateOverlay(target);
+
+  const activeIndex = Array.from(navItemList.value).indexOf(target);
+  currentIndex.value = activeIndex;
+}
+
 const handleSwitch = (value) => {
   isDark.value = value === 'dark' ? true : false;
   colorMode.value = value;
@@ -108,4 +137,21 @@ const handleSwitch = (value) => {
 const debounceSwitch = debounce(handleSwitch, 500);
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+/* Active overlay */
+.active-overlay {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: hsla(219, 8%, 52%, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.nav-item.active {
+  color: #181c1f;
+  position: relative;
+  z-index: 2;
+  font-weight: 600;
+}
+</style>
