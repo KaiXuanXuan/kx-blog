@@ -1,51 +1,51 @@
 <template>
   <div class="max-w-7xl mx-auto px-4">
-    <div class="grid lg:grid-cols-12 gap-6">
+    <div class="grid lg:grid-cols-7 gap-6">
+
       <!-- 左侧边栏（添加ref） -->
-      <aside ref="leftAside" class="lg:col-span-3 space-y-6">
+      <aside ref="leftAside" class="lg:col-span-2 space-y-6">
         <!-- 头像卡片 -->
-        <Card class="p-6 text-center gap-2">
-          <Avatar class="w-24 h-24 rounded-full mx-auto mb-2">
-            <AvatarImage src="/avatar.png" alt="Avatar" />
-            <AvatarFallback>KX</AvatarFallback>
-          </Avatar>
-          <h2 class="text-xl font-bold">KaiXuanXuan</h2>
-          <p class="text-gray-600">Stay hungry, stay foolish</p>
+        <Card class="text-center gap-2 p-0 overflow-hidden">
+          <div class="head h-32 flex items-center relative">
+            <Avatar
+              class=" w-22 h-22 rounded-full mx-auto absolute left-4 -bottom-10 box-content border-5 border-gray-100">
+              <AvatarImage src="/avatar.png" alt="Avatar" />
+              <AvatarFallback>KX</AvatarFallback>
+            </Avatar>
+            <p class="absolute text-2xl text-white font-bold left-40 bottom-6">KaiXuan</p>
+          </div>
+          <div class="foot p-4  w-full flex items-center justify-center gap-2">
+            <p>生活就是在米缸里种玫瑰🌹</p>
+            <div class="flex w-full flex-wrap gap-1 items-center justify-center">
+              <div class="bg-[#95B2FF] text-white py-1 px-2 rounded-md text-xs cursor-pointer"
+                v-for="(tag, index) in skillList" :key="index">#{{ tag }}</div>
+            </div>
+          </div>
         </Card>
 
-        <!-- 音乐播放器 -->
-        <Card class="p-4 px-6 items-center">
-          <AudioPlayer :song="song" @change="changeSong" />
-        </Card>
+        <div class="space-y-4">
+          <!-- 音乐播放器 -->
+          <Card class="p-4 px-6 items-center">
+            <AudioPlayer :song="song" @change="changeSong" />
+          </Card>
 
-        <!-- 日历 -->
-        <Card class="items-center">
-          <Calendar v-model="todayValue" :weekday-format="'short'" />
-        </Card>
+          <NextHoliday class="h-30"/>
+          <div class="flex items-start justify-center gap-2 h-40">
+            <WeatherReport class="h-full" /> 
+            <WorkTimeProgress :size="90" :strokeWidth="10" class="h-full"/>
+          </div>
+        </div>
       </aside>
 
       <!-- 主内容区（添加ref） -->
-      <main ref="mainContent" class="lg:col-span-7 space-y-4">
-        <BlogCard
-          v-for="(blog, index) in blogs"
-          :key="index"
-          @click="openDialog(index)"
-          class="card cursor-pointer hover:shadow-md"
-          :title="blog.title"
-          :cover_image="blog.cover_image"
-          :author="blog.author"
-          :update_time="blog.update_time"
-          :category="blog.category"
-        />
+      <main ref="mainContent" class="lg:col-span-5 space-y-4">
+        <BlogCard v-for="(blog, index) in blogs" :key="index" @click="openDialog(index)"
+          class="card cursor-pointer hover:shadow-md" :title="blog.title" :cover_image="blog.cover_image"
+          :author="blog.author" :update_time="blog.update_time" :category="blog.category" />
         <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" @closeDialog="closeDialog" />
       </main>
 
-      <!-- 右侧边栏（添加ref） -->
-      <aside ref="rightAside" class="lg:col-span-2 space-y-6">
-        <!-- 下班时间 -->
-        <WorkTimeProgress />
-        <WeatherReport />
-      </aside>
+
     </div>
   </div>
 </template>
@@ -60,6 +60,7 @@ import BlogCard from '@/components/myComponents/BlogCard.vue';
 import AudioPlayer from '@/components/myComponents/AudioPlayer.vue';
 import WorkTimeProgress from '@/components/myComponents/WorkTimeProgress.vue';
 import WeatherReport from '@/components/myComponents/WeatherReport.vue';
+import NextHoliday from '@/components/myComponents/NextHoliday.vue';
 import BlogDialog from '@/components/myComponents/BlogDialog.vue';
 import { getBlogList } from '@/api/blog';
 import { gsap } from 'gsap';
@@ -74,14 +75,12 @@ const dialogOpen = ref(false);
 const dialogId = ref('');
 const leftAside = ref(null);
 const mainContent = ref(null);
-const rightAside = ref(null);
+const skillList = ['HTML', 'CSS', 'JavaScript', 'Vue', 'React', 'Three', 'Element']
 
 onMounted(() => {
   init();
   // 左侧边栏动画（延迟0.2s）
   animateOnScroll(leftAside.value, 0.2);
-  // 右侧边栏动画（延迟0.2s）
-  animateOnScroll(rightAside.value, 0.2);
 });
 
 // 定义通用动画函数
@@ -92,7 +91,7 @@ const animateOnScroll = (element, delay = 0, stagger = 0.1) => {
       start: 'top bottom', // 元素顶部进入视口底部时触发
       end: 'bottom top',
       scrub: false,
-      once: false, 
+      once: false,
     },
     y: 50, // 初始Y轴偏移50px（下方）
     opacity: 0,
@@ -103,7 +102,7 @@ const animateOnScroll = (element, delay = 0, stagger = 0.1) => {
   });
 };
 
-function init() {
+function init () {
   changeSong(0);
   getBlogList().then((res) => {
     blogs.value = res.data;
@@ -114,14 +113,14 @@ function init() {
 }
 
 const openDialog = (index) => {
-  dialogOpen.value = true;  
+  dialogOpen.value = true;
   dialogId.value = String(blogs.value[index].id);
 };
 const closeDialog = () => {
   dialogOpen.value = false;
 };
 
-function changeSong(index) {
+function changeSong (index) {
   if (index < 0 || index > songList.length - 1) return;
   song.value = songList[index];
   console.log(song.value);
@@ -132,4 +131,21 @@ const songList = [
   { src: '/mp3/Die_For_You.mp3', title: 'Die For You', index: 1 },
 ];
 </script>
-<style scoped></style>
+<style scoped>
+.head {
+  position: relative;
+  z-index: 1;
+}
+
+.head::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: url("/avatar-bg.jpg");
+  background-size: cover;
+  z-index: -1;
+  transform: skewY(-4deg);
+  transform-origin: 0 0;
+}
+</style>

@@ -1,48 +1,39 @@
 <template>
-  <div class="space-y-2">
-    <Card class="flex flex-col justify-center items-center gap-2 p-6">
-      <div class="progress-container relative mb-4">
+  <div class="space-y-2 w-full">
+    <Card class="flex flex-col justify-center items-center gap-2 p-4 h-full">
+      <div class="progress-container relative mb-2">
         <svg :width="size" :height="size">
           <!-- 背景环 -->
-          <circle :cx="size / 2" :cy="size / 2" :r="radius" fill="none" :stroke-width="strokeWidth" stroke="#ddd" stroke-linecap="round" :stroke-dasharray="`${circumference}`" />
+          <circle :cx="size / 2" :cy="size / 2" :r="radius" fill="none" :stroke-width="strokeWidth" stroke="#ddd"
+            stroke-linecap="round" :stroke-dasharray="`${circumference}`" />
 
           <!-- 进度环 -->
-          <motion.circle
-            :cx="size / 2"
-            :cy="size / 2"
-            :r="radius"
-            fill="none"
-            :stroke-width="strokeWidth"
-            :stroke="strokeColor"
-            :initial="{ strokeDashoffset: circumference }"
-            :animate="{ strokeDasharray: progressDash }"
-            :transition="{ duration: 1.2 }"
-            :stroke-dasharray="progressDash"
-            stroke-linecap="round"
-            :style="{ rotate: -90 }"
-          />
+          <motion.circle :cx="size / 2" :cy="size / 2" :r="radius" fill="none" :stroke-width="strokeWidth"
+            :stroke="strokeColor" :initial="{ strokeDashoffset: circumference }"
+            :animate="{ strokeDasharray: progressDash }" :transition="{ duration: 1.2 }"
+            :stroke-dasharray="progressDash" stroke-linecap="round" :style="{ rotate: -90 }" />
         </svg>
 
         <!-- 文本 -->
-        <div class="absolute left-[50%] top-[50%] translate-[-50%] text-center text-lg font-medium text-gray-800 dark:text-white">
+        <div
+          class="absolute left-[50%] top-[50%] translate-[-50%] text-center text-lg font-medium text-gray-800 dark:text-white">
           {{ Math.floor(localProgress * 100) }}
         </div>
       </div>
       <div class="text-center text-md font-medium text-gray-500 dark:text-gray-200">
         {{ status }}
       </div>
-      <div v-if="workFlag == 0" class="text-center text-sm font-medium text-gray-500 dark:text-gray-200">下班：{{ timeToGo[0] }} 时 {{ timeToGo[1] }} 分</div>
+      <div v-if="workFlag == 0" class="text-center text-sm font-medium text-gray-500 dark:text-gray-200">下班：{{
+        timeToGo[0] }} 时 {{ timeToGo[1] }} 分</div>
     </Card>
 
     <Collapsible v-model:open="isOpen" class="w-full">
       <CollapsibleTrigger class="w-full cursor-pointer">
         <Card class="p-1 items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"
-            />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
           </svg>
         </Card>
@@ -85,12 +76,7 @@
       </CollapsibleContent>
     </Collapsible>
 
-    <Card v-if="nextHoliday !== null" class="bg-pink gap-1 items-center justify-center text-white">
-      <div class="text-lg font-medium">{{ nextHoliday.name }}</div>
-      <div class="text-sm">{{ nextHoliday.formateHolidayDate }}</div>
-      <div class="text-md font-medium">还有 {{ nextHoliday.days }} 天 🎉</div>
-    </Card>
-    <Card v-else class="bg-pink items-center justify-center text-white">网络繁忙😿</Card>
+
   </div>
 </template>
 
@@ -103,7 +89,6 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { motion, useMotionValue } from 'motion-v';
 import chineseDays from 'chinese-days';
-import { getNextHoliday } from '@/api/holiday.js';
 
 const props = defineProps({
   size: {
@@ -121,7 +106,6 @@ const goWorkTime = ref(9);
 const offWorkTime = ref(18);
 const workFlag = ref(3); // -1:上班前  0:上班中   1:下班后   2:放假   3:载入中
 const isOpen = ref(false);
-const nextHoliday = ref(null);
 const timeToGo = ref(0); // 距离下班时间
 
 const radius = computed(() => (props.size - props.strokeWidth) / 2);
@@ -162,21 +146,21 @@ const progressDash = computed(() => {
   return `${visibleLength} ${circumference.value - visibleLength}`;
 });
 
-function getLocalstorage(key) {
+function getLocalstorage (key) {
   const value = localStorage.getItem(key);
   return value ? JSON.parse(value) : null;
 }
-function setLocalstorage(key, value) {
+function setLocalstorage (key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-function confirmWorkTime() {
+function confirmWorkTime () {
   setLocalstorage('goWorkTime', goWorkTime.value);
   setLocalstorage('offWorkTime', offWorkTime.value);
   isOpen.value = false;
 }
 
-function nowMinutes() {
+function nowMinutes () {
   const now = new Date();
   const currentHours = now.getHours();
   const currentMinutes = now.getMinutes();
@@ -187,7 +171,7 @@ function nowMinutes() {
   return minutes;
 }
 
-function formatDate(date) {
+function formatDate (date) {
   const year = date.getFullYear();
   let month = date.getMonth() + 1;
   let day = date.getDate();
@@ -197,7 +181,7 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
-function calcWorkProgress(now, start, end) {
+function calcWorkProgress (now, start, end) {
   if (now <= start) {
     workFlag.value = -1;
     return now / start;
@@ -209,7 +193,7 @@ function calcWorkProgress(now, start, end) {
     return (now - start) / (end - start);
   }
 }
-function calcRestProgress(now, start, end) {
+function calcRestProgress (now, start, end) {
   workFlag.value = 2;
   return (now - start) / (end - start);
 }
@@ -217,28 +201,6 @@ function calcRestProgress(now, start, end) {
 onMounted(() => {
   // 获取下一个节假日
   const now = formatDate(new Date());
-  getNextHoliday(now).then((res) => {
-    const { date, name } = res.holiday;
-    const nowDateList = now.split('-');
-    const holidayDateList = date.split('-');
-    const formateHolidayDate = `${holidayDateList[0]}年${holidayDateList[1]}月${holidayDateList[2]}日`;
-
-    // 计算距离下个节假日的天数
-    const nowMonth = nowDateList[1];
-    const holidayMonth = holidayDateList[1];
-    const nowDay = nowDateList[2];
-    const holidayDay = holidayDateList[2];
-    const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-    let days = 0;
-    for (let i = nowMonth; i < holidayMonth; i++) {
-      days += monthDays[i];
-    }
-    days += holidayDay - nowDay;
-    days -= 1;
-
-    nextHoliday.value = { name, formateHolidayDate, days };
-  });
 
   const timer = setInterval(() => {
     if (!isOpen.value) {
@@ -264,7 +226,4 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.bg-pink {
-  background: linear-gradient(135deg, rgb(255, 154, 158) 0%, rgb(250, 208, 196) 100%);
-}
 </style>
