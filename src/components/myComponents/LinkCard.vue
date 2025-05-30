@@ -6,8 +6,8 @@
     <div class="flex items-center gap-3">
       <img :src="item.icon" class="w-10 h-10" />
       <div class="flex-1 text-nowrap overflow-hidden">
-        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ item.title }}</h3>
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 truncate">{{ item.item_desc }}</p>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100" v-html="highlightKeyword(item.title)"></h3>
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 truncate" v-html="highlightKeyword(item.item_desc)"></p>
       </div>
     </div>
 
@@ -42,6 +42,7 @@ import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } 
 const props = defineProps({
   item: { type: Object, required: true },
   delay: { type: Number, default: 0 },
+  keyword: { type: String, default: '' },
 });
 const emits = defineEmits(['openItemEditDialog', 'openItemDeleteDialog']);
 const animated = ref(false);
@@ -50,6 +51,12 @@ onMounted(() => {
   // 触发Tailwind过渡类切换
   setTimeout(() => (animated.value = true), props.delay * 1000);
 });
+
+const highlightKeyword = (text) => {
+  if (!props.keyword) return text;
+  const regex = new RegExp(props.keyword, 'gi');
+  return text.replace(regex, (match) => `<span class="bg-yellow-100 dark:bg-yellow-800 rounded-sm p-0.5">${match}</span>`);
+}
 
 const openItemEditDialog = () => {
   emits('openItemEditDialog', props.item);

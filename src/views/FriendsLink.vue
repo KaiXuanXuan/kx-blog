@@ -4,7 +4,7 @@
     <div class="flex justify-center">
       <div class="relative max-w-lg items-center mb-8 transition-all duration-750" :class="{ 'w-full': focusSearch }">
         <Input id="search" type="text" placeholder="搜索..." class="pl-10 " @focus="focusSearch = true"
-          @blur="focusSearch = false" @input="debounceSearch"  v-model="searchKeyword"/>
+          @blur="focusSearch = false" @input="debounceSearch" v-model="searchKeyword" />
         <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
           <Search class="size-6 text-muted-foreground" />
         </span>
@@ -78,7 +78,7 @@
         <Input v-model="itemForm.item_desc" placeholder="网站描述" class="" />
         <Input v-model="itemForm.item_url" placeholder="网站地址" class="" />
         <Input placeholder="网站图标" type="file" @change="changeAddIcon" class="" />
-        <img :src="itemForm.icon"/>
+        <img :src="itemForm.icon" />
 
         <DialogFooter>
           <Button class="w-full" @click="addItem" :disabled="isLoading">确认添加</Button>
@@ -136,14 +136,15 @@
     </Badge>
 
     <!-- 收藏夹列表 -->
-    <div class="space-y-4">
+    <div v-if="folders.length > 0"> 
+    <TransitionGroup name="folder" tag="div" class="space-y-4">
       <Collapsible v-for="(folder, index) in folders" :key="folder.id" v-model:open="folder.isOpen"
         class="border rounded-lg relative">
         <CollapsibleTrigger
           class="cursor-pointer relative rounded-md flex items-center justify-between w-full p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-900">
           <div class="flex items-center gap-2">
             <div class="h-5 w-5 flex items-center">{{ folder.isOpen ? '📂' : '📁' }}</div>
-            <span class="text-lg font-medium">{{ folder.title }}</span>
+            <span class="text-lg font-medium" v-html="highlightKeyword(folder.title)"></span>
           </div>
           <ContextMenu>
             <ContextMenuTrigger class="absolute w-full h-full left-0 top-0"> </ContextMenuTrigger>
@@ -195,11 +196,15 @@
         <CollapsibleContent class="p-4">
           <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <LinkCard v-for="(item, itemIdx) in folder.items" :key="itemIdx" :item="item" :delay="itemIdx * 0.1"
-              :categoryList="categoryList" @openItemEditDialog="openItemEditDialog"
+              :categoryList="categoryList" :keyword="searchKeyword" @openItemEditDialog="openItemEditDialog"
               @openItemDeleteDialog="openItemDeleteDialog" />
           </div>
         </CollapsibleContent>
       </Collapsible>
+    </TransitionGroup>
+    </div>
+    <div class="mt-4" v-else>
+      <p class="text-center text-gray-500">暂无收藏夹</p> 
     </div>
   </div>
 </template>
@@ -301,21 +306,33 @@ const debounce = (func, delay) => {
   };
 };
 
-const search = () => { 
+const search = () => {
   if (searchKeyword.value === "") {
     getFolders();
     return;
   }
   const keyword = searchKeyword.value;
-  searchResources(keyword).then((res) => { 
+  searchResources(keyword).then((res) => {
     if (res.code == 200) {
       const data = res.data;
+      data.forEach(item=>{
+        item.isOpen = true;
+      })
       folders.value = data;
     }
   });
 };
 
 const debounceSearch = debounce(search, 500);
+
+// 高亮关键字
+const highlightKeyword = (text) => {
+  const keyword = searchKeyword.value;
+  if (!keyword) return text;
+  // 正则匹配
+  const regex = new RegExp(keyword, "gi");
+  return text.replace(regex, (match) => `<span class="bg-yellow-100 dark:bg-yellow-800 rounded-sm p-0.5">${match}</span>`);
+};
 
 const openFolderEditDialog = (folder) => {
   const { title, id } = folder;
@@ -533,4 +550,27 @@ const changeEditIcon = (e) => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.folder-enter-from {
+  opacity: 0;
+  transform: translateX(-80px);
+}
+.folder-enter-active {
+  transition: all 0.5s ease;
+}
+.folder-enter-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+.folder-leave-from {
+  opacity: 1;
+  transform: translateX(0);
+}
+.folder-leave-active {
+  transition: all 0.5s ease;
+}
+.folder-leave-to {
+  opacity: 0;
+  transform: translateX(-80px);
+}
+</style>
