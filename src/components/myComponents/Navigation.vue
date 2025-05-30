@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between items-center px-40 py-2 h-14 w-full border-b border-gray-200 dark:border-gray-700">
+  <div class="flex justify-between items-center px-40 py-2 h-14 w-full dark:border-gray-700">
     <!-- logo -->
     <div class="flex items-center">
       <img src="/vite.svg" alt="logo" class="w-8 h-8" />

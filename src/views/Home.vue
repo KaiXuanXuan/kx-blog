@@ -1,51 +1,51 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4">
-    <div class="grid lg:grid-cols-7 gap-6">
+  <div>
+    <HeaderBanner />
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid lg:grid-cols-7 gap-6">
+        <!-- 左侧边栏（添加ref） -->
+        <aside ref="leftAside" class="lg:col-span-2 space-y-6">
+          <!-- 头像卡片 -->
+          <Card class="text-center gap-2 p-0 overflow-hidden">
+            <div class="head h-32 flex items-center relative">
+              <Avatar
+                class=" w-22 h-22 rounded-full mx-auto absolute left-4 -bottom-10 box-content border-5 border-gray-100">
+                <AvatarImage src="/avatar.png" alt="Avatar" />
+                <AvatarFallback>KX</AvatarFallback>
+              </Avatar>
+              <p class="absolute text-2xl text-white font-bold left-40 bottom-6">KaiXuan</p>
+            </div>
+            <div class="foot p-4  w-full flex items-center justify-center gap-2">
+              <p>生活就是在米缸里种玫瑰🌹</p>
+              <div class="flex w-full flex-wrap gap-1 items-center justify-center">
+                <div class="bg-[#95B2FF] text-white py-1 px-2 rounded-md text-xs cursor-pointer"
+                  v-for="(tag, index) in skillList" :key="index">#{{ tag }}</div>
+              </div>
+            </div>
+          </Card>
 
-      <!-- 左侧边栏（添加ref） -->
-      <aside ref="leftAside" class="lg:col-span-2 space-y-6">
-        <!-- 头像卡片 -->
-        <Card class="text-center gap-2 p-0 overflow-hidden">
-          <div class="head h-32 flex items-center relative">
-            <Avatar
-              class=" w-22 h-22 rounded-full mx-auto absolute left-4 -bottom-10 box-content border-5 border-gray-100">
-              <AvatarImage src="/avatar.png" alt="Avatar" />
-              <AvatarFallback>KX</AvatarFallback>
-            </Avatar>
-            <p class="absolute text-2xl text-white font-bold left-40 bottom-6">KaiXuan</p>
-          </div>
-          <div class="foot p-4  w-full flex items-center justify-center gap-2">
-            <p>生活就是在米缸里种玫瑰🌹</p>
-            <div class="flex w-full flex-wrap gap-1 items-center justify-center">
-              <div class="bg-[#95B2FF] text-white py-1 px-2 rounded-md text-xs cursor-pointer"
-                v-for="(tag, index) in skillList" :key="index">#{{ tag }}</div>
+          <div class="space-y-2">
+            <Card class="p-4 px-6 items-center">
+              <AudioPlayer :song="song" @change="changeSong" />
+            </Card>
+
+            <NextHoliday class="h-30" />
+
+            <div class="flex items-start justify-center gap-2 h-40">
+              <WeatherReport class="h-full" />
+              <WorkTimeProgress :size="90" :strokeWidth="10" class="h-full" />
             </div>
           </div>
-        </Card>
+        </aside>
 
-        <div class="space-y-2">
-          <Card class="p-4 px-6 items-center">
-            <AudioPlayer :song="song" @change="changeSong" />
-          </Card>
-          
-          <NextHoliday class="h-30"/>
-
-          <div class="flex items-start justify-center gap-2 h-40">
-            <WeatherReport class="h-full" /> 
-            <WorkTimeProgress :size="90" :strokeWidth="10" class="h-full"/>
-          </div>
-        </div>
-      </aside>
-
-      <!-- 主内容区（添加ref） -->
-      <main ref="mainContent" class="lg:col-span-5 space-y-4">
-        <BlogCard v-for="(blog, index) in blogs" :key="index" @click="openDialog(index)"
-          class="card cursor-pointer hover:shadow-md" :title="blog.title" :cover_image="blog.cover_image"
-          :author="blog.author" :update_time="blog.update_time" :category="blog.category" />
-        <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" @closeDialog="closeDialog" />
-      </main>
-
-
+        <!-- 主内容区（添加ref） -->
+        <main ref="mainContent" class="lg:col-span-5 space-y-4">
+          <BlogCard v-for="(blog, index) in blogs" :key="index" @click="openDialog(index)"
+            class="card cursor-pointer hover:shadow-md" :title="blog.title" :cover_image="blog.cover_image"
+            :author="blog.author" :update_time="blog.update_time" :category="blog.category" />
+          <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" @closeDialog="closeDialog" />
+        </main>
+      </div>
     </div>
   </div>
 </template>
@@ -62,6 +62,7 @@ import WorkTimeProgress from '@/components/myComponents/WorkTimeProgress.vue';
 import WeatherReport from '@/components/myComponents/WeatherReport.vue';
 import NextHoliday from '@/components/myComponents/NextHoliday.vue';
 import BlogDialog from '@/components/myComponents/BlogDialog.vue';
+import HeaderBanner from '@/components/myComponents/HeaderBanner.vue';
 import { getBlogList } from '@/api/blog';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';

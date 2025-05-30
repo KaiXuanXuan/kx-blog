@@ -1,6 +1,6 @@
 <template>
   <div
-    class="link-card relative cursor-pointer w-full p-4 bg-white dark:bg-gray-900 rounded-lg shadow-sm hover:shadow-md transition-transform -translate-y-5 opacity-0"
+    class="link-card relative cursor-pointer w-full p-4 bg-gray-50 dark:bg-gray-900 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 transition-transform -translate-y-5 opacity-0"
     @click="openLink(item.item_url)" :style="{ transitionDelay: `${delay}s` }"
     :class="{ 'opacity-100 translate-y-0': animated }">
     <div class="flex items-center gap-3">
