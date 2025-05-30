@@ -2,12 +2,11 @@
   <div class="max-w-7xl mx-auto px-4 py-8 center">
     <!-- 搜索框 -->
     <div class="flex justify-center">
-      <div class="relative max-w-lg items-center mb-8 transition-all duration-750" :class="{ 'w-full': focusSearch }">
-        <Input id="search" type="text" placeholder="搜索..." class="pl-10 " @focus="focusSearch = true"
-          @blur="focusSearch = false" @input="debounceSearch" v-model="searchKeyword" />
-        <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
-          <Search class="size-6 text-muted-foreground" />
-        </span>
+      <div class="flex justify-center items-center mb-8 w-full max-w-lg">
+        <Search class="size-6 -mr-8"  />
+        <Input id="search" type="text" placeholder="搜索..." class="w-80 focus:w-full transition-[width] duration-500 pl-10 " 
+           @input="debounceSearch" v-model="searchKeyword" />
+
       </div>
     </div>
 
@@ -287,7 +286,6 @@ const folders = ref([]);
 const categoryList = ref([]);
 
 const isLoading = ref(false);
-const focusSearch = ref(false);
 
 onMounted(() => {
   getFolders();
