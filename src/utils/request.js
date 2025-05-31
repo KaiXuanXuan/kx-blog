@@ -42,10 +42,6 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     const res = response.data;
-    if (res.code !== 200) {
-      toastWarningMessage(res.message);
-      return Promise.reject(new Error(res.message || 'Error'));
-    }
     // toast.success(res.message);
     return res;
   },
