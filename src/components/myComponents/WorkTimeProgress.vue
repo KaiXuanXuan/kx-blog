@@ -119,7 +119,7 @@ const status = computed(() => {
     case 1:
       return '🏃下班！';
     case 2:
-      return '🏖放假中~';
+      return '🍹放假中~';
     case 3:
       return '🚌载入中~';
   }
