@@ -1,152 +1,165 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 py-8">
-    <div class="mb-4 flex items-center justify-between">
-      <div class="text-xl font-medium">🔊:今天也要加油鸭💪</div>
-      <div class="flex gap-4">
-        <Button @click="listOpen = true" variant="outline">所有待办</Button>
-        <Button @click="editOpen = true">编辑待办</Button>
-        <Button @click="isOpen = true">新增待办</Button>
-      </div>
-    </div>
-    <!-- 待办列表 -->
-    <div>
-      <transition-group class="grid grid-cols-1 gap-4" name="card" tag="div">
-        <Collapsible
-          v-model:open="todo.collapsibleOpen"
-          v-for="todo in todos"
-          :key="todo.id"
-          class="rounded-sm overflow-hidden relative shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 bg-yellow-50 z-0"
-        >
-          <CollapsibleTrigger class="w-full cursor-pointer">
-            <div class="flex items-center justify-between w-full py-6 px-10 z-10 relative">
-              <p class="text-gray-900 text-xl font-medium flex items-center">
-                {{ todo.title }}
-                <span class="text-xs ml-4">
-                  <div v-if="todo.progress <= 20" class="bg-yellow-100 p-1 rounded-md text-yellow-800 border border-yellow-400">⚡起步中</div>
-                  <div v-if="todo.progress <= 70 && todo.progress > 20" class="bg-red-100 p-1 rounded-md text-red-800 border border-red-400">🔥进行中</div>
-                  <div v-if="todo.progress < 100 && todo.progress > 70" class="bg-blue-100 p-1 rounded-md text-blue-800 border border-blue-400">🩵收尾中</div>
-                  <div v-if="todo.progress >= 100" class="bg-green-100 p-1 rounded-md text-green-800 border border-green-400">✅已完成</div>
-                </span>
-              </p>
-              <Button v-if="!todo.status" @click.stop="changeStatus(todo, 1)" class="bg-green-500 text-white hover:bg-green-400"
-                ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                </svg>
-                完成</Button
-              >
-              <Button v-else @click.stop="changeStatus(todo, 0)" class="bg-blue-500 text-white hover:bg-blue-400"
-                ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-                回滚</Button
-              >
-              <div class="text-4xl text-gray-900 font-bold absolute left-[50%] top-[50%] -translate-[50%]">{{ todo.progress }}%</div>
-            </div>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <div class="w-full px-10 rounded-b-md pb-4 z-10 relative text-gray-700 flex items-center justify-between">
-              <div class="flex flex-col">
-                <div class="mb-1 font-medium">🔖任务详情：</div>
-                <div class="">{{ todo.content }}</div>
-              </div>
-              <Button class="bg-red-500 text-white hover:bg-red-400" @click.stop="openDeleteDialog(todo.id)"
-                ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                  />
-                </svg>
-                删除
-              </Button>
-            </div>
-          </CollapsibleContent>
-          <div class="absolute bg-gradient h-full top-0 left-0 z-1 transition-[width] duration-500" :style="`width: ${todo.progress}%`"></div>
-        </Collapsible>
-      </transition-group>
-    </div>
-    <!-- 新增待办dialog -->
-    <Dialog v-model:open="isOpen" onOpenChange="(val) => isOpen = val">
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>新增待办任务</DialogTitle>
-          <DialogDescription>填写任务详细信息</DialogDescription>
-        </DialogHeader>
+  <Tabs default-value="todo">
+    <TabsList class="mx-auto mt-2">
+      <TabsTrigger value="todo" class="cursor-pointer"> 每日待办 </TabsTrigger>
+      <TabsTrigger value="agent" class="cursor-pointer"> 报告助手 </TabsTrigger>
+    </TabsList>
+    <TabsContent value="todo">
+      <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="mb-4 flex items-center justify-between">
+          <div class="text-xl font-medium">🔊:今天也要加油鸭💪</div>
+          <div class="flex gap-4">
+            <Button @click="listOpen = true" variant="outline">所有待办</Button>
+            <Button @click="editOpen = true">编辑待办</Button>
+            <Button @click="isOpen = true">新增待办</Button>
+          </div>
+        </div>
+        <!-- 待办列表 -->
+        <div>
+          <transition-group class="grid grid-cols-1 gap-4" name="card" tag="div">
+            <Collapsible
+              v-model:open="todo.collapsibleOpen"
+              v-for="todo in todos"
+              :key="todo.id"
+              class="rounded-sm overflow-hidden relative shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 bg-yellow-50 z-0"
+            >
+              <CollapsibleTrigger class="w-full cursor-pointer">
+                <div class="flex items-center justify-between w-full py-6 px-10 z-10 relative">
+                  <p class="text-gray-900 text-xl font-medium flex items-center">
+                    {{ todo.title }}
+                    <span class="text-xs ml-4">
+                      <div v-if="todo.progress <= 20" class="bg-yellow-100 p-1 rounded-md text-yellow-800 border border-yellow-400">⚡起步中</div>
+                      <div v-if="todo.progress <= 70 && todo.progress > 20" class="bg-red-100 p-1 rounded-md text-red-800 border border-red-400">🔥进行中</div>
+                      <div v-if="todo.progress < 100 && todo.progress > 70" class="bg-blue-100 p-1 rounded-md text-blue-800 border border-blue-400">🩵收尾中</div>
+                      <div v-if="todo.progress >= 100" class="bg-green-100 p-1 rounded-md text-green-800 border border-green-400">✅已完成</div>
+                    </span>
+                  </p>
+                  <Button v-if="!todo.status" @click.stop="changeStatus(todo, 1)" class="bg-green-500 text-white hover:bg-green-400"
+                    ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                    完成</Button
+                  >
+                  <Button v-else @click.stop="changeStatus(todo, 0)" class="bg-blue-500 text-white hover:bg-blue-400"
+                    ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                    回滚</Button
+                  >
+                  <div class="text-4xl text-gray-900 font-bold absolute left-[50%] top-[50%] -translate-[50%]">{{ todo.progress }}%</div>
+                </div>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div class="w-full px-10 rounded-b-md pb-4 z-10 relative text-gray-700 flex items-center justify-between">
+                  <div class="flex flex-col">
+                    <div class="mb-1 font-medium">🔖任务详情：</div>
+                    <div class="">{{ todo.content }}</div>
+                  </div>
+                  <Button class="bg-red-100 text-red-700 hover:bg-red-200" @click.stop="openDeleteDialog(todo.id)"
+                    ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                      />
+                    </svg>
+                    删除
+                  </Button>
+                </div>
+              </CollapsibleContent>
+              <div class="absolute bg-gradient h-full top-0 left-0 z-1 transition-[width] duration-500" :style="`width: ${todo.progress}%`"></div>
+            </Collapsible>
+          </transition-group>
+        </div>
+        <!-- 新增待办dialog -->
+        <Dialog v-model:open="isOpen" onOpenChange="(val) => isOpen = val">
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>新增待办任务</DialogTitle>
+              <DialogDescription>填写任务详细信息</DialogDescription>
+            </DialogHeader>
 
-        <div class="space-y-4">
-          <Label for="title">标题</Label>
-          <Input id="title" v-model="formData.title" class="w-full" />
-          <Label for="content">内容</Label>
-          <Textarea id="content" v-model="formData.content" class="w-full" />
-          <NumberField :min="0" :max="100" :step="5" :default-value="0" v-model="formData.progress">
-            <Label for="progress">进度</Label>
-            <NumberFieldContent>
-              <NumberFieldDecrement class="cursor-pointer" />
-              <NumberFieldInput id="progress" />
-              <NumberFieldIncrement class="cursor-pointer" />
-            </NumberFieldContent>
-          </NumberField>
-        </div>
-        <DialogFooter>
-          <Button class="w-full" @click="handleAddTodo">提交</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-    <!-- 编辑待办dialog -->
-    <Dialog v-model:open="editOpen">
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>编辑待办任务</DialogTitle>
-          <DialogDescription>填写任务详细信息</DialogDescription>
-        </DialogHeader>
-        <div class="space-y-4">
-          <Label for="title">标题</Label>
-          <Select @update:model-value="changeEditTodo">
-            <SelectTrigger class="w-full cursor-pointer">
-              <SelectValue placeholder="选择一个待办任务" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem v-for="todo in todos" :key="todo.id" :value="todo.id" class="cursor-pointer">
-                {{ todo.title }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          <Label for="content">内容</Label>
-          <Textarea v-model="editData.content" class="w-full" />
-          <NumberField :min="0" :max="100" :step="10" :default-value="0" v-model="editData.progress">
-            <Label for="progress">进度</Label>
-            <NumberFieldContent>
-              <NumberFieldDecrement class="cursor-pointer" />
-              <NumberFieldInput id="progress" />
-              <NumberFieldIncrement class="cursor-pointer" />
-            </NumberFieldContent>
-          </NumberField>
-        </div>
-        <DialogFooter>
-          <Button class="w-full" @click="handleEditTodo">提交</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-    <!-- 确认删除Dialog -->
-    <Dialog v-model:open="deleteOpen">
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>确认删除</DialogTitle>
-          <DialogDescription>确定要删除该任务吗？</DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <Button @click="deleteOpen = false" variant="outline">取消</Button>
-          <Button @click="handleDeleteTodo">确认</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-    <!-- 所有待办 -->
-    <Dialog v-model:open="listOpen">
-      <DialogContent class="h-[90%]">
-        <TodoTable :records="todos" />
-      </DialogContent>
-    </Dialog>
-  </div>
+            <div class="space-y-4">
+              <Label for="title">标题</Label>
+              <Input id="title" v-model="formData.title" class="w-full" />
+              <Label for="content">内容</Label>
+              <Textarea id="content" v-model="formData.content" class="w-full" />
+              <NumberField :min="0" :max="100" :step="5" :default-value="0" v-model="formData.progress">
+                <Label for="progress">进度</Label>
+                <NumberFieldContent>
+                  <NumberFieldDecrement class="cursor-pointer" />
+                  <NumberFieldInput id="progress" />
+                  <NumberFieldIncrement class="cursor-pointer" />
+                </NumberFieldContent>
+              </NumberField>
+            </div>
+            <DialogFooter>
+              <Button class="w-full" @click="handleAddTodo">提交</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        <!-- 编辑待办dialog -->
+        <Dialog v-model:open="editOpen">
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>编辑待办任务</DialogTitle>
+              <DialogDescription>填写任务详细信息</DialogDescription>
+            </DialogHeader>
+            <div class="space-y-4">
+              <Label for="title">标题</Label>
+              <Select @update:model-value="changeEditTodo">
+                <SelectTrigger class="w-full cursor-pointer">
+                  <SelectValue placeholder="选择一个待办任务" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem v-for="todo in todos" :key="todo.id" :value="todo.id" class="cursor-pointer">
+                    {{ todo.title }}
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <Label for="content">内容</Label>
+              <Textarea v-model="editData.content" class="w-full" />
+              <NumberField :min="0" :max="100" :step="10" :default-value="0" v-model="editData.progress">
+                <Label for="progress">进度</Label>
+                <NumberFieldContent>
+                  <NumberFieldDecrement class="cursor-pointer" />
+                  <NumberFieldInput id="progress" />
+                  <NumberFieldIncrement class="cursor-pointer" />
+                </NumberFieldContent>
+              </NumberField>
+            </div>
+            <DialogFooter>
+              <Button class="w-full" @click="handleEditTodo">提交</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        <!-- 确认删除Dialog -->
+        <Dialog v-model:open="deleteOpen">
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>确认删除</DialogTitle>
+              <DialogDescription>确定要删除该任务吗？</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button @click="deleteOpen = false" variant="outline">取消</Button>
+              <Button @click="handleDeleteTodo">确认</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        <!-- 所有待办 -->
+        <Dialog v-model:open="listOpen">
+          <DialogContent class="h-[90%]">
+            <TodoTable :records="todos" />
+          </DialogContent>
+        </Dialog>
+      </div>
+    </TabsContent>
+    <TabsContent value="agent">
+      <div class="max-w-7xl mx-auto px-4 py-8">
+        <Textarea class=" w-full h-30" placeholder="请输入内容" ></Textarea>
+      </div>
+    </TabsContent>
+  </Tabs>
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -158,6 +171,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Select, SelectItem, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { NumberField, NumberFieldInput, NumberFieldContent, NumberFieldDecrement, NumberFieldIncrement } from '@/components/ui/number-field';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
