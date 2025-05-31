@@ -19,7 +19,15 @@
         >
           <CollapsibleTrigger class="w-full cursor-pointer">
             <div class="flex items-center justify-between w-full py-6 px-10 z-10 relative">
-              <p class="text-gray-900 text-xl font-medium">{{ todo.title }}</p>
+              <p class="text-gray-900 text-xl font-medium flex items-center">
+                {{ todo.title }}
+                <span class="text-xs ml-4">
+                  <div v-if="todo.progress <= 20" class="bg-yellow-100 p-1 rounded-md text-yellow-800 border border-yellow-400">⚡起步中</div>
+                  <div v-if="todo.progress <= 70 && todo.progress > 20" class="bg-red-100 p-1 rounded-md text-red-800 border border-red-400">🔥进行中</div>
+                  <div v-if="todo.progress < 100 && todo.progress > 70" class="bg-blue-100 p-1 rounded-md text-blue-800 border border-blue-400">🩵收尾中</div>
+                  <div v-if="todo.progress >= 100" class="bg-green-100 p-1 rounded-md text-green-800 border border-green-400">✅已完成</div>
+                </span>
+              </p>
               <Button v-if="!todo.status" @click.stop="changeStatus(todo, 1)" class="bg-green-500 text-white hover:bg-green-400"
                 ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
@@ -36,7 +44,7 @@
             </div>
           </CollapsibleTrigger>
           <CollapsibleContent>
-            <div class="w-full px-10 rounded-b-md pb-4 z-10 relative text-gray-600 flex items-center justify-between">
+            <div class="w-full px-10 rounded-b-md pb-4 z-10 relative text-gray-700 flex items-center justify-between">
               <div class="flex flex-col">
                 <div class="mb-1 font-medium">🔖任务详情：</div>
                 <div class="">{{ todo.content }}</div>
@@ -53,7 +61,7 @@
               </Button>
             </div>
           </CollapsibleContent>
-          <div class="absolute bg-gradient h-full top-0 left-0 z-1 transition-[width] duration-500 " :style="`width: ${todo.progress}%`"></div>
+          <div class="absolute bg-gradient h-full top-0 left-0 z-1 transition-[width] duration-500" :style="`width: ${todo.progress}%`"></div>
         </Collapsible>
       </transition-group>
     </div>
@@ -70,7 +78,7 @@
           <Input id="title" v-model="formData.title" class="w-full" />
           <Label for="content">内容</Label>
           <Textarea id="content" v-model="formData.content" class="w-full" />
-          <NumberField :min="0" :max="100" :step="10" :default-value="0" v-model="formData.progress">
+          <NumberField :min="0" :max="100" :step="5" :default-value="0" v-model="formData.progress">
             <Label for="progress">进度</Label>
             <NumberFieldContent>
               <NumberFieldDecrement class="cursor-pointer" />
