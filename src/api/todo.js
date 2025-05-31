@@ -1,13 +1,13 @@
 import request from '@/utils/request';
 
 // 新增待办
-export const addTodo = async (title, content) => {
-  return request.post('/api/todo/add', { title, content });
+export const addTodo = async (data) => {
+  return request.post('/api/todo/add', data);
 };
 
 // 更新内容（标题和内容）
-export const updateTodoContent = async (id, title, content) => {
-  return request.put('/api/todo/content', { id, title, content });
+export const updateTodoContent = async (data) => {
+  return request.put('/api/todo/content', data);
 };
 
 // 更新状态
