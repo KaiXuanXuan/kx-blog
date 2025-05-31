@@ -38,7 +38,7 @@
           <CollapsibleContent>
             <div class="w-full px-10 rounded-b-md pb-4 z-10 relative text-gray-600 flex items-center justify-between">
               <div class="flex flex-col">
-                <div class="mb-1 font-medium">任务详情：</div>
+                <div class="mb-1 font-medium">🔖任务详情：</div>
                 <div class="">{{ todo.content }}</div>
               </div>
               <Button class="bg-red-500 text-white hover:bg-red-400" @click.stop="openDeleteDialog(todo.id)"
@@ -53,7 +53,7 @@
               </Button>
             </div>
           </CollapsibleContent>
-          <div class="absolute bg-gradient h-full top-0 left-0 z-1" :style="`width: ${todo.progress}%`"></div>
+          <div class="absolute bg-gradient h-full top-0 left-0 z-1 transition-[width] duration-500 " :style="`width: ${todo.progress}%`"></div>
         </Collapsible>
       </transition-group>
     </div>
