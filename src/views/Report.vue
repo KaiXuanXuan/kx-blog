@@ -159,7 +159,7 @@
     <TabsContent value="agent">
       <div class="max-w-7xl mx-auto px-4 py-8 grid gap-1.5">
         <Label for="content" class="font-medium">请输入报告提示词</Label>
-        <Textarea v-model="text" id="content" class="w-full h-30" placeholder="请输入内容" @keyup.enter.prevent="handleSendMessage"></Textarea>
+        <Textarea v-model="text" id="content" class="w-full h-30" placeholder="请输入内容" @keydown.enter.prevent="handleSendMessage"></Textarea>
       </div>
     </TabsContent>
   </Tabs>
