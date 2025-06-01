@@ -27,5 +27,5 @@ export const getTodayTodos = async () => {
 
 // 删除待办
 export const deleteTodo = async (id) => {
-  return request.delete(`/todo/${id}`);
+  return request.delete('/todo/delete', { params: { id } });
 };

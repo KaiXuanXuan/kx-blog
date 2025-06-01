@@ -248,4 +248,33 @@ const handleAddTodo = () => {
 .bg-gradient {
   background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
 }
+
+.card-enter-from {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.card-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-leave-to {
+  opacity: 0;
+  transform: translateY(-50px);
+}
+
+.card-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-move {
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition-delay: var(--delay);
+}
 </style>
