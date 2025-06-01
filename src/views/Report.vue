@@ -157,15 +157,16 @@
       </div>
     </TabsContent>
     <TabsContent value="agent">
-      <div class="max-w-7xl mx-auto px-4 py-8">
-        <Textarea class="w-full h-30" placeholder="请输入内容"></Textarea>
+      <div class="max-w-7xl mx-auto px-4 py-8 grid gap-1.5">
+        <Label for="content" class="font-medium">请输入报告提示词</Label>
+        <Textarea v-model="text" id="content" class="w-full h-30" placeholder="请输入内容" @keyup.enter.prevent="handleSendMessage"></Textarea>
       </div>
     </TabsContent>
   </Tabs>
 </template>
 <script setup>
 import { ref } from 'vue';
-import { addTodo, getTodayTodos, updateTodoStatus, updateTodoContent, deleteTodo } from '@/api/todo';
+import { addTodo, getTodayTodos, updateTodoStatus, updateTodoContent, deleteTodo, sendMessageToAgent } from '@/api/todo';
 import TodoTable from '@/components/myComponents/TodoTable.vue';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -186,6 +187,7 @@ const formData = ref({ id: '', title: '', content: '', progress: 0 });
 const editData = ref({ id: '', title: '', content: '', progress: 0 });
 const deleteId = ref('');
 const todos = ref([]);
+const text =  ref('');
 
 // 初始化加载待办列表
 const loadTodos = async () => {
@@ -200,6 +202,14 @@ const changeStatus = (todo, checked) => {
     loadTodos();
   });
 };
+
+const handleSendMessage = () => {
+  console.log('发送消息');
+  sendMessageToAgent(text.value).then(() => {
+    console.log(text.value);
+    text.value = '';
+  });
+}
 
 const openDeleteDialog = (id) => {
   deleteOpen.value = true; // 打开确认删除对话框

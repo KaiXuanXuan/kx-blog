@@ -29,3 +29,8 @@ export const getTodayTodos = async () => {
 export const deleteTodo = async (id) => {
   return request.delete('/todo/delete', { params: { id } });
 };
+
+// 发送给报告助手
+export const sendMessageToAgent = async (text) => {
+  return request.post('/todo/agent', { text });
+};
