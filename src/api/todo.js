@@ -1,5 +1,4 @@
 import request from '@/utils/request';
-
 // 新增待办
 export const addTodo = async (data) => {
   return request.post('/todo/add', data);
@@ -32,5 +31,11 @@ export const deleteTodo = async (id) => {
 
 // 发送给报告助手
 export const sendMessageToAgent = async (text) => {
-  return request.post('/todo/agent', { text }, { timeout: 500000 });
+  return request.post(
+    '/todo/agent',
+    { text },
+    {
+      timeout: 500000,
+    }
+  );
 };

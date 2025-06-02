@@ -14,12 +14,6 @@ const toastErrorMessage = (message) => {
   });
 };
 
-const toastWarningMessage = (message) => {
-  toast.warning('警告', {
-    description: message,
-  });
-};
-
 // 请求拦截器
 service.interceptors.request.use(
   (config) => {

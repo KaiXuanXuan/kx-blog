@@ -157,9 +157,20 @@
       </div>
     </TabsContent>
     <TabsContent value="agent">
-      <div class="max-w-7xl mx-auto px-4 py-8 grid gap-1.5">
-        <Label for="content" class="font-medium">请输入报告提示词</Label>
-        <Textarea v-model="text" id="content" class="w-full h-30" placeholder="请输入内容" @keydown.enter.prevent="handleSendMessage"></Textarea>
+      <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- 打字机文本显示容器 -->
+        <div v-if="responseText.length > 0" class="fixed bottom-[calc(100% + 20px)] left-0 right-0 mx-auto max-w-7xl px-4">
+          <div class="bg-white p-4 rounded-lg shadow-md">
+            {{ responseText }}
+          </div>
+        </div>
+        <!-- textarea输入容器 -->
+        <div class="fixed bottom-5 left-0 right-0 mx-auto max-w-7xl px-4">
+          <div class="grid gap-1.5">
+            <Label for="content" class="font-medium">请输入报告提示词</Label>
+            <Textarea v-model="text" id="content" class="w-full h-30" placeholder="请输入内容" @keydown.enter.prevent="handleSendMessage"></Textarea>
+          </div>
+        </div>
       </div>
     </TabsContent>
   </Tabs>
@@ -187,7 +198,9 @@ const formData = ref({ id: '', title: '', content: '', progress: 0 });
 const editData = ref({ id: '', title: '', content: '', progress: 0 });
 const deleteId = ref('');
 const todos = ref([]);
-const text =  ref('');
+const text = ref('');
+const responseText = ref(''); // 存储逐步显示的文本
+const isTyping = ref(false); // 标记是否在打字中
 
 // 初始化加载待办列表
 const loadTodos = async () => {
@@ -203,11 +216,19 @@ const changeStatus = (todo, checked) => {
   });
 };
 
-const handleSendMessage = () => {
-  sendMessageToAgent(text.value).then((res) => {
-    console.log(res);
-    text.value = '';
-  });
+const handleSendMessage = async () => {
+  if (isTyping.value || !text.value.trim()) return;
+  // isTyping.value = true;
+  responseText.value = ''; // 清空之前的文本
+
+  sendMessageToAgent(text.value)
+    .then((res) => {
+      const reader = res.data.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+      console.log(reader);
+      
+    })
 }
 
 const openDeleteDialog = (id) => {
