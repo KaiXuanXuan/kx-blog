@@ -204,9 +204,8 @@ const changeStatus = (todo, checked) => {
 };
 
 const handleSendMessage = () => {
-  console.log('发送消息');
-  sendMessageToAgent(text.value).then(() => {
-    console.log(text.value);
+  sendMessageToAgent(text.value).then((res) => {
+    console.log(res);
     text.value = '';
   });
 }

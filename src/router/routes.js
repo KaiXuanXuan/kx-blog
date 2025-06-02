@@ -27,7 +27,7 @@ const routes = [
     path: '/report',
     name: 'Report',
     component: () => import('@/views/Report.vue'),
-    meta: { title: '报告助手' }
+    meta: { title: '报告' }
   }
 ];
 

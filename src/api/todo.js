@@ -32,5 +32,5 @@ export const deleteTodo = async (id) => {
 
 // 发送给报告助手
 export const sendMessageToAgent = async (text) => {
-  return request.post('/todo/agent', { text });
+  return request.post('/todo/agent', { text }, { timeout: 500000 });
 };

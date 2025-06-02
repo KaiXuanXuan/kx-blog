@@ -72,7 +72,7 @@ const toastMessage = (username, message = '注册成功') => {
 
 const onSubmit = form.handleSubmit((values) => {
   register(values).then((res) => {
-    if ((res.code = 200)) {
+    if ((res.code == 200)) {
       const { message } = res;
       const { id, token, username } = res.data;
 
