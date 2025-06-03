@@ -23,7 +23,7 @@
               :key="todo.id"
               class="relative bg-white rounded-xl shadow-md border border-gray-100 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-4"
             >
-              <CollapsibleTrigger class="w-full cursor-pointer">
+              <CollapsibleTrigger class="w-full cursor-pointer hover:bg-gray-100 transition-colors duration-300 rounded-t-xl">
                 <div class="flex items-center justify-between px-6 py-5">
                   <div class="flex items-center gap-3">
                     <span class="text-2xl font-bold text-gray-900">{{ todo.title }}</span>
@@ -222,6 +222,7 @@
           </div>
         </div>
         <div v-else class="pt-36 pb-36 flex flex-col items-center justify-center text-gray-400 h-80 select-none">
+          <div class="mb-2 text-4xl">🙂</div>
           <div class="text-lg font-semibold mb-2">请输入报告提示词</div>
           <div class="text-base">
             如：
