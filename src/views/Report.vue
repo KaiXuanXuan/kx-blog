@@ -166,24 +166,53 @@
               :key="idx"
               :class="[
                 'max-w-[70%] px-4 py-3 rounded-xl text-base break-words',
-                msg.role === 'user' ? 'self-end bg-green-100 text-green-900 text-right' : 'self-start bg-blue-50 text-blue-900 shadow',
+                msg.role === 'user'
+                  ? 'self-end bg-green-100 text-green-900 text-right'
+                  : 'self-start bg-blue-50 text-blue-900 shadow'
               ]"
             >
-              <v-md-preview :text="msg.content" class="whitespace-pre-line" v-if="msg.role === 'ai'" />
+              <template v-if="msg.role === 'ai'">
+                <template v-if="!msg.content">
+                  <!-- 加载动画 -->
+                  <div class="flex items-center gap-2">
+                    <svg class="animate-spin h-5 w-5 text-blue-400" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+                    </svg>
+                    <span class="text-gray-400">AI正在思考...</span>
+                  </div>
+                </template>
+                <v-md-preview v-else :text="msg.content" class="whitespace-pre-line" />
+              </template>
               <div v-else class="whitespace-pre-line">{{ msg.content }}</div>
             </div>
+          </div>
+        </div>
+        <div v-else class="pt-36 pb-36 flex flex-col items-center justify-center text-gray-400 h-80 select-none">
+          <div class="text-lg font-semibold mb-2">请输入报告提示词</div>
+          <div class="text-base">
+            如：
+            <span
+              class="text-blue-400 cursor-pointer hover:underline select-auto"
+              @click="handleKeywordClick('本周周报')"
+            >本周周报</span>
+            、
+            <span
+              class="text-blue-400 cursor-pointer hover:underline select-auto"
+              @click="handleKeywordClick('昨日日报')"
+            >本日日报</span>
+            ，即可自动总结与输出
           </div>
         </div>
         <!-- textarea输入容器 -->
         <div class="fixed bottom-5 left-0 right-0 mx-auto max-w-7xl px-4 z-20">
           <div class="relative bg-gray-100 rounded-2xl shadow-md p-4 flex items-end">
-            <Textarea
+            <textarea
+              ref="textareaRef"
               v-model="text"
-              id="content"
               class="w-full h-24 resize-none bg-transparent outline-none border-none text-base"
               placeholder="请输入内容"
               @keydown.enter.prevent="handleSendMessage"
-              style="background: transparent; box-shadow: none;"
             />
             <!-- 发送按钮 -->
             <button
@@ -204,7 +233,7 @@
   </Tabs>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref, nextTick } from 'vue';
 import { addTodo, getTodayTodos, updateTodoStatus, updateTodoContent, deleteTodo, sendMessageToAgent } from '@/api/todo';
 import TodoTable from '@/components/myComponents/TodoTable.vue';
 import { Button } from '@/components/ui/button';
@@ -228,6 +257,7 @@ const editData = ref({ id: '', title: '', content: '', progress: 0 });
 const deleteId = ref('');
 const todos = ref([]);
 const text = ref('');
+const textareaRef = ref(null);
 const isTyping = ref(false); // 标记是否在打字中
 const chatList = ref([]);
 
@@ -377,6 +407,14 @@ const handleAddTodo = () => {
     .finally(() => {
       isOpen.value = false; // 关闭对话框
     });
+};
+
+const handleKeywordClick = (keyword) => {
+  text.value = keyword;
+  // 聚焦到输入框
+  nextTick(() => {
+    textareaRef.value?.focus();
+  });
 };
 </script>
 <style scoped>
