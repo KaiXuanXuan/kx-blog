@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-2 w-full">
     <Card class="flex flex-col justify-center items-center gap-2 p-4 h-full">
-      <div class="progress-container relative mb-2">
+      <div class="progress-container relative">
         <svg :width="size" :height="size">
           <!-- 背景环 -->
           <circle :cx="size / 2" :cy="size / 2" :r="radius" fill="none" :stroke-width="strokeWidth" stroke="#ddd"
