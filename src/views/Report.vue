@@ -10,7 +10,7 @@
           <div class="text-xl font-medium">🔊:今天也要加油鸭💪</div>
           <div class="flex gap-4">
             <Button @click="listOpen = true" variant="outline">所有待办</Button>
-            <Button @click="editOpen = true">编辑待办</Button>
+            <Button @click="openEditDialog">编辑待办</Button>
             <Button @click="isOpen = true">新增待办</Button>
           </div>
         </div>
@@ -144,7 +144,7 @@
             </DialogHeader>
             <div class="space-y-4">
               <Label for="title">标题</Label>
-              <Select @update:model-value="changeEditTodo">
+              <Select v-model="editData.id" @update:model-value="changeEditTodo">
                 <SelectTrigger class="w-full cursor-pointer">
                   <SelectValue placeholder="选择一个待办任务" />
                 </SelectTrigger>
@@ -454,5 +454,13 @@ const handleKeywordClick = (keyword) => {
   nextTick(() => {
     textareaRef.value?.focus();
   });
+};
+
+const openEditDialog = () => {
+  if (todos.value.length > 0) {
+    editData.value.id = todos.value[0].id;
+    changeEditTodo(todos.value[0].id);
+  }
+  editOpen.value = true;
 };
 </script>
