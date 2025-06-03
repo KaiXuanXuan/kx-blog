@@ -135,35 +135,42 @@
     <!-- 收藏夹列表 -->
     <div v-if="folders.length > 0">
       <TransitionGroup name="folder" tag="div" class="space-y-4 relative" appear>
-        <Collapsible v-for="(folder, index) in folders" :key="folder.id" v-model:open="folder.isOpen" class="border rounded-lg relative" :style="{ '--enter-delay': `${index * 0.1}s` }">
-          <CollapsibleTrigger class="cursor-pointer relative rounded-md flex items-center justify-between w-full p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-900">
-            <div class="flex items-center gap-2">
-              <div class="h-5 w-5 flex items-center">{{ folder.isOpen ? '📂' : '📁' }}</div>
-              <span class="text-lg font-medium" v-html="highlightKeyword(folder.title)"></span>
+        <Collapsible
+          v-for="(folder, index) in folders"
+          :key="folder.id"
+          v-model:open="folder.isOpen"
+          class="border border-gray-100 rounded-md bg-white shadow-md hover:shadow-lg transition-all duration-300 relative"
+        >
+          <CollapsibleTrigger class="cursor-pointer flex items-center justify-between w-full p-4 rounded-t-xl hover:bg-gray-50 transition-colors duration-200">
+            <div class="flex items-center gap-3">
+              <div class="h-7 w-7 flex items-center justify-center text-2xl">{{ folder.isOpen ? '📂' : '📁' }}</div>
+              <span class="text-lg font-bold text-gray-900" v-html="highlightKeyword(folder.title)"></span>
             </div>
-            <ContextMenu>
-              <ContextMenuTrigger class="absolute w-full h-full left-0 top-0"> </ContextMenuTrigger>
-              <ContextMenuContent>
-                <ContextMenuItem @click="openFolderEditDialog(folder)">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                    /></svg
-                  >编辑
-                </ContextMenuItem>
-                <ContextMenuItem @click="openFolderDeleteDialog(folder)">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                    /></svg
-                  >删除
-                </ContextMenuItem>
-              </ContextMenuContent>
-            </ContextMenu>
+            <div class="flex gap-2">
+              <ContextMenu>
+                <ContextMenuTrigger class="absolute w-full h-full left-0 top-0"> </ContextMenuTrigger>
+                <ContextMenuContent>
+                  <ContextMenuItem @click.stop="openFolderEditDialog(folder)">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                      /></svg
+                    >编辑
+                  </ContextMenuItem>
+                  <ContextMenuItem @click.stop="openFolderDeleteDialog(folder)">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                      /></svg
+                    >删除
+                  </ContextMenuItem>
+                </ContextMenuContent>
+              </ContextMenu>
+            </div>
           </CollapsibleTrigger>
 
           <DropdownMenu>
@@ -197,8 +204,8 @@
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <CollapsibleContent class="p-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <CollapsibleContent class="p-4 bg-gray-50 rounded-b-xl">
+            <div v-if="folder.items.length > 0" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
               <LinkCard
                 v-for="(item, itemIdx) in folder.items"
                 :key="itemIdx"
@@ -210,12 +217,24 @@
                 @openItemDeleteDialog="openItemDeleteDialog"
               />
             </div>
+            <div v-else class="flex flex-col items-center justify-center py-8 text-gray-400">
+              <!-- <svg class="w-12 h-12 mb-2 text-gray-200" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+              </svg> -->
+              <div class="text-base font-semibold">暂无网站</div>
+              <div class="text-sm mt-1">点击“添加网站”按钮试试吧！</div>
+            </div>
           </CollapsibleContent>
         </Collapsible>
       </TransitionGroup>
     </div>
-    <div class="mt-4" v-else>
-      <p class="text-center text-gray-500">暂无收藏夹</p>
+    <div class="mt-8 flex flex-col items-center text-gray-400" v-else>
+      <svg class="w-16 h-16 mb-4 text-gray-200" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 5.75v12.5A2.25 2.25 0 0 0 6 20.5h12a2.25 2.25 0 0 0 2.25-2.25V5.75A2.25 2.25 0 0 0 18 3.5H6A2.25 2.25 0 0 0 3.75 5.75z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h4" />
+      </svg>
+      <div class="text-lg font-semibold">暂无收藏夹</div>
+      <div class="text-sm mt-1">点击“添加收藏夹”按钮试试吧！</div>
     </div>
   </div>
 </template>
