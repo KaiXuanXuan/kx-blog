@@ -160,7 +160,7 @@
       <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- 打字机文本显示容器 -->
         <div v-if="responseText.length > 0" class="fixed bottom-[calc(100% + 20px)] left-0 right-0 mx-auto max-w-7xl px-4">
-          <div class="bg-white p-4 rounded-lg shadow-md">
+          <div class="bg-white p-4 rounded-lg shadow-md" style="white-space: pre-line;">
             {{ responseText }}
           </div>
         </div>
@@ -189,6 +189,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import Cookie from 'js-cookie';
 
 const isOpen = ref(false);
 const editOpen = ref(false);
@@ -218,18 +219,79 @@ const changeStatus = (todo, checked) => {
 
 const handleSendMessage = async () => {
   if (isTyping.value || !text.value.trim()) return;
-  // isTyping.value = true;
+  isTyping.value = true;
   responseText.value = ''; // 清空之前的文本
+  const baseURL = process.env.NODE_ENV === 'production' ? 'https://117.72.35.18:7001/api' : '/api';
+  const token = sessionStorage.getItem('token') || localStorage.getItem('token');
+  const csrfToken = Cookie.get('csrfToken');
+  const url = `${baseURL}/todo/agent`;
 
-  sendMessageToAgent(text.value)
-    .then((res) => {
-      const reader = res.data.getReader();
-      const decoder = new TextDecoder();
-      let done = false;
-      console.log(reader);
-      
-    })
-}
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'X-CSRF-TOKEN': csrfToken,
+      },
+      body: JSON.stringify({ text: text.value }),
+    });
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+
+      // 处理SSE格式的数据块
+      let lines = buffer.split('\n\n');
+      buffer = lines.pop(); // 可能有半包，留到下次
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const jsonStr = line.replace('data: ', '');
+          try {
+            const obj = JSON.parse(jsonStr);
+            const {event, data} = obj;
+
+            if (event === 'conversation.chat.created'){
+              console.log('对话开始');
+            }
+
+            if (event === 'conversation.message.delta'){
+              const content = data.content;
+              console.log('传输增量消息', content);
+              responseText.value += content || '';
+            }
+            
+            if (event === 'conversation.message.completed'){
+              const content = data.content;
+              console.log('消息传输完毕', content);
+
+              if(data.type === 'answer' && content){
+                responseText.value = content;
+              }
+            }
+
+            if (event === 'conversation.chat.completed'){
+              console.log('对话结束');
+            }
+            
+          } catch (e) {
+            // 解析失败可以忽略或报错
+            console.log('解析失败', e);
+          }
+        }
+      }
+    }
+  } catch (err) {
+    responseText.value = '请求失败，请重试';
+  } finally {
+    isTyping.value = false;
+  }
+};
 
 const openDeleteDialog = (id) => {
   deleteOpen.value = true; // 打开确认删除对话框
