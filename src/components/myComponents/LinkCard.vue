@@ -55,7 +55,7 @@ onMounted(() => {
 const highlightKeyword = (text) => {
   if (!props.keyword) return text;
   const regex = new RegExp(props.keyword, 'gi');
-  return text.replace(regex, (match) => `<span class="bg-yellow-100 dark:bg-yellow-800 rounded-sm p-0.5">${match}</span>`);
+  return text.replace(regex, (match) => `<span class="bg-yellow-100 text-yellow-700 dark:bg-yellow-700 dark:text-gray-200 rounded-sm p-0.5">${match}</span>`);
 }
 
 const openItemEditDialog = () => {

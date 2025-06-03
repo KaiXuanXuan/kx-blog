@@ -139,9 +139,9 @@
           v-for="(folder, index) in folders"
           :key="folder.id"
           v-model:open="folder.isOpen"
-          class="border border-gray-100 rounded-md bg-white shadow-md hover:shadow-lg transition-all duration-300 relative"
+          class="border border-gray-100 dark:border-gray-800 rounded-md bg-white dark:bg-gray-900  shadow-md hover:shadow-lg transition-all duration-300 relative"
         >
-          <CollapsibleTrigger class="cursor-pointer flex items-center justify-between w-full p-4 rounded-t-xl hover:bg-gray-50 transition-colors duration-200">
+          <CollapsibleTrigger class="cursor-pointer flex items-center justify-between w-full p-4 rounded-t-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
             <div class="flex items-center gap-3">
               <div class="h-7 w-7 flex items-center justify-center text-2xl">{{ folder.isOpen ? '📂' : '📁' }}</div>
               <span class="text-lg font-bold text-gray-900" v-html="highlightKeyword(folder.title)"></span>
@@ -204,7 +204,7 @@
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <CollapsibleContent class="p-4 bg-gray-50 rounded-b-xl">
+          <CollapsibleContent class="p-4 bg-gray-50 dark:bg-gray-950 rounded-b-xl">
             <div v-if="folder.items.length > 0" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
               <LinkCard
                 v-for="(item, itemIdx) in folder.items"
@@ -376,7 +376,7 @@ const highlightKeyword = (text) => {
   if (!keyword) return text;
   // 正则匹配
   const regex = new RegExp(keyword, 'gi');
-  return text.replace(regex, (match) => `<span class="bg-yellow-100 dark:bg-yellow-800 rounded-sm p-0.5">${match}</span>`);
+  return text.replace(regex, (match) => `<span class="bg-yellow-100 text-yellow-700 dark:bg-yellow-700 dark:text-gray-100 rounded-sm p-1">${match}</span>`);
 };
 
 const openFolderEditDialog = (folder) => {
