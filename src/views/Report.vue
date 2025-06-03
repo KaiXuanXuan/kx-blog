@@ -160,9 +160,7 @@
       <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- 打字机文本显示容器 -->
         <div v-if="responseText.length > 0" class="fixed bottom-[calc(100% + 20px)] left-0 right-0 mx-auto max-w-7xl px-4">
-          <div class="bg-white p-4 rounded-lg shadow-md" style="white-space: pre-line;">
-            {{ responseText }}
-          </div>
+          <v-md-preview :text="responseText" />
         </div>
         <!-- textarea输入容器 -->
         <div class="fixed bottom-5 left-0 right-0 mx-auto max-w-7xl px-4">
@@ -254,31 +252,30 @@ const handleSendMessage = async () => {
           const jsonStr = line.replace('data: ', '');
           try {
             const obj = JSON.parse(jsonStr);
-            const {event, data} = obj;
+            const { event, data } = obj;
 
-            if (event === 'conversation.chat.created'){
+            if (event === 'conversation.chat.created') {
               console.log('对话开始');
             }
 
-            if (event === 'conversation.message.delta'){
+            if (event === 'conversation.message.delta') {
               const content = data.content;
               console.log('传输增量消息', content);
               responseText.value += content || '';
             }
-            
-            if (event === 'conversation.message.completed'){
+
+            if (event === 'conversation.message.completed') {
               const content = data.content;
               console.log('消息传输完毕', content);
 
-              if(data.type === 'answer' && content){
+              if (data.type === 'answer' && content) {
                 responseText.value = content;
               }
             }
 
-            if (event === 'conversation.chat.completed'){
+            if (event === 'conversation.chat.completed') {
               console.log('对话结束');
             }
-            
           } catch (e) {
             // 解析失败可以忽略或报错
             console.log('解析失败', e);
