@@ -1,6 +1,6 @@
 <template>
   <Tabs default-value="todo">
-    <TabsList class="mx-auto mt-2">
+    <TabsList class="mx-auto mt-2 w-60">
       <TabsTrigger value="todo" class="cursor-pointer"> 每日待办 </TabsTrigger>
       <TabsTrigger value="agent" class="cursor-pointer"> 报告助手 </TabsTrigger>
     </TabsList>
