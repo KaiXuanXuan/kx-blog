@@ -159,14 +159,44 @@
     <TabsContent value="agent">
       <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- 打字机文本显示容器 -->
-        <div v-if="responseText.length > 0" class="fixed bottom-[calc(100% + 20px)] left-0 right-0 mx-auto max-w-7xl px-4">
-          <v-md-preview :text="responseText" />
+        <div v-if="chatList.length > 0" class="pb-36 bottom-[calc(100% + 20px)] left-0 right-0 mx-auto max-w-7xl px-4">
+          <div class="flex flex-col gap-3">
+            <div
+              v-for="(msg, idx) in chatList"
+              :key="idx"
+              :class="[
+                'max-w-[70%] px-4 py-3 rounded-xl text-base break-words',
+                msg.role === 'user' ? 'self-end bg-green-100 text-green-900 text-right' : 'self-start bg-blue-50 text-blue-900 shadow',
+              ]"
+            >
+              <v-md-preview :text="msg.content" class="whitespace-pre-line" v-if="msg.role === 'ai'" />
+              <div v-else class="whitespace-pre-line">{{ msg.content }}</div>
+            </div>
+          </div>
         </div>
         <!-- textarea输入容器 -->
-        <div class="fixed bottom-5 left-0 right-0 mx-auto max-w-7xl px-4">
-          <div class="grid gap-1.5">
-            <Label for="content" class="font-medium">请输入报告提示词</Label>
-            <Textarea v-model="text" id="content" class="w-full h-30" placeholder="请输入内容" @keydown.enter.prevent="handleSendMessage"></Textarea>
+        <div class="fixed bottom-5 left-0 right-0 mx-auto max-w-7xl px-4 z-20">
+          <div class="relative bg-gray-100 rounded-2xl shadow-md p-4 flex items-end">
+            <Textarea
+              v-model="text"
+              id="content"
+              class="w-full h-24 resize-none bg-transparent outline-none border-none text-base"
+              placeholder="请输入内容"
+              @keydown.enter.prevent="handleSendMessage"
+              style="background: transparent; box-shadow: none;"
+            />
+            <!-- 发送按钮 -->
+            <button
+              class="absolute bottom-4 right-4 w-10 h-10 flex items-center justify-center rounded-full transition-colors"
+              :class="text.trim() ? 'bg-blue-500 cursor-pointer' : 'bg-gray-300 cursor-not-allowed'"
+              :disabled="!text.trim()"
+              @click="handleSendMessage"
+              type="button"
+            >
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
           </div>
         </div>
       </div>
@@ -198,8 +228,8 @@ const editData = ref({ id: '', title: '', content: '', progress: 0 });
 const deleteId = ref('');
 const todos = ref([]);
 const text = ref('');
-const responseText = ref(''); // 存储逐步显示的文本
 const isTyping = ref(false); // 标记是否在打字中
+const chatList = ref([]);
 
 // 初始化加载待办列表
 const loadTodos = async () => {
@@ -218,7 +248,12 @@ const changeStatus = (todo, checked) => {
 const handleSendMessage = async () => {
   if (isTyping.value || !text.value.trim()) return;
   isTyping.value = true;
-  responseText.value = ''; // 清空之前的文本
+
+  chatList.value.push({ role: 'user', content: text.value });
+  chatList.value.push({ role: 'ai', content: '' });
+  const aiMsgIndex = chatList.value.length - 1;
+  text.value = '';
+
   const baseURL = process.env.NODE_ENV === 'production' ? 'https://117.72.35.18:7001/api' : '/api';
   const token = sessionStorage.getItem('token') || localStorage.getItem('token');
   const csrfToken = Cookie.get('csrfToken');
@@ -232,7 +267,7 @@ const handleSendMessage = async () => {
         Authorization: `Bearer ${token}`,
         'X-CSRF-TOKEN': csrfToken,
       },
-      body: JSON.stringify({ text: text.value }),
+      body: JSON.stringify({ text: chatList.value[aiMsgIndex - 1].content }),
     });
 
     const reader = response.body.getReader();
@@ -261,15 +296,26 @@ const handleSendMessage = async () => {
             if (event === 'conversation.message.delta') {
               const content = data.content;
               console.log('传输增量消息', content);
-              responseText.value += content || '';
+              chatList.value[aiMsgIndex].content += content;
             }
 
             if (event === 'conversation.message.completed') {
               const content = data.content;
               console.log('消息传输完毕', content);
-
-              if (data.type === 'answer' && content) {
-                responseText.value = content;
+              if (data.type === 'answer') {
+                // 去除开头的```markdown和结尾的```
+                let mdContent = content;
+                // 去除开头的 ```markdown
+                if (mdContent.startsWith('```markdown')) {
+                  mdContent = mdContent.slice(11);
+                }
+                // 去除结尾的 ```
+                if (mdContent.endsWith('```')) {
+                  mdContent = mdContent.slice(0, -3);
+                }
+                // 去除首尾多余的换行
+                mdContent = mdContent.trim();
+                chatList.value[aiMsgIndex].content = mdContent;
               }
             }
 
@@ -284,7 +330,7 @@ const handleSendMessage = async () => {
       }
     }
   } catch (err) {
-    responseText.value = '请求失败，请重试';
+    console.log('请求失败', err);
   } finally {
     isTyping.value = false;
   }
