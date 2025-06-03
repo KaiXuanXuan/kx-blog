@@ -16,62 +16,97 @@
         </div>
         <!-- 待办列表 -->
         <div>
-          <transition-group class="grid md:grid-cols-1 lg:grid-cols-2 gap-4 items-start" name="card" tag="div">
+          <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-4 items-start">
             <Collapsible
-              v-model:open="todo.collapsibleOpen"
               v-for="todo in todos"
+              v-model:open="todo.collapsibleOpen"
               :key="todo.id"
-              class="rounded-sm overflow-hidden relative shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 bg-yellow-50 z-0"
+              class="relative bg-white rounded-xl shadow-md border border-gray-100 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-4"
             >
               <CollapsibleTrigger class="w-full cursor-pointer">
-                <div class="flex items-center justify-between w-full py-6 px-10 z-10 relative">
-                  <p class="text-gray-900 text-xl font-medium">
-                    {{ todo.title }}
-                  </p>
-                  <Button v-if="!todo.status" @click.stop="changeStatus(todo, 1)" class="bg-green-500 text-white hover:bg-green-400"
-                    ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                    </svg>
-                    完成</Button
-                  >
-                  <Button v-else @click.stop="changeStatus(todo, 0)" class="bg-blue-500 text-white hover:bg-blue-400"
-                    ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                    </svg>
-                    回滚</Button
-                  >
-                  <div class="text-4xl text-gray-900 font-bold absolute left-[50%] top-[50%] -translate-[50%]">{{ todo.progress }}%</div>
+                <div class="flex items-center justify-between px-6 py-5">
+                  <div class="flex items-center gap-3">
+                    <span class="text-2xl font-bold text-gray-900">{{ todo.title }}</span>
+                    <span
+                      class="ml-2 px-2 py-0.5 rounded-full text-xs font-semibold"
+                      :class="{
+                        'bg-yellow-100 text-yellow-800': todo.progress <= 20,
+                        'bg-red-100 text-red-800': todo.progress > 20 && todo.progress <= 70,
+                        'bg-blue-100 text-blue-800': todo.progress > 70 && todo.progress < 100,
+                        'bg-green-100 text-green-800': todo.progress >= 100,
+                      }"
+                    >
+                      {{ todo.progress }}%
+                    </span>
+                  </div>
+                  <div class="flex gap-2">
+                    <Button v-if="!todo.status" @click.stop="changeStatus(todo, 1)" class="bg-green-500 hover:bg-green-400 text-white rounded-full w-9 h-9 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                      </svg>
+                    </Button>
+                    <Button v-else @click.stop="changeStatus(todo, 0)" class="bg-blue-500 hover:bg-blue-400 text-white rounded-full w-9 h-9 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                      </svg>
+                    </Button>
+                    <Button @click.stop="openDeleteDialog(todo.id)" class="bg-red-100 hover:bg-red-200 text-red-700 rounded-full w-9 h-9 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                        />
+                      </svg>
+                    </Button>
+                  </div>
                 </div>
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <div class="w-full px-10 rounded-b-md pb-4 z-10 relative text-gray-700 flex items-center justify-between">
-                  <div class="flex flex-col">
-                    <div class="mb-1 font-medium flex items-center">
-                      <p>任务详情</p>
-                      <span class="text-xs ml-4">
-                        <div v-if="todo.progress <= 20" class="bg-yellow-100 p-1 rounded-md text-yellow-800 border border-yellow-400">⚡起步中</div>
-                        <div v-if="todo.progress <= 70 && todo.progress > 20" class="bg-red-100 p-1 rounded-md text-red-800 border border-red-400">🔥进行中</div>
-                        <div v-if="todo.progress < 100 && todo.progress > 70" class="bg-blue-100 p-1 rounded-md text-blue-800 border border-blue-400">🩵收尾中</div>
-                        <div v-if="todo.progress >= 100" class="bg-green-100 p-1 rounded-md text-green-800 border border-green-400">✅已完成</div>
-                      </span>
-                    </div>
-                    <div class="">{{ todo.content }}</div>
+                <div class="px-6 pb-5 pt-2 text-gray-700">
+                  <div class="mb-2 flex items-center gap-2">
+                    <span class="font-medium">任务详情</span>
+                    <span
+                      class="px-2 py-0.5 rounded-full text-xs font-semibold"
+                      :class="{
+                        'bg-yellow-50 text-yellow-700 border border-yellow-200': todo.progress <= 20,
+                        'bg-red-50 text-red-700 border border-red-200': todo.progress > 20 && todo.progress <= 70,
+                        'bg-blue-50 text-blue-700 border border-blue-200': todo.progress > 70 && todo.progress < 100,
+                        'bg-green-50 text-green-700 border border-green-200': todo.progress >= 100,
+                      }"
+                    >
+                      <template v-if="todo.progress <= 20">⚡起步中</template>
+                      <template v-else-if="todo.progress <= 70">🔥进行中</template>
+                      <template v-else-if="todo.progress < 100">🩵收尾中</template>
+                      <template v-else>✅已完成</template>
+                    </span>
                   </div>
-                  <Button class="bg-red-100 text-red-700 hover:bg-red-200" @click.stop="openDeleteDialog(todo.id)"
-                    ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                      />
-                    </svg>
-                    删除
-                  </Button>
+                  <div class="text-gray-600">{{ todo.content }}</div>
+                  <!-- 进度条 -->
+                  <div class="w-full h-2 bg-gray-100 rounded-full mt-4">
+                    <div
+                      class="h-2 rounded-full transition-all duration-500"
+                      :class="{
+                        'bg-yellow-400': todo.progress <= 20,
+                        'bg-red-400': todo.progress > 20 && todo.progress <= 70,
+                        'bg-blue-400': todo.progress > 70 && todo.progress < 100,
+                        'bg-green-400': todo.progress >= 100,
+                      }"
+                      :style="`width: ${todo.progress}%`"
+                    ></div>
+                  </div>
                 </div>
               </CollapsibleContent>
-              <div class="absolute bg-gradient h-full top-0 left-0 z-1 transition-[width] duration-500" :style="`width: ${todo.progress}%`"></div>
             </Collapsible>
-          </transition-group>
+          </div>
+          <!-- 占位提示 -->
+          <div v-if="todos.length === 0" class="flex flex-col items-center justify-center py-16 text-gray-400">
+            <svg class="w-16 h-16 mb-4 text-gray-200" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8a9 9 0 100-18 9 9 0 000 18z" />
+            </svg>
+            <div class="text-lg font-semibold">暂无待办任务</div>
+            <div class="text-sm mt-1">点击右上角"新增待办"按钮添加任务吧！</div>
+          </div>
         </div>
         <!-- 新增待办dialog -->
         <Dialog v-model:open="isOpen" onOpenChange="(val) => isOpen = val">
@@ -166,9 +201,7 @@
               :key="idx"
               :class="[
                 'max-w-[70%] px-4 py-3 rounded-xl text-base break-words',
-                msg.role === 'user'
-                  ? 'self-end bg-green-100 text-green-900 text-right'
-                  : 'self-start bg-blue-50 text-blue-900 shadow'
+                msg.role === 'user' ? 'self-end bg-green-100 text-green-900 text-right' : 'self-start bg-blue-50 text-blue-900 shadow',
               ]"
             >
               <template v-if="msg.role === 'ai'">
@@ -176,8 +209,8 @@
                   <!-- 加载动画 -->
                   <div class="flex items-center gap-2">
                     <svg class="animate-spin h-5 w-5 text-blue-400" viewBox="0 0 24 24">
-                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"/>
-                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
                     </svg>
                     <span class="text-gray-400">AI正在思考...</span>
                   </div>
@@ -192,15 +225,9 @@
           <div class="text-lg font-semibold mb-2">请输入报告提示词</div>
           <div class="text-base">
             如：
-            <span
-              class="text-blue-400 cursor-pointer hover:underline select-auto"
-              @click="handleKeywordClick('本周周报')"
-            >本周周报</span>
+            <span class="text-blue-400 cursor-pointer hover:underline select-auto" @click="handleKeywordClick('本周周报')">本周周报</span>
             、
-            <span
-              class="text-blue-400 cursor-pointer hover:underline select-auto"
-              @click="handleKeywordClick('昨日日报')"
-            >本日日报</span>
+            <span class="text-blue-400 cursor-pointer hover:underline select-auto" @click="handleKeywordClick('昨日日报')">本日日报</span>
             ，即可自动总结与输出
           </div>
         </div>
@@ -223,7 +250,7 @@
               type="button"
             >
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </button>
           </div>
@@ -263,8 +290,20 @@ const chatList = ref([]);
 
 // 初始化加载待办列表
 const loadTodos = async () => {
+  // 1. 先保存当前 open 状态
+  const openMap = {};
+  todos.value.forEach(item => {
+    openMap[item.id] = item.collapsibleOpen;
+  });
+
+  // 2. 获取新数据
   const res = await getTodayTodos();
-  todos.value = res.data;
+
+  // 3. 赋值时保留原有 open 状态
+  todos.value = (res.data || []).map(item => ({
+    ...item,
+    collapsibleOpen: openMap[item.id] ?? true
+  }));
 };
 loadTodos();
 
@@ -402,7 +441,7 @@ const handleAddTodo = () => {
   addTodo(formData.value)
     .then(() => {
       loadTodos(); // 提交成功后重新加载待办列表
-      formData.value = { id: '', title: '', content: '', progress: 0 }; // 重置表单
+      formData.value = { id: '', title: '', content: '', progress: 0, collapsibleOpen: false }; // 重置表单
     })
     .finally(() => {
       isOpen.value = false; // 关闭对话框
@@ -417,37 +456,3 @@ const handleKeywordClick = (keyword) => {
   });
 };
 </script>
-<style scoped>
-.bg-gradient {
-  background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
-}
-
-.card-enter-from {
-  opacity: 0;
-  transform: translateY(50px);
-}
-
-.card-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.card-leave-to {
-  opacity: 0;
-  transform: translateY(-50px);
-}
-
-.card-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.card-move {
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.card {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  transition-delay: var(--delay);
-}
-</style>
