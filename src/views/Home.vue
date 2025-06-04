@@ -1,8 +1,8 @@
 <template>
   <div v-if="showSplash" class="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
-    <div class="flex space-x-8">
+    <div class="flex space-x-12">
       <div v-for="(letter, letterIdx) in letters" :key="letterIdx" class="relative">
-        <svg width="100" height="140" viewBox="0 0 100 140">
+        <svg width="100" height="140" viewBox="0 0 100 200">
           <Motion
             v-for="(stroke, strokeIdx) in letter.strokes"
             :key="strokeIdx"
@@ -12,24 +12,39 @@
               opacity: 1,
               transition: {
                 duration: 2,
-                ease: 'easeOut'
-              }
+                ease: 'easeOut',
+              },
             }"
             as="path"
             :d="stroke.path"
             fill="none"
             :stroke="letter.color"
-            stroke-width="6"
+            stroke-width="10"
             stroke-linecap="round"
             :style="{
               strokeDasharray: stroke.length,
-              strokeDashoffset: stroke.length
+              strokeDashoffset: stroke.length,
             }"
           />
         </svg>
       </div>
     </div>
-    <div class="mt-8 text-gray-400 text-sm">下滑进入</div>
+    <div class="mt-12 text-gray-400 text-sm">下滑进入</div>
+    <svg
+      class="mx-auto mt-2 animate-bounce"
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+    >
+      <path
+        d="M8 12l8 8 8-8"
+        stroke="#aaa"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
   </div>
   <div v-else>
     <!-- <HeaderBanner /> -->
@@ -122,60 +137,45 @@ const skillList = ['HTML', 'CSS', 'JavaScript', 'Vue', 'React', 'Three', 'Elemen
 const letters = [
   // K
   {
-    color: '#FF4D4F',
+    color: '#d0d0f8',
     strokes: [
-      { path: 'M30,20 L30,130', length: 110 },
-      { path: 'M80,30 L30,75 L80,130', length: 120 }
-    ]
+      { path: 'M0,0 L0,200 ', length: 200 },
+      { path: 'M100,0 L10,100 L100,200', length: 300 },
+    ],
   },
-  // a
+  // A
   {
-    color: '#FAAD14',
-    strokes: [
-      { path: 'M90,100 Q90,70 60,70 Q30,70 30,100 Q30,130 60,130 Q90,130 90,100 Z', length: 200 },
-      { path: 'M90,70 L90,130', length: 60 }
-    ]
+    color: '#d0d0f8',
+    strokes: [{ path: 'M0,200 L50,0 L100,200', length: 450 }],
   },
-  // i
+  // I
   {
-    color: '#40A9FF',
-    strokes: [
-      { path: 'M50,40 L50,50', length: 10 },
-      { path: 'M50,70 L50,120', length: 50 }
-    ]
+    color: '#d5d5f9',
+    strokes: [{ path: 'M50,0 L50,200', length: 200 }],
   },
   // X
   {
-    color: '#36CFC9',
+    color: '#dbdafa',
     strokes: [
-      { path: 'M25,30 L75,120', length: 110 },
-      { path: 'M75,30 L25,120', length: 110 }
-    ]
+      { path: 'M0,0 L100,200', length: 250 },
+      { path: 'M100,0 L0,200', length: 250 },
+    ],
   },
-  // u
+  // U
   {
-    color: '#73D13D',
-    strokes: [
-      { path: 'M40,70 A20,60 0 0 0 80,70', length: 140 },
-      { path: 'M80,70 L80,130', length: 60 }
-    ]
+    color: '#e0dffa',
+    strokes: [{ path: 'M0,0 L0,145 A5,5 0 0 0 100,145 L100,0', length: 460 }],
   },
-  // a
+  // A
   {
-    color: '#9254DE',
-    strokes: [
-    { path: 'M90,100 Q90,70 60,70 Q30,70 30,100 Q30,130 60,130 Q90,130 90,100 Z', length: 200 },
-      { path: 'M90,70 L90,130', length: 60 }
-    ]
+    color: '#e5e5fb',
+    strokes: [{ path: 'M0,200 L50,0 L100,200', length: 450 }],
   },
-  // n
+  // N
   {
-    color: '#F759AB',
-    strokes: [
-      { path: 'M40,70 L40,130', length: 60 },
-      { path: 'M40,130 A20,60 0 0 1 80,130', length: 140 }
-    ]
-  }
+    color: '#eaeafc',
+    strokes: [{ path: 'M0,200 L0,55 A5,5 0 0 1 100,55 L100,200', length: 460 }],
+  },
 ];
 
 const showSplash = ref(true);
