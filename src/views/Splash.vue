@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed inset-0 flex flex-col items-center justify-center z-50 overflow-hidden">
+  <div class="bg-black fixed inset-0 flex flex-col items-center justify-center z-50 overflow-hidden">
     <div class="splash-bg"></div>
     <div class="flex space-x-12 relative z-10">
       <div v-for="(letter, letterIdx) in letters" :key="letterIdx" class="relative">
