@@ -324,7 +324,7 @@ const handleSendMessage = async () => {
   const aiMsgIndex = chatList.value.length - 1;
   text.value = '';
 
-  const baseURL = process.env.NODE_ENV === 'production' ? 'https://117.72.35.18:7001/api' : '/api';
+  const baseURL = process.env.NODE_ENV === 'production' ? 'https://117.72.35.18/api' : '/api';
   const token = sessionStorage.getItem('token') || localStorage.getItem('token');
   const csrfToken = Cookie.get('csrfToken');
   const url = `${baseURL}/todo/agent`;
