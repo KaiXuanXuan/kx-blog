@@ -72,7 +72,7 @@ const loginStore = useLoginStore();
 const { isLogin, userInfo } = storeToRefs(loginStore);
 
 
-const links = routes.map(route => {
+const links = routes.slice(1).map(route => {
   return {
     title: route.meta.title,
     path: route.path,

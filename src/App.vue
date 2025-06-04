@@ -1,8 +1,8 @@
 <template>
-  <header class="fixed w-full z-10 backdrop-blur-md">
+  <header v-if="!$route.meta.hideNav" class="fixed w-full z-10 backdrop-blur-md">
     <Navigation />
   </header>
-  <div class="pt-14 w-full h-full">
+  <div :class="[$route.meta.hideNav ? '' : 'pt-14', 'w-full h-full']">
     <RouterView />
     <Toaster richColors />
   </div>

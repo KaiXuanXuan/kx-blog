@@ -1,34 +1,40 @@
 const routes = [
   {
     path: '/',
+    name: 'Splash',
+    component: () => import('@/views/Splash.vue'),
+    meta: { title: '开屏', hideNav: true }
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: () => import('@/views/Home.vue'),
-    meta: { title: '首页' }
+    meta: { title: '首页', hideNav: false }
   },
   {
     path: '/friendsLink',
     name: 'FriendsLink',
     component: () => import('@/views/FriendsLink.vue'),
-    meta: { title: '友链' }
+    meta: { title: '友链', hideNav: false }
   },
   {
     path: '/relax',
     name: 'Relax',
     component: () => import('@/views/Relax.vue'),
-    meta: { title: '摸鱼' }
+    meta: { title: '摸鱼', hideNav: false }
   },
   {
     path: '/editor',
     name: 'Editor',
     component: () => import('@/views/Editor.vue'),
-    meta: { title: '写文' }
+    meta: { title: '写文', hideNav: false }
   },
   {
     path: '/report',
     name: 'Report',
     component: () => import('@/views/Report.vue'),
-    meta: { title: '待办' }
+    meta: { title: '待办', hideNav: false }
   }
 ];
 
- export default routes
+export default routes
