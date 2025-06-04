@@ -1,107 +1,109 @@
 <template>
-  <div v-if="showSplash" class="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
-    <div class="flex space-x-12">
-      <div v-for="(letter, letterIdx) in letters" :key="letterIdx" class="relative">
-        <svg width="100" height="140" viewBox="0 0 100 200">
-          <Motion
-            v-for="(stroke, strokeIdx) in letter.strokes"
-            :key="strokeIdx"
-            :initial="{ strokeDashoffset: stroke.length, opacity: 1 }"
-            :animate="{
-              strokeDashoffset: 0,
-              opacity: 1,
-              transition: {
-                duration: 2,
-                ease: 'easeOut',
-              },
-            }"
-            as="path"
-            :d="stroke.path"
-            fill="none"
-            :stroke="letter.color"
-            stroke-width="10"
-            stroke-linecap="round"
-            :style="{
-              strokeDasharray: stroke.length,
-              strokeDashoffset: stroke.length,
-            }"
-          />
-        </svg>
+  <Transition name="splash-fade-slide" mode="out-in">
+    <div v-if="showSplash" key="splash" class="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
+      <div class="flex space-x-12">
+        <div v-for="(letter, letterIdx) in letters" :key="letterIdx" class="relative">
+          <svg width="100" height="140" viewBox="0 0 100 200">
+            <Motion
+              v-for="(stroke, strokeIdx) in letter.strokes"
+              :key="strokeIdx"
+              :initial="{ strokeDashoffset: stroke.length, opacity: 1 }"
+              :animate="{
+                strokeDashoffset: 0,
+                opacity: 1,
+                transition: {
+                  duration: 2,
+                  ease: 'easeOut',
+                },
+              }"
+              as="path"
+              :d="stroke.path"
+              fill="none"
+              :stroke="letter.color"
+              stroke-width="10"
+              stroke-linecap="round"
+              :style="{
+                strokeDasharray: stroke.length,
+                strokeDashoffset: stroke.length,
+              }"
+            />
+          </svg>
+        </div>
       </div>
+      <div class="mt-12 text-gray-400 text-sm">下滑进入</div>
+      <svg
+        class="mx-auto mt-2 animate-bounce"
+        width="32"
+        height="32"
+        viewBox="0 0 32 32"
+        fill="none"
+      >
+        <path
+          d="M8 12l8 8 8-8"
+          stroke="#aaa"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
     </div>
-    <div class="mt-12 text-gray-400 text-sm">下滑进入</div>
-    <svg
-      class="mx-auto mt-2 animate-bounce"
-      width="32"
-      height="32"
-      viewBox="0 0 32 32"
-      fill="none"
-    >
-      <path
-        d="M8 12l8 8 8-8"
-        stroke="#aaa"
-        stroke-width="3"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-  </div>
-  <div v-else>
-    <!-- <HeaderBanner /> -->
-    <div class="max-w-7xl mx-auto px-4">
-      <div class="grid lg:grid-cols-7 gap-6">
-        <!-- 左侧边栏（添加ref） -->
-        <aside ref="leftAside" class="lg:col-span-2 space-y-6">
-          <!-- 头像卡片 -->
-          <Card class="text-center gap-2 p-0 overflow-hidden">
-            <div class="head h-32 flex items-center relative">
-              <Avatar class="w-22 h-22 rounded-full mx-auto absolute left-4 -bottom-10 box-content border-5 border-gray-100">
-                <AvatarImage src="/avatar.png" alt="Avatar" />
-                <AvatarFallback>KX</AvatarFallback>
-              </Avatar>
-              <p class="absolute text-2xl text-white font-bold left-40 bottom-6">KaiXuan</p>
-            </div>
-            <div class="foot p-4 w-full flex items-center justify-center gap-2">
-              <p>生活就是在米缸里种玫瑰🌹</p>
-              <div class="flex w-full flex-wrap gap-1 items-center justify-center">
-                <div class="bg-[#95B2FF] text-white py-1 px-2 rounded-md text-xs cursor-pointer" v-for="(tag, index) in skillList" :key="index">#{{ tag }}</div>
+    <div v-else key="main">
+      <!-- <HeaderBanner /> -->
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="grid lg:grid-cols-7 gap-6">
+          <!-- 左侧边栏（添加ref） -->
+          <aside ref="leftAside" class="lg:col-span-2 space-y-6">
+            <!-- 头像卡片 -->
+            <Card class="text-center gap-2 p-0 overflow-hidden">
+              <div class="head h-32 flex items-center relative">
+                <Avatar class="w-22 h-22 rounded-full mx-auto absolute left-4 -bottom-10 box-content border-5 border-gray-100">
+                  <AvatarImage src="/avatar.png" alt="Avatar" />
+                  <AvatarFallback>KX</AvatarFallback>
+                </Avatar>
+                <p class="absolute text-2xl text-white font-bold left-40 bottom-6">KaiXuan</p>
               </div>
-            </div>
-          </Card>
-
-          <div class="space-y-2">
-            <Card class="p-4 px-6 items-center">
-              <AudioPlayer :song="song" @change="changeSong" />
+              <div class="foot p-4 w-full flex items-center justify-center gap-2">
+                <p>生活就是在米缸里种玫瑰🌹</p>
+                <div class="flex w-full flex-wrap gap-1 items-center justify-center">
+                  <div class="bg-[#95B2FF] text-white py-1 px-2 rounded-md text-xs cursor-pointer" v-for="(tag, index) in skillList" :key="index">#{{ tag }}</div>
+                </div>
+              </div>
             </Card>
 
-            <NextHoliday class="h-30" />
+            <div class="space-y-2">
+              <Card class="p-4 px-6 items-center">
+                <AudioPlayer :song="song" @change="changeSong" />
+              </Card>
 
-            <div class="flex items-start justify-center gap-2 h-40">
-              <WeatherReport class="h-full" />
-              <WorkTimeProgress :size="90" :strokeWidth="10" class="h-full" />
+              <NextHoliday class="h-30" />
+
+              <div class="flex items-start justify-center gap-2 h-40">
+                <WeatherReport class="h-full" />
+                <WorkTimeProgress :size="90" :strokeWidth="10" class="h-full" />
+              </div>
             </div>
-          </div>
-        </aside>
+          </aside>
 
-        <!-- 主内容区（添加ref） -->
-        <TransitionGroup name="card" tag="div" ref="mainContent" class="lg:col-span-5 space-y-4" appear>
-          <BlogCard
-            v-for="(blog, index) in blogs"
-            :key="blog.id"
-            @click="openDialog(index)"
-            class="card cursor-pointer hover:shadow-md"
-            :title="blog.title"
-            :cover_image="blog.cover_image"
-            :author="blog.author"
-            :update_time="blog.update_time"
-            :category="blog.category"
-            :style="{ '--delay': `${index * 0.1 + 0.2}s` }"
-          />
-        </TransitionGroup>
-        <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" @closeDialog="closeDialog" />
+          <!-- 主内容区（添加ref） -->
+          <TransitionGroup name="card" tag="div" ref="mainContent" class="lg:col-span-5 space-y-4" appear>
+            <BlogCard
+              v-for="(blog, index) in blogs"
+              :key="blog.id"
+              @click="openDialog(index)"
+              class="card cursor-pointer hover:shadow-md"
+              :title="blog.title"
+              :cover_image="blog.cover_image"
+              :author="blog.author"
+              :update_time="blog.update_time"
+              :category="blog.category"
+              :style="{ '--delay': `${index * 0.1 + 0.2}s` }"
+            />
+          </TransitionGroup>
+          <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" @closeDialog="closeDialog" />
+        </div>
       </div>
     </div>
-  </div>
+  </Transition>
 </template>
 <script setup>
 import { Card } from '@/components/ui/card';
@@ -279,5 +281,26 @@ const songList = [
 .card {
   transition: opacity 0.3s ease, transform 0.3s ease;
   transition-delay: var(--delay);
+}
+
+.splash-fade-slide-enter-active,
+.splash-fade-slide-leave-active {
+  transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.splash-fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(50px);
+}
+.splash-fade-slide-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+.splash-fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+.splash-fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-50px);
 }
 </style>
