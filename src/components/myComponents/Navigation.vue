@@ -8,7 +8,7 @@
     <!-- 导航 -->
     <div class="relative flex items-center gap-4" ref="navItemsRef" @click="handleNavItemClick">
       <div class="active-overlay rounded-md" ref="activeOverlay"></div>
-      <router-link v-for="link in links" :key="link.title" :to="link.path" class="nav-item px-4 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+      <router-link v-for="link in links" :key="link.title" :to="link.path" class="nav-item px-4 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800" :class="{ active: route.path === link.path }">
         {{ link.title }}
       </router-link>
     </div>
@@ -50,7 +50,7 @@
 
 <script setup>
 import DarkLightSwitch from '@/components/myComponents/DarkLightSwitch.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch, nextTick } from 'vue';
 import { useColorMode } from '@vueuse/core';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Register from '@/components/myComponents/Register.vue';
@@ -61,6 +61,7 @@ import { storeToRefs } from 'pinia';
 import { connect } from '@/api/connect.js'
 import { toast } from 'vue-sonner';
 import routes from '@/router/routes';
+import { useRoute } from 'vue-router';
 
 const isDark = ref(false);
 const navItemsRef = ref(null);
@@ -70,7 +71,7 @@ const currentIndex = ref(0);
 const colorMode = useColorMode();
 const loginStore = useLoginStore();
 const { isLogin, userInfo } = storeToRefs(loginStore);
-
+const route = useRoute();
 
 const links = routes.slice(1).map(route => {
   return {
@@ -94,8 +95,26 @@ onMounted(() => {
   // 获取csrfToken
   connect()
   navItemList.value = navItemsRef.value.querySelectorAll('.nav-item');
-  updateOverlay(navItemList.value[0]); 
+  nextTick(() => {
+    const activeNav = Array.from(navItemList.value).find(
+      nav => nav.classList.contains('active')
+    );
+    if (activeNav) updateOverlay(activeNav);
+  });
 });
+
+watch(
+  () => route.path,
+  () => {
+    nextTick(() => {
+      navItemList.value = navItemsRef.value.querySelectorAll('.nav-item');
+      const activeNav = Array.from(navItemList.value).find(
+        nav => nav.classList.contains('active')
+      );
+      if (activeNav) updateOverlay(activeNav);
+    });
+  }
+);
 
 // 防抖
 const debounce = (fn, delay) => {
