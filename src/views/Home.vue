@@ -1,9 +1,20 @@
 <template>
   <Transition name="splash-fade-slide" mode="out-in">
-    <div v-if="showSplash" key="splash" class="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
+    <div v-if="showSplash" key="splash" class="bg-black fixed inset-0 flex flex-col items-center justify-center z-50 overflow-hidden">
+      <div class="splash-bg"></div>
       <div class="flex space-x-12">
         <div v-for="(letter, letterIdx) in letters" :key="letterIdx" class="relative">
           <svg width="100" height="140" viewBox="0 0 100 200">
+            <defs>
+              <linearGradient
+                :id="`stroke-gradient-${letterIdx}`"
+                x1="0" y1="200" x2="100" y2="0"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop offset="0%" :stop-color="letter.gradient[0]" />
+                <stop offset="100%" :stop-color="letter.gradient[1]" />
+              </linearGradient>
+            </defs>
             <Motion
               v-for="(stroke, strokeIdx) in letter.strokes"
               :key="strokeIdx"
@@ -19,7 +30,7 @@
               as="path"
               :d="stroke.path"
               fill="none"
-              :stroke="letter.color"
+              :stroke="`url(#stroke-gradient-${letterIdx})`"
               stroke-width="10"
               stroke-linecap="round"
               :style="{
@@ -139,25 +150,29 @@ const skillList = ['HTML', 'CSS', 'JavaScript', 'Vue', 'React', 'Three', 'Elemen
 const letters = [
   // K
   {
-    color: '#d0d0f8',
+    gradient: ['#8a6ff0', '#c6c6ef'],
     strokes: [
-      { path: 'M0,0 L0,200 ', length: 200 },
-      { path: 'M100,0 L10,100 L100,200', length: 300 },
+      { path: 'M0,0 L0,200', length: 200 },
+      { path: 'M100,0 L5,100 L100,200', length: 300 },
     ],
   },
   // A
   {
-    color: '#d0d0f8',
-    strokes: [{ path: 'M0,200 L50,0 L100,200', length: 450 }],
+    gradient: ['#8a73f3', '#cecbee'],
+    strokes: [
+      { path: 'M0,200 L50,0 L100,200', length: 450 },
+    ],
   },
   // I
   {
-    color: '#d5d5f9',
-    strokes: [{ path: 'M50,0 L50,200', length: 200 }],
+    gradient: ['#8f7af6', '#d3d1f7'],
+    strokes: [
+      { path: 'M50,0 L50,200', length: 200 },
+    ],
   },
   // X
   {
-    color: '#dbdafa',
+    gradient: ['#a18cd1', '#dbdafa'],
     strokes: [
       { path: 'M0,0 L100,200', length: 250 },
       { path: 'M100,0 L0,200', length: 250 },
@@ -165,18 +180,24 @@ const letters = [
   },
   // U
   {
-    color: '#e0dffa',
-    strokes: [{ path: 'M0,0 L0,145 A5,5 0 0 0 100,145 L100,0', length: 460 }],
+    gradient: ['#b39ddb', '#e7e7fc'],
+    strokes: [
+      { path: 'M0,0 L0,145 A45,45 0 0 0 100,145 L100,0', length: 460 },
+    ],
   },
   // A
   {
-    color: '#e5e5fb',
-    strokes: [{ path: 'M0,200 L50,0 L100,200', length: 450 }],
+    gradient: ['#c5b6e0', '#eaeafc'],
+    strokes: [
+      { path: 'M0,200 L50,0 L100,200', length: 450 },
+    ],
   },
   // N
   {
-    color: '#eaeafc',
-    strokes: [{ path: 'M0,200 L0,55 A5,5 0 0 1 100,55 L100,200', length: 460 }],
+    gradient: ['#d1c4e9', '#f5f5fd'],
+    strokes: [
+      { path: 'M0,200 L0,55 A45,45 0 0 1 100,55 L100,200', length: 460 },
+    ],
   },
 ];
 
@@ -302,5 +323,13 @@ const songList = [
 .splash-fade-slide-leave-to {
   opacity: 0;
   transform: translateY(-50px);
+}
+
+.splash-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url('  https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  filter: brightness(0.3) blur(2px);
 }
 </style>
