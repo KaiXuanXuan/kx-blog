@@ -16,7 +16,6 @@ import 'vue-sonner/style.css';
 import Navigation from '@/components/myComponents/Navigation.vue';
 
 const router = useRouter();
-const route = useRoute();
 const routeReady = ref(false);
 const originalTitle = '⌯>ᴗo⌯ಣ';
 const blurTitle = '・ࡇ・';
