@@ -6,6 +6,7 @@ import { useLoginStore } from '@/stores/login';
 const service = axios.create({
   baseURL: process.env.NODE_ENV === 'production' ? 'https://117.72.35.18/api' : '/api',
   timeout: 10000,
+  withCredentials: true,
 });
 
 const toastErrorMessage = (message) => {

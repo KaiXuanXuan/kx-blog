@@ -338,6 +338,7 @@ const handleSendMessage = async () => {
         'X-CSRF-TOKEN': csrfToken,
       },
       body: JSON.stringify({ text: chatList.value[aiMsgIndex - 1].content }),
+      credentials: 'include',
     });
 
     const reader = response.body.getReader();
