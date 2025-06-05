@@ -59,7 +59,7 @@
   </div>
 </template>
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { Motion } from 'motion-v';
 
@@ -83,6 +83,12 @@ onMounted(() => {
   window.addEventListener('wheel', handleEnter);
   window.addEventListener('scroll', handleEnter);
   window.addEventListener('touchmove', handleEnter);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('wheel', handleEnter);
+  window.removeEventListener('scroll', handleEnter);
+  window.removeEventListener('touchmove', handleEnter);
 });
 </script>
 <style scoped>
