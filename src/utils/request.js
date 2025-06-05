@@ -47,6 +47,9 @@ service.interceptors.response.use(
 
     // 如果是 401 错误，清除登录信息
     if (error.response && error.response.status === 401) {
+      const { csrfToken } = error.response.data;
+      sessionStorage.setItem('csrfToken', csrfToken);
+
       const loginStore = useLoginStore();
       loginStore.clearLogin();
       loginStore.clearUserInfo();
