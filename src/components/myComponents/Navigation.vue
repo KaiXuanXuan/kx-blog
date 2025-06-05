@@ -22,7 +22,7 @@
       <div v-else class="flex items-center gap-2 mr-10">
         <Avatar class="mr-2">
           <AvatarImage src="https://github.com/unovue.png" alt="Avatar" />
-          <AvatarFallback>{{ userInfo.username.slice(0,2) }}</AvatarFallback>
+          <AvatarFallback>{{ userInfo.username.slice(0, 2) }}</AvatarFallback>
         </Avatar>
         <UserControl />
       </div>
@@ -58,7 +58,7 @@ import Login from '@/components/myComponents/Login.vue';
 import UserControl from '@/components/myComponents/UserControl.vue';
 import { useLoginStore } from '@/stores/login';
 import { storeToRefs } from 'pinia';
-import { connect } from '@/api/connect.js'
+import { connect } from '@/api/connect.js';
 import { toast } from 'vue-sonner';
 import routes from '@/router/routes';
 import { useRoute } from 'vue-router';
@@ -73,7 +73,7 @@ const loginStore = useLoginStore();
 const { isLogin, userInfo } = storeToRefs(loginStore);
 const route = useRoute();
 
-const links = routes.slice(1).map(route => {
+const links = routes.slice(1).map((route) => {
   return {
     title: route.meta.title,
     path: route.path,
@@ -86,19 +86,20 @@ onMounted(() => {
 
   // 如有token缓存，设置登录状态和用户信息
   if (token || tempToken) {
-    loginStore.setLogin(true)
+    loginStore.setLogin(true);
     const username = sessionStorage.getItem('username') || localStorage.getItem('username');
     const id = sessionStorage.getItem('id') || localStorage.getItem('id');
-    loginStore.setUserInfo({ username, id })
+    loginStore.setUserInfo({ username, id });
   }
 
   // 获取csrfToken
-  connect()
+  connect().then((res) => {
+    const { csrfToken } = res.data;
+    sessionStorage.setItem('csrfToken', csrfToken);
+  });
   navItemList.value = navItemsRef.value.querySelectorAll('.nav-item');
   nextTick(() => {
-    const activeNav = Array.from(navItemList.value).find(
-      nav => nav.classList.contains('active')
-    );
+    const activeNav = Array.from(navItemList.value).find((nav) => nav.classList.contains('active'));
     if (activeNav) updateOverlay(activeNav);
   });
 });
@@ -108,9 +109,7 @@ watch(
   () => {
     nextTick(() => {
       navItemList.value = navItemsRef.value.querySelectorAll('.nav-item');
-      const activeNav = Array.from(navItemList.value).find(
-        nav => nav.classList.contains('active')
-      );
+      const activeNav = Array.from(navItemList.value).find((nav) => nav.classList.contains('active'));
       if (activeNav) updateOverlay(activeNav);
     });
   }

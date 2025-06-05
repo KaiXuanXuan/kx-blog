@@ -19,7 +19,7 @@ const toastErrorMessage = (message) => {
 service.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem('token') || localStorage.getItem('token');
-    const csrfToken = Cookie.get('csrfToken');
+    const csrfToken = sessionStorage.getItem('csrfToken') || Cookie.get('csrfToken');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
