@@ -94,7 +94,7 @@ onMounted(() => {
 
   // 获取csrfToken
   connect().then((res) => {
-    const { csrfToken } = res.data;
+    const { csrfToken } = res;
     sessionStorage.setItem('csrfToken', csrfToken);
   });
   navItemList.value = navItemsRef.value.querySelectorAll('.nav-item');
