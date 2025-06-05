@@ -74,7 +74,7 @@
         <Input v-model="itemForm.item_desc" placeholder="网站描述" class="" />
         <Input v-model="itemForm.item_url" placeholder="网站地址" class="" />
         <Input placeholder="网站图标" type="file" @change="changeAddIcon" class="" />
-        <img :src="itemForm.icon" />
+        <img :src="formateUrl(itemForm.icon)" />
 
         <DialogFooter>
           <Button class="w-full" @click="addItem" :disabled="isLoading">确认添加</Button>
@@ -101,7 +101,7 @@
         <Input v-model="itemEditForm.item_desc" placeholder="网站描述" class="" />
         <Input v-model="itemEditForm.item_url" placeholder="网站地址" class="" />
         <Input placeholder="网站图标" type="file" @change="changeEditIcon" class="" />
-        <img :src="itemEditForm.icon" />
+        <img :src="formateUrl(itemEditForm.icon)" />
         <DialogFooter>
           <Button class="w-full" @click="updateItem">确认修改</Button>
         </DialogFooter>
@@ -281,6 +281,14 @@ import {
 } from '@/api/resource';
 import { gsap } from 'gsap';
 import { toast } from 'vue-sonner';
+
+function formateUrl(url) {
+  if (!url) return '';
+  // 获取当前协议（带冒号，如 'https:'），动态匹配，让链接协议与当前页面协议一致
+  const protocol = window.location.protocol;
+  console.log(url, url.replace(/^https?:/, protocol));
+  return url.replace(/^https?:/, protocol);
+}
 
 // 搜索关键词
 const searchKeyword = ref('');

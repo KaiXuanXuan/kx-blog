@@ -4,7 +4,7 @@
     @click="openLink(item.item_url)" :style="{ transitionDelay: `${delay}s` }"
     :class="{ 'opacity-100 translate-y-0': animated }">
     <div class="flex items-center gap-3">
-      <img :src="getIconUrl(item.icon)" class="w-10 h-10" />
+      <img :src="formateUrl(item.icon)" class="w-10 h-10" />
       <div class="flex-1 text-nowrap overflow-hidden">
         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100" v-html="highlightKeyword(item.title)"></h3>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 truncate" v-html="highlightKeyword(item.item_desc)"></p>
@@ -70,7 +70,7 @@ const openLink = (url) => {
   window.open(url, '_blank');
 };
 
-function getIconUrl(url) {
+function formateUrl(url) {
   if (!url) return '';
   // 获取当前协议（带冒号，如 'https:'），动态匹配，让链接协议与当前页面协议一致
   const protocol = window.location.protocol;
