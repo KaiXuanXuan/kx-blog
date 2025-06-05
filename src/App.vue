@@ -9,19 +9,39 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { Toaster } from '@/components/ui/sonner';
 import 'vue-sonner/style.css';
 import Navigation from '@/components/myComponents/Navigation.vue';
 
 const router = useRouter();
+const route = useRoute();
 const routeReady = ref(false);
+const originalTitle = '⌯>ᴗo⌯ಣ';
+const blurTitle = '・ࡇ・';
 
 onMounted(async () => {
   await router.isReady();
   routeReady.value = true;
+
+  // 设置固定标题
+  document.title = originalTitle;
+
+  document.addEventListener('visibilitychange', handleVisibilityChange);
 });
+
+onUnmounted(() => {
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
+});
+
+function handleVisibilityChange() {
+  if (document.hidden) {
+    document.title = blurTitle; // 失去焦点时显示的标题
+  } else {
+    document.title = originalTitle; // 恢复为固定标题
+  }
+}
 </script>
 
 <style scoped></style>

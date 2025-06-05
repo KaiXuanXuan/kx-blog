@@ -2,7 +2,7 @@
   <div class="flex justify-between items-center px-40 py-2 h-14 w-full dark:border-gray-700">
     <!-- logo -->
     <div class="flex items-center">
-      <img src="/vite.svg" alt="logo" class="w-8 h-8" />
+      <img src="/logo1.png" alt="logo" class="w-8 h-8" />
       <span class="ml-8 font-semibold">个人博客 - 凯旋</span>
     </div>
     <!-- 导航 -->

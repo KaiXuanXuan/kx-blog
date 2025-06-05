@@ -5,8 +5,4 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from) => {
-  document.title = to.meta?.title || '默认标题';
-});
-
 export default router;
