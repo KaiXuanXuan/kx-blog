@@ -19,7 +19,7 @@ const toastErrorMessage = (message) => {
 service.interceptors.request.use(
   (config) => {
     const token = sessionStorage.getItem('token') || localStorage.getItem('token');
-    const csrfToken = sessionStorage.getItem('csrfToken') || Cookie.get('csrfToken');
+    const csrfToken = Cookie.get('csrfToken') || sessionStorage.getItem('csrfToken');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -47,9 +47,6 @@ service.interceptors.response.use(
 
     // 如果是 401 错误，清除登录信息
     if (error.response && error.response.status === 401) {
-      const { csrfToken } = error.response.data;
-      sessionStorage.setItem('csrfToken', csrfToken);
-
       const loginStore = useLoginStore();
       loginStore.clearLogin();
       loginStore.clearUserInfo();
@@ -61,6 +58,9 @@ service.interceptors.response.use(
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('username');
       sessionStorage.removeItem('id');
+
+      const { csrfToken } = error.response.data;
+      sessionStorage.setItem('csrfToken', csrfToken);
     }
     return Promise.reject(error);
   }
