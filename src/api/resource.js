@@ -54,8 +54,13 @@ const getItemsByCategory = (category_id) => {
 
 const updateResourceItem = (data, file) => {
   const formData = new FormData();
-  formData.append('file', file);
   formData.append('data', JSON.stringify(data));
+  // 如果file的值不为undefined，则添加到formData中
+  console.log(file);
+  
+  if (file.name !== 'undefined') {
+    formData.append('file', file);
+  }
 
   return request({
     url: '/resource/item/update',

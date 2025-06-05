@@ -139,7 +139,7 @@
           v-for="(folder, index) in folders"
           :key="folder.id"
           v-model:open="folder.isOpen"
-          class="border border-gray-100 dark:border-gray-800 rounded-md bg-white dark:bg-gray-900  shadow-md hover:shadow-lg transition-all duration-300 relative"
+          class="border border-gray-100 dark:border-gray-800 rounded-md bg-white dark:bg-gray-900 shadow-md hover:shadow-lg transition-all duration-300 relative"
         >
           <CollapsibleTrigger class="cursor-pointer flex items-center justify-between w-full p-4 rounded-t-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
             <div class="flex items-center gap-3">
@@ -517,7 +517,7 @@ const updateItem = () => {
   isLoading.value = true;
   const { title, item_url, item_desc, category_id, icon, iconType, iconName, id } = itemEditForm.value;
   const file = new File([icon], iconName, { type: iconType });
-  updateResourceItem(id, { title, item_url, item_desc, category_id }, file)
+  updateResourceItem({ id, title, item_url, item_desc, category_id }, file)
     .then((res) => {
       if (res.code == 200) {
         const msg = res.message;
