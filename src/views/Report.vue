@@ -5,7 +5,7 @@
       <TabsTrigger value="agent" class="cursor-pointer"> 报告助手 </TabsTrigger>
     </TabsList>
     <TabsContent value="todo">
-      <div class="max-w-7xl mx-auto px-4 py-8">
+      <div class="max-w-7xl mx-auto px-4 py-8 bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 rounded-sm">
         <div class="mb-4 flex items-center justify-between">
           <div class="text-xl font-medium">🔊:今天也要加油鸭💪</div>
           <div class="flex gap-4">
@@ -21,36 +21,47 @@
               v-for="todo in todos"
               v-model:open="todo.collapsibleOpen"
               :key="todo.id"
-              class="relative bg-white rounded-xl shadow-md border border-gray-100 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-4"
+              class="relative bg-white rounded-xl shadow-md border border-gray-100 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-4 dark:bg-gray-800 dark:border-gray-700"
             >
-              <CollapsibleTrigger class="w-full cursor-pointer hover:bg-gray-100 transition-colors duration-300 rounded-t-xl">
+              <CollapsibleTrigger class="w-full cursor-pointer hover:bg-gray-100 transition-colors duration-300 rounded-t-xl dark:hover:bg-gray-700">
                 <div class="flex items-center justify-between px-6 py-5">
                   <div class="flex items-center gap-3">
-                    <span class="text-2xl font-bold text-gray-900">{{ todo.title }}</span>
+                    <span class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ todo.title }}</span>
                     <span
                       class="ml-2 px-2 py-0.5 rounded-full text-xs font-semibold"
                       :class="{
-                        'bg-yellow-100 text-yellow-800': todo.progress <= 20,
-                        'bg-red-100 text-red-800': todo.progress > 20 && todo.progress <= 70,
-                        'bg-blue-100 text-blue-800': todo.progress > 70 && todo.progress < 100,
-                        'bg-green-100 text-green-800': todo.progress >= 100,
+                        'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200': todo.progress <= 20,
+                        'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200': todo.progress > 20 && todo.progress <= 70,
+                        'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200': todo.progress > 70 && todo.progress < 100,
+                        'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200': todo.progress >= 100,
                       }"
                     >
                       {{ todo.progress }}%
                     </span>
                   </div>
                   <div class="flex gap-2">
-                    <Button v-if="!todo.status" @click.stop="changeStatus(todo, 1)" class="bg-green-500 hover:bg-green-400 text-white rounded-full w-9 h-9 flex items-center justify-center">
+                    <Button
+                      v-if="!todo.status"
+                      @click.stop="changeStatus(todo, 1)"
+                      class="bg-green-500 hover:bg-green-400 text-white rounded-full w-9 h-9 flex items-center justify-center dark:bg-green-600 dark:hover:bg-green-500"
+                    >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                       </svg>
                     </Button>
-                    <Button v-else @click.stop="changeStatus(todo, 0)" class="bg-blue-500 hover:bg-blue-400 text-white rounded-full w-9 h-9 flex items-center justify-center">
+                    <Button
+                      v-else
+                      @click.stop="changeStatus(todo, 0)"
+                      class="bg-blue-500 hover:bg-blue-400 text-white rounded-full w-9 h-9 flex items-center justify-center dark:bg-blue-600 dark:hover:bg-blue-500"
+                    >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                       </svg>
                     </Button>
-                    <Button @click.stop="openDeleteDialog(todo.id)" class="bg-red-100 hover:bg-red-200 text-red-700 rounded-full w-9 h-9 flex items-center justify-center">
+                    <Button
+                      @click.stop="openDeleteDialog(todo.id)"
+                      class="bg-red-100 hover:bg-red-200 text-red-700 rounded-full w-9 h-9 flex items-center justify-center dark:bg-red-900 dark:hover:bg-red-800 dark:text-red-200"
+                    >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path
                           stroke-linecap="round"
@@ -63,16 +74,16 @@
                 </div>
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <div class="px-6 pb-5 pt-2 text-gray-700">
+                <div class="px-6 pb-5 pt-2 text-gray-700 dark:text-gray-200">
                   <div class="mb-2 flex items-center gap-2">
                     <span class="font-medium">任务详情</span>
                     <span
                       class="px-2 py-0.5 rounded-full text-xs font-semibold"
                       :class="{
-                        'bg-yellow-50 text-yellow-700 border border-yellow-200': todo.progress <= 20,
-                        'bg-red-50 text-red-700 border border-red-200': todo.progress > 20 && todo.progress <= 70,
-                        'bg-blue-50 text-blue-700 border border-blue-200': todo.progress > 70 && todo.progress < 100,
-                        'bg-green-50 text-green-700 border border-green-200': todo.progress >= 100,
+                        'bg-yellow-50 text-yellow-700 border border-yellow-200 dark:bg-yellow-900 dark:text-yellow-200 dark:border-yellow-800': todo.progress <= 20,
+                        'bg-red-50 text-red-700 border border-red-200 dark:bg-red-900 dark:text-red-200 dark:border-red-800': todo.progress > 20 && todo.progress <= 70,
+                        'bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900 dark:text-blue-200 dark:border-blue-800': todo.progress > 70 && todo.progress < 100,
+                        'bg-green-50 text-green-700 border border-green-200 dark:bg-green-900 dark:text-green-200 dark:border-green-800': todo.progress >= 100,
                       }"
                     >
                       <template v-if="todo.progress <= 20">⚡起步中</template>
@@ -81,16 +92,16 @@
                       <template v-else>✅已完成</template>
                     </span>
                   </div>
-                  <div class="text-gray-600">{{ todo.content }}</div>
+                  <div class="text-gray-600 dark:text-gray-300">{{ todo.content }}</div>
                   <!-- 进度条 -->
-                  <div class="w-full h-2 bg-gray-100 rounded-full mt-4">
+                  <div class="w-full h-2 bg-gray-100 rounded-full mt-4 dark:bg-gray-700">
                     <div
                       class="h-2 rounded-full transition-all duration-500"
                       :class="{
-                        'bg-yellow-400': todo.progress <= 20,
-                        'bg-red-400': todo.progress > 20 && todo.progress <= 70,
-                        'bg-blue-400': todo.progress > 70 && todo.progress < 100,
-                        'bg-green-400': todo.progress >= 100,
+                        'bg-yellow-400 dark:bg-yellow-500': todo.progress <= 20,
+                        'bg-red-400 dark:bg-red-500': todo.progress > 20 && todo.progress <= 70,
+                        'bg-blue-400 dark:bg-blue-500': todo.progress > 70 && todo.progress < 100,
+                        'bg-green-400 dark:bg-green-500': todo.progress >= 100,
                       }"
                       :style="`width: ${todo.progress}%`"
                     ></div>
@@ -100,8 +111,8 @@
             </Collapsible>
           </div>
           <!-- 占位提示 -->
-          <div v-if="todos.length === 0" class="flex flex-col items-center justify-center py-16 text-gray-400">
-            <svg class="w-16 h-16 mb-4 text-gray-200" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <div v-if="todos.length === 0" class="flex flex-col items-center justify-center py-16 text-gray-400 dark:text-gray-500">
+            <svg class="w-16 h-16 mb-4 text-gray-200 dark:text-gray-700" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8a9 9 0 100-18 9 9 0 000 18z" />
             </svg>
             <div class="text-lg font-semibold">暂无待办任务</div>
@@ -293,7 +304,7 @@ const chatList = ref([]);
 const loadTodos = async () => {
   // 1. 先保存当前 open 状态
   const openMap = {};
-  todos.value.forEach(item => {
+  todos.value.forEach((item) => {
     openMap[item.id] = item.collapsibleOpen;
   });
 
@@ -301,9 +312,9 @@ const loadTodos = async () => {
   const res = await getTodayTodos();
 
   // 3. 赋值时保留原有 open 状态
-  todos.value = (res.data || []).map(item => ({
+  todos.value = (res.data || []).map((item) => ({
     ...item,
-    collapsibleOpen: openMap[item.id] ?? true
+    collapsibleOpen: openMap[item.id] ?? true,
   }));
 };
 loadTodos();

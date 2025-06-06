@@ -144,7 +144,7 @@
           <CollapsibleTrigger class="cursor-pointer flex items-center justify-between w-full p-4 rounded-t-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
             <div class="flex items-center gap-3">
               <div class="h-7 w-7 flex items-center justify-center text-2xl">{{ folder.isOpen ? '📂' : '📁' }}</div>
-              <span class="text-lg font-bold text-gray-900" v-html="highlightKeyword(folder.title)"></span>
+              <span class="text-lg font-bold text-gray-900 dark:text-gray-100" v-html="highlightKeyword(folder.title)"></span>
             </div>
             <div class="flex gap-2">
               <ContextMenu>
