@@ -96,7 +96,7 @@ onUnmounted(() => {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  background: url('/splash.webp') center/cover no-repeat;
   filter: brightness(0.3) blur(2px);
   pointer-events: none;
 }
