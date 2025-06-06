@@ -13,7 +13,7 @@ const getBlogDetail = (id) => {
     method: 'get',
     params: {
       id,
-    }
+    },
   });
 };
 
@@ -41,11 +41,13 @@ const updateBlog = (data, file) => {
   });
 };
 
-const deleteBlog = (data) => {
+const deleteBlog = (id) => {
   return request({
     url: '/blog/delete',
-    method: 'post',
-    data,
+    method: 'delete',
+    data: {
+      id,
+    },
   });
 };
 

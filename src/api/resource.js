@@ -4,14 +4,14 @@ const addResourceCategory = (title) => {
   return request({
     url: '/resource/category/add',
     method: 'post',
-    data: { title }
+    data: { title },
   });
 };
 
 const getResourceCategories = () => {
   return request({
     url: '/resource/categories',
-    method: 'get'
+    method: 'get',
   });
 };
 
@@ -19,7 +19,7 @@ const updateResourceCategory = (id, title) => {
   return request({
     url: '/resource/category/update',
     method: 'put',
-    data: { id, title }
+    data: { id, title },
   });
 };
 
@@ -27,7 +27,7 @@ const deleteResourceCategory = (id) => {
   return request({
     url: '/resource/category/delete',
     method: 'delete',
-    data: { id }
+    data: { id },
   });
 };
 
@@ -48,7 +48,7 @@ const getItemsByCategory = (category_id) => {
   return request({
     url: '/resource/items',
     method: 'get',
-    params: { category_id }
+    params: { category_id },
   });
 };
 
@@ -57,7 +57,7 @@ const updateResourceItem = (data, file) => {
   formData.append('data', JSON.stringify(data));
   // 如果file的值不为undefined，则添加到formData中
   console.log(file);
-  
+
   if (file.name !== 'undefined') {
     formData.append('file', file);
   }
@@ -67,13 +67,13 @@ const updateResourceItem = (data, file) => {
     method: 'put',
     data: formData,
   });
-}
+};
 
 const deleteResourceItem = (id) => {
   return request({
     url: '/resource/item/delete',
     method: 'delete',
-    data: { id }
+    data: { id },
   });
 };
 
@@ -82,7 +82,7 @@ const searchResources = (keyword) => {
   return request({
     url: '/resource/search',
     method: 'get',
-    params: { keyword }
+    params: { keyword },
   });
 };
 

@@ -51,6 +51,7 @@
             :author="blog.author"
             :update_time="blog.update_time"
             :category="blog.category"
+            :id="blog.id"
             :style="{ '--delay': `${index * 0.1 + 0.2}s` }"
           />
         </TransitionGroup>
