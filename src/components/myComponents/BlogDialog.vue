@@ -43,7 +43,7 @@
       </DialogHeader>
       <div class="grid gap-4 py-4 overflow-y-auto px-6">
         <div class="flex flex-col justify-between">
-          <img :src="blog.cover_image" alt="封面" class="w-full h-60 object-cover rounded-lg" />
+          <img :src="formateUrl(blog.cover_image)" alt="封面" class="w-full h-60 object-cover rounded-lg" />
           <v-md-preview :text="blog.markdown_content" />
         </div>
       </div>
@@ -57,6 +57,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ref, onMounted, watch } from 'vue';
 import { getBlogDetail } from '@/api/blog';
+import { formateUrl } from '@/utils/helper';
 
 const blog = ref({});
 const open = ref(false);
