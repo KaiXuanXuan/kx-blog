@@ -6,7 +6,7 @@
       <span class="ml-8 font-semibold">个人博客 - 凯旋</span>
     </div>
     <!-- 导航 -->
-    <div class="relative flex items-center gap-6 h-14" ref="navItemsRef" @click="handleNavItemClick">
+    <div class="relative flex items-center gap-4" ref="navItemsRef" @click="handleNavItemClick">
       <div class="active-overlay rounded-lg" ref="activeOverlay"></div>
       <router-link
         v-for="(link, index) in links"
@@ -201,37 +201,11 @@ const debounceSwitch = debounce(handleSwitch, 500);
 /* Active overlay */
 .active-overlay {
   position: absolute;
-  top: 0.5rem;
-  height: calc(100% - 0.5rem);
-  /* background: hsla(219, 8%, 52%, 0.1); */
+  top: 0;
+  height: 100%;
   background: #6874e8;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
-}
-
-.active-overlay::before,
-.active-overlay::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  height: 1.5rem;
-  width: 1.5rem;
-}
-
-.active-overlay::before {
-  left: 0;
-  border-bottom-right-radius: 50%;
-  transform: translate(-100%, 0);
-  background: transparent;
-  box-shadow: 1rem 0 0 0 #6874e8;
-}
-
-.active-overlay::after {
-  right: 0;
-  border-bottom-left-radius: 50%;
-  transform: translate(100%, 0);
-  background: transparent;
-  box-shadow: -1rem 0 0 0 #6874e8;
 }
 
 .nav-item.active {
@@ -248,6 +222,5 @@ const debounceSwitch = debounce(handleSwitch, 500);
 .active .active-icon {
   opacity: 1;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: translateY(0.5rem);
 }
 </style>
