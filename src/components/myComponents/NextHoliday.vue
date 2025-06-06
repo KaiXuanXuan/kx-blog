@@ -1,8 +1,8 @@
 <template>
   <Card v-if="nextHoliday !== null" class="bg-pink gap-0 items-center justify-center text-white px-2 w-full">
     <div class="text-2xl font-bold mb-2">{{ nextHoliday.name }}</div>
-    <div class="text-sm">{{ nextHoliday.formateHolidayDate }}</div>
-    <div class="font-medium flex items-baseline">还有  <span class="text-2xl mx-1 leading-none relative top-[0.1em]">{{ nextHoliday.days }} </span> 天 🎉</div>
+    <div class="text-xs">{{ nextHoliday.formateHolidayDate }}</div>
+    <div class="text-sm font-medium flex items-baseline">还有  <span class="text-2xl mx-1 leading-none relative top-[0.1em]">{{ nextHoliday.days }} </span> 天 🎉</div>
   </Card>
   <Card v-else class="w-full bg-pink items-center justify-center text-white">网络繁忙😿</Card>
 </template>

@@ -26,9 +26,12 @@
             <Card class="p-4 px-6 items-center">
               <AudioPlayer :song="song" @change="changeSong" />
             </Card>
-
-            <NextHoliday class="h-30" />
-
+            <div class="flex items-center justify-center gap-2">
+              <NextHoliday class="h-28" />
+              <div class="h-28 w-28 flex-shrink-0">
+                <img src="/kaofish.webp" class="h-full w-full rounded-sm" />
+              </div>
+            </div>
             <div class="flex items-start justify-center gap-2 h-40">
               <WeatherReport class="h-full" />
               <WorkTimeProgress :size="90" :strokeWidth="10" class="h-full" />
@@ -99,16 +102,12 @@ const letters = [
   // A
   {
     gradient: ['#8a73f3', '#cecbee'],
-    strokes: [
-      { path: 'M0,200 L50,0 L100,200', length: 450 },
-    ],
+    strokes: [{ path: 'M0,200 L50,0 L100,200', length: 450 }],
   },
   // I
   {
     gradient: ['#8f7af6', '#d3d1f7'],
-    strokes: [
-      { path: 'M50,0 L50,200', length: 200 },
-    ],
+    strokes: [{ path: 'M50,0 L50,200', length: 200 }],
   },
   // X
   {
@@ -121,23 +120,17 @@ const letters = [
   // U
   {
     gradient: ['#b39ddb', '#e7e7fc'],
-    strokes: [
-      { path: 'M0,0 L0,145 A45,45 0 0 0 100,145 L100,0', length: 460 },
-    ],
+    strokes: [{ path: 'M0,0 L0,145 A45,45 0 0 0 100,145 L100,0', length: 460 }],
   },
   // A
   {
     gradient: ['#c5b6e0', '#eaeafc'],
-    strokes: [
-      { path: 'M0,200 L50,0 L100,200', length: 450 },
-    ],
+    strokes: [{ path: 'M0,200 L50,0 L100,200', length: 450 }],
   },
   // N
   {
     gradient: ['#d1c4e9', '#f5f5fd'],
-    strokes: [
-      { path: 'M0,200 L0,55 A45,45 0 0 1 100,55 L100,200', length: 460 },
-    ],
+    strokes: [{ path: 'M0,200 L0,55 A45,45 0 0 1 100,55 L100,200', length: 460 }],
   },
 ];
 
@@ -246,7 +239,7 @@ const songList = [
 
 .splash-fade-slide-enter-active,
 .splash-fade-slide-leave-active {
-  transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .splash-fade-slide-enter-from {
   opacity: 0;
