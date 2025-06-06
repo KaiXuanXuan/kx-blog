@@ -38,6 +38,7 @@
 <script setup>
 import {ref, onMounted } from 'vue';
 import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from '@/components/ui/context-menu';
+import { formateUrl } from '@/utils/helper';
 
 const props = defineProps({
   item: { type: Object, required: true },
@@ -69,13 +70,6 @@ const openItemDeleteDialog = () => {
 const openLink = (url) => {
   window.open(url, '_blank');
 };
-
-function formateUrl(url) {
-  if (!url) return '';
-  // 获取当前协议（带冒号，如 'https:'），动态匹配，让链接协议与当前页面协议一致
-  const protocol = window.location.protocol;
-  return url.replace(/^https?:/, protocol);
-}
 </script>
 
 <style scoped>
