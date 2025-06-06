@@ -197,6 +197,6 @@ const debounceSwitch = debounce(handleSwitch, 500);
   position: relative;
   z-index: 2;
   font-weight: 600;
-  border: 1px solid #6874E8;
+  /* border: 1px solid #6874E8; */
 }
 </style>
