@@ -1,7 +1,7 @@
 <template>
   <Card class="p-4 px-6 rounded-sm">
     <div class="flex items-center">
-      <img :src="cover_image" class="w-24 h-24 rounded-sm object-cover mr-10" />
+      <img :src="formateUrl(cover_image)" class="w-24 h-24 rounded-sm object-cover mr-10" />
       <div class="flex-1 flex flex-col gap-3">
         <div class="text-2xl font-medium mb-2 text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer">{{ title }}</div>
         <div class="flex items-center text-sm gap-4">
@@ -23,7 +23,7 @@
                 d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
               />
             </svg>
-            {{ update_time }}
+            {{ formateDate(update_time) }}
           </span>
           <span class="text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -44,6 +44,7 @@
 
 <script setup>
 import { Card } from '@/components/ui/card';
+import { formateUrl, formateDate } from '@/utils/helper';
 const props = defineProps({
   title: String,
   cover_image: String,

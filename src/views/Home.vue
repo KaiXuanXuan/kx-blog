@@ -47,7 +47,7 @@
             @click="openDialog(index)"
             class="card cursor-pointer hover:shadow-md"
             :title="blog.title"
-            :cover_image="formateUrl(blog.cover_image)"
+            :cover_image="blog.cover_image"
             :author="blog.author"
             :update_time="blog.update_time"
             :category="blog.category"
@@ -77,7 +77,6 @@ import { getBlogList } from '@/api/blog';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Motion } from 'motion-v';
-import { formateUrl } from '@/utils/helper';
 
 gsap.registerPlugin(ScrollTrigger);
 
