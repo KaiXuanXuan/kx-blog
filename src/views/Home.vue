@@ -216,7 +216,7 @@ const songList = [
   width: 100%;
   height: 100%;
   position: absolute;
-  background: url('/avatar-bg.jpg');
+  background: url('/avatar-bg.webp');
   background-size: cover;
   z-index: -1;
   transform: skewY(-4deg);
@@ -236,34 +236,5 @@ const songList = [
 .card {
   transition: opacity 0.3s ease, transform 0.3s ease;
   transition-delay: var(--delay);
-}
-
-.splash-fade-slide-enter-active,
-.splash-fade-slide-leave-active {
-  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.splash-fade-slide-enter-from {
-  opacity: 0;
-  transform: translateY(50px);
-}
-.splash-fade-slide-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-}
-.splash-fade-slide-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-}
-.splash-fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-50px);
-}
-
-.splash-bg {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: url('  https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-  filter: brightness(0.3) blur(2px);
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div class="space-y-4">
-    <!-- <img src="/avatar.png" class="w-full rounded-lg" /> -->
     <div class="w-full rounded-lg">{{ song.title }}</div>
     <audio ref="audioEl"></audio>
     <!-- 播放进度条 -->
