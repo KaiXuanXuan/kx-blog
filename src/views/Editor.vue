@@ -193,7 +193,6 @@ const handleCoverChange = async (e) => {
   reader.onload = (event) => {
     const base64 = event.target.result;
     formData.value.cover = base64;
-    console.log(base64);
   };
   reader.readAsDataURL(file);
 };

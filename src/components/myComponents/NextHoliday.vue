@@ -29,10 +29,7 @@ onMounted(() => {
     const nowDay = nowDateList[2];
     const holidayDay = holidayDateList[2];
     const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-    console.log(nowMonth, holidayMonth, nowDay, holidayDay);
     
-
     let days = 0;
     for (let i = Number(nowMonth); i < Number(holidayMonth); i++) {
       days += monthDays[i-1];

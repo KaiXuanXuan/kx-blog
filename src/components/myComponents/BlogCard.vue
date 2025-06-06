@@ -52,7 +52,7 @@
             </svg>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem class="cursor-pointer" @click="deleteBlogCard"
+            <DropdownMenuItem class="cursor-pointer" @click="openDeleteDialog"
               ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path
                   stroke-linecap="round"
@@ -73,15 +73,11 @@
 import { Card } from '@/components/ui/card';
 import { formateUrl, formateDate } from '@/utils/helper';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { deleteBlog } from '@/api/blog';
-import { toast } from 'vue-sonner';
 
-const deleteBlogCard = () => {
-  deleteBlog(props.id).then((res) => {
-    if (res.code === 200) {
-      toast.success('删除成功');
-    }
-  });
+const emits = defineEmits(['openDeleteDialog']);
+
+const openDeleteDialog = () => {
+  emits('openDeleteDialog', props.id);
 };
 
 const props = defineProps({
@@ -90,6 +86,6 @@ const props = defineProps({
   author: String,
   update_time: String,
   category: String,
-  id: String,
+  id: Number | String,
 });
 </script>

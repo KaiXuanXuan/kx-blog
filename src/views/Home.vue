@@ -45,6 +45,7 @@
             v-for="(blog, index) in blogs"
             :key="blog.id"
             @click="openDialog(index)"
+            @openDeleteDialog="openDeleteDialog"
             class="card cursor-pointer hover:shadow-md"
             :title="blog.title"
             :cover_image="blog.cover_image"
@@ -56,6 +57,18 @@
           />
         </TransitionGroup>
         <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" @closeDialog="closeDialog" />
+        <Dialog v-model:open="deleteDialogOpen">
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>删除</DialogTitle>
+              <DialogDescription>确定删除该博客吗？</DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="outline" @click="deleteDialogOpen = false">取消</Button>
+              <Button @click="deleteBlogCard">确认</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   </div>
@@ -78,6 +91,9 @@ import { getBlogList } from '@/api/blog';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Motion } from 'motion-v';
+import { deleteBlog } from '@/api/blog';
+import { toast } from 'vue-sonner';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -85,79 +101,35 @@ const todayValue = ref(today(getLocalTimeZone()));
 const song = ref({});
 const blogs = ref([]);
 const dialogOpen = ref(false);
+const deleteDialogOpen = ref(false);
+const deleteId = ref('');
 const dialogId = ref('');
 const leftAside = ref(null);
 const mainContent = ref(null);
 const skillList = ['HTML', 'CSS', 'JavaScript', 'Vue', 'React', 'Three', 'Element'];
-
-// 每个字母的笔画数据
-const letters = [
-  // K
-  {
-    gradient: ['#8a6ff0', '#c6c6ef'],
-    strokes: [
-      { path: 'M0,0 L0,200', length: 200 },
-      { path: 'M100,0 L5,100 L100,200', length: 300 },
-    ],
-  },
-  // A
-  {
-    gradient: ['#8a73f3', '#cecbee'],
-    strokes: [{ path: 'M0,200 L50,0 L100,200', length: 450 }],
-  },
-  // I
-  {
-    gradient: ['#8f7af6', '#d3d1f7'],
-    strokes: [{ path: 'M50,0 L50,200', length: 200 }],
-  },
-  // X
-  {
-    gradient: ['#a18cd1', '#dbdafa'],
-    strokes: [
-      { path: 'M0,0 L100,200', length: 250 },
-      { path: 'M100,0 L0,200', length: 250 },
-    ],
-  },
-  // U
-  {
-    gradient: ['#b39ddb', '#e7e7fc'],
-    strokes: [{ path: 'M0,0 L0,145 A45,45 0 0 0 100,145 L100,0', length: 460 }],
-  },
-  // A
-  {
-    gradient: ['#c5b6e0', '#eaeafc'],
-    strokes: [{ path: 'M0,200 L50,0 L100,200', length: 450 }],
-  },
-  // N
-  {
-    gradient: ['#d1c4e9', '#f5f5fd'],
-    strokes: [{ path: 'M0,200 L0,55 A45,45 0 0 1 100,55 L100,200', length: 460 }],
-  },
-];
-
-const showSplash = ref(true);
-
-const handleScroll = (e) => {
-  if (window.scrollY > 10) {
-    showSplash.value = false;
-  }
+const openDeleteDialog = (id) => {
+  deleteDialogOpen.value = true;
+  deleteId.value = id;
 };
-const handleWheel = (e) => {
-  if (e.deltaY > 30) {
-    showSplash.value = false;
-  }
+
+const deleteBlogCard = () => {
+  deleteBlog(deleteId.value)
+    .then((res) => {
+      if (res.code === 200) {
+        toast.success('删除成功');
+      }
+    })
+    .then(() => {
+      deleteDialogOpen.value = false;
+      getBlogList().then((res) => {
+        blogs.value = res.data;
+      });
+    });
 };
 
 onMounted(() => {
   init();
-  // 左侧边栏动画（延迟0.2s）
   animateOnScroll(leftAside.value, 0.2);
-  window.addEventListener('wheel', handleWheel);
-  window.addEventListener('scroll', handleScroll);
-});
-onUnmounted(() => {
-  window.removeEventListener('wheel', handleWheel);
-  window.removeEventListener('scroll', handleScroll);
 });
 
 // 定义通用动画函数
@@ -205,6 +177,7 @@ const songList = [
   { src: '/mp3/Die_For_You.mp3', title: 'Die For You', index: 1 },
 ];
 </script>
+
 <style scoped>
 .head {
   position: relative;
