@@ -184,7 +184,7 @@
               </svg>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem class="cursor-pointer" @click="folderEditForm.open = true">
+              <DropdownMenuItem class="cursor-pointer" @click="openFolderEditDialog(folder)">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                   <path
                     stroke-linecap="round"
@@ -193,7 +193,7 @@
                   /></svg
                 >编辑
               </DropdownMenuItem>
-              <DropdownMenuItem class="cursor-pointer" @click="folderDeleteForm.open = true">
+              <DropdownMenuItem class="cursor-pointer" @click="openFolderDeleteDialog(folder)">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                   <path
                     stroke-linecap="round"
