@@ -1,14 +1,14 @@
 <template>
-  <div class="flex justify-between items-center px-40 py-2 h-14 w-full dark:border-gray-700">
+  <div class="flex justify-between items-center px-40 py-2 h-14 w-full ">
     <!-- logo -->
     <div class="flex items-center">
       <img src="/logo1.png" alt="logo" class="w-8 h-8" />
       <span class="ml-8 font-semibold">个人博客 - 凯旋</span>
     </div>
     <!-- 导航 -->
-    <div class="relative flex items-center gap-4" ref="navItemsRef" @click="handleNavItemClick">
-      <div class="active-overlay rounded-md" ref="activeOverlay"></div>
-      <router-link v-for="link in links" :key="link.title" :to="link.path" class="nav-item px-4 py-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800" :class="{ active: route.path === link.path }">
+    <div class="relative flex items-center gap-6 h-14 " ref="navItemsRef" @click="handleNavItemClick">
+      <div class="active-overlay rounded-lg" ref="activeOverlay"></div>
+      <router-link v-for="link in links" :key="link.title" :to="link.path" class="nav-item px-6 py-2 rounded-md hover:bg-[#6874E8] hover:text-[#E8F0FF]" :class="{ active: route.path === link.path }">
         {{ link.title }}
       </router-link>
     </div>
@@ -127,7 +127,6 @@ const debounce = (fn, delay) => {
 };
 
 function updateOverlay(target) {
-  const padding = 24; // 匹配 nav-item 的 padding-x
   const rect = target.getBoundingClientRect();
   const parentRect = target.parentElement.getBoundingClientRect();
 
@@ -159,17 +158,45 @@ const debounceSwitch = debounce(handleSwitch, 500);
 /* Active overlay */
 .active-overlay {
   position: absolute;
-  top: 0;
-  height: 100%;
-  background: hsla(219, 8%, 52%, 0.1);
+  top: 0.3rem;
+  height: calc(100% - 0.3rem);
+  /* background: hsla(219, 8%, 52%, 0.1); */
+  background: #6874E8;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
 }
 
+.active-overlay::before,
+.active-overlay::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.active-overlay::before {
+  left: 0;
+  border-bottom-right-radius: 50%;
+  transform: translateX(-100%);
+  background: transparent;
+  box-shadow: 1rem 0 0 0 #6874E8;
+}
+
+.active-overlay::after {
+  right: 0;
+  border-bottom-left-radius: 50%;
+  transform: translateX(100%);
+  background: transparent;
+  box-shadow: -1rem 0 0 0 #6874E8;
+}
+
+
 .nav-item.active {
-  color: #181c1f;
+  color: #E8F0FF;
   position: relative;
   z-index: 2;
   font-weight: 600;
+  border: 1px solid #6874E8;
 }
 </style>
