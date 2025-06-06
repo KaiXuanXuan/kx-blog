@@ -14,9 +14,9 @@
               </Avatar>
               <p class="absolute text-2xl text-white font-bold left-40 bottom-6">KaiXuan</p>
             </div>
-            <div class="foot p-4 w-full flex items-center justify-center gap-2">
+            <div class="foot p-4 w-full flex items-center justify-center gap-2 mt-3">
               <p>生活就是在米缸里种玫瑰🌹</p>
-              <div class="flex w-full flex-wrap gap-1 items-center justify-center">
+              <div class="flex flex-wrap w-full gap-1 items-center justify-center">
                 <div class="bg-[#95B2FF] text-white py-1 px-2 rounded-md text-xs cursor-pointer" v-for="(tag, index) in skillList" :key="index">#{{ tag }}</div>
               </div>
             </div>
