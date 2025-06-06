@@ -17,8 +17,9 @@ import Navigation from '@/components/myComponents/Navigation.vue';
 
 const router = useRouter();
 const routeReady = ref(false);
-const originalTitle = '⌯>ᴗo⌯ಣ';
-const blurTitle = '・ࡇ・';
+const titleFix = process.env.NODE_ENV === 'production' ?  '' : '开发';
+const originalTitle = '⌯>ᴗo⌯ಣ' + titleFix;
+const blurTitle = '・ࡇ・' + titleFix;
 
 onMounted(async () => {
   await router.isReady();
