@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between items-center px-40 py-2 h-14 w-full">
+  <div class="flex justify-between items-center xl:px-35 lg:px-30 md:px-15 sm:px-5  py-2 h-14 w-full">
     <!-- logo -->
     <div class="flex items-center">
       <img src="/logo1.png" alt="logo" class="w-8 h-8" />
