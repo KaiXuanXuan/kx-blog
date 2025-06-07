@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-[100rem] h-[50rem] overflow-auto">
+  <div class="w-full h-[50rem] overflow-auto">
     <ListTable :options="options" />
   </div>
 </template>
@@ -49,6 +49,9 @@ const options = ref({
       field: 'status',
       caption: '状态',
       width: 'auto',
+      fieldFormat: (value) => {
+        return value.status === 1 ? '已完成' : '未完成';
+      },
     },
     {
       field: 'create_time',
