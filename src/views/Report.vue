@@ -196,8 +196,14 @@
         </Dialog>
         <!-- 所有待办 -->
         <Dialog v-model:open="listOpen">
-          <DialogContent class="h-[90%]">
-            <TodoTable :records="todos" />
+          <DialogContent class="flex flex-col h-[50rem] sm:max-w-[95dvw]">
+            <DialogHeader>
+              <DialogTitle>所有待办</DialogTitle>
+              <DialogDescription></DialogDescription>
+            </DialogHeader>
+            <div class="flex-1 overflow-auto">
+              <TodoTable :records="historyTodos" />
+            </div>
           </DialogContent>
         </Dialog>
       </div>
@@ -272,8 +278,8 @@
   </Tabs>
 </template>
 <script setup>
-import { ref, nextTick } from 'vue';
-import { addTodo, getTodayTodos, updateTodoStatus, updateTodoContent, deleteTodo, sendMessageToAgent } from '@/api/todo';
+import { ref, nextTick, onMounted } from 'vue';
+import { addTodo, getTodayTodos, updateTodoStatus, updateTodoContent, deleteTodo, sendMessageToAgent, getTodoList } from '@/api/todo';
 import TodoTable from '@/components/myComponents/TodoTable.vue';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -295,10 +301,17 @@ const formData = ref({ id: '', title: '', content: '', progress: 0 });
 const editData = ref({ id: '', title: '', content: '', progress: 0 });
 const deleteId = ref('');
 const todos = ref([]);
+const historyTodos = ref([]);
 const text = ref('');
 const textareaRef = ref(null);
 const isTyping = ref(false); // 标记是否在打字中
 const chatList = ref([]);
+
+// 获取历史待办
+const getHistoryTodos = async () => {
+  const res = await getTodoList(1, 1000);
+  historyTodos.value = res.data.list;
+};
 
 // 初始化加载待办列表
 const loadTodos = async () => {
@@ -317,7 +330,6 @@ const loadTodos = async () => {
     collapsibleOpen: openMap[item.id] ?? true,
   }));
 };
-loadTodos();
 
 const changeStatus = (todo, checked) => {
   const { id } = todo;
@@ -476,4 +488,9 @@ const openEditDialog = () => {
   }
   editOpen.value = true;
 };
+
+onMounted(() => {
+  loadTodos();
+  getHistoryTodos();
+});
 </script>

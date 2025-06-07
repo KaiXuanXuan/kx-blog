@@ -1,12 +1,20 @@
 <template>
-  <div class="w-200 h-full">
+  <div class="w-full max-w-[100rem] h-[50rem] overflow-auto">
     <ListTable :options="options" />
   </div>
 </template>
 <script setup>
 import { ListTable } from '@visactor/vue-vtable';
-import { ref, onMounted } from 'vue';
+import { ref, watch, defineProps } from 'vue';
+import { formateDate } from '@/utils/helper';
 import { addTodo, getTodoList, getTodayTodos, updateTodoStatus, updateTodoContent, deleteTodo } from '@/api/todo';
+
+const props = defineProps({
+  records: {
+    type: Array,
+    default: () => [],
+  },
+});
 
 const options = ref({
   header: [
@@ -26,7 +34,7 @@ const options = ref({
       cellType: 'progressbar',
       min: 0,
       max: 100,
-      width: 120,
+      width: 150,
       barType: 'default',
       style: {
         showBar: true,
@@ -53,16 +61,24 @@ const options = ref({
       width: 'auto',
     },
   ],
-  records: [
-    {
-      title: '任务1',
-      content: '内容1',
-      progress: 50,
-      status: '未完成',
-      create_time: '2023-01-01',
-      update_time: '2023-01-01',
-    },
-  ],
+  records: props.records,
 });
+
+// 监听 records 变化，动态更新 options
+watch(
+  () => props.records,
+  (val) => {
+    let newRecords = [];
+    for (let i = 0; i < val.length; i++) {
+      newRecords.push({
+        ...val[i],
+        create_time: formateDate(val[i].create_time),
+        update_time: formateDate(val[i].update_time),
+      });
+    }
+    options.value.records = newRecords;
+  },
+  { immediate: true }
+);
 </script>
 <style scoped></style>
