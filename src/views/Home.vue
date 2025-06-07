@@ -173,7 +173,7 @@ function changeSong(index) {
 }
 
 const songList = [
-  { src: '/mp3/Underground.mp3', title: 'Underground', index: 0 },
+  { src: '/mp3/zrryytjdf.mp3', title: '做讓人远远聽見的風', index: 0 },
   { src: '/mp3/Die_For_You.mp3', title: 'Die For You', index: 1 },
 ];
 </script>
