@@ -3,7 +3,7 @@
     <!-- logo -->
     <div class="flex items-center">
       <img src="/logo1.png" alt="logo" class="w-8 h-8" />
-      <span class="ml-8 font-semibold">个人博客 - 凯旋</span>
+      <span class="ml-8 font-semibold">KX</span>
     </div>
     <!-- 导航 -->
     <div class="relative flex items-center gap-4" ref="navItemsRef" @click="handleNavItemClick">
