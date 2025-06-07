@@ -377,7 +377,7 @@ const highlightKeyword = (text) => {
   if (!keyword) return text;
   // 正则匹配
   const regex = new RegExp(keyword, 'gi');
-  return text.replace(regex, (match) => `<span class="bg-yellow-100 text-yellow-700 dark:bg-yellow-700 dark:text-gray-100 rounded-sm p-1">${match}</span>`);
+  return text.replace(regex, (match) => `<span class="bg-red-100 text-red-600 border border-red-300 rounded-sm p-1">${match}</span>`);
 };
 
 const openFolderEditDialog = (folder) => {

@@ -3,8 +3,8 @@
     class="link-card relative cursor-pointer w-full p-4 bg-gray-50 dark:bg-gray-900 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 transition-transform -translate-y-5 opacity-0"
     @click="openLink(item.item_url)" :style="{ transitionDelay: `${delay}s` }"
     :class="{ 'opacity-100 translate-y-0': animated }">
-    <div class="flex items-center gap-3">
-      <img :src="formateUrl(item.icon)" class="w-10 h-10" />
+    <div class="flex items-center gap-2">
+      <img :src="formateUrl(item.icon)" class="w-12 h-12 rounded-sm" /> 
       <div class="flex-1 text-nowrap overflow-hidden">
         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100" v-html="highlightKeyword(item.title)"></h3>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 truncate" v-html="highlightKeyword(item.item_desc)"></p>
@@ -56,7 +56,7 @@ onMounted(() => {
 const highlightKeyword = (text) => {
   if (!props.keyword) return text;
   const regex = new RegExp(props.keyword, 'gi');
-  return text.replace(regex, (match) => `<span class="bg-yellow-100 text-yellow-700 dark:bg-yellow-700 dark:text-gray-200 rounded-sm p-0.5">${match}</span>`);
+  return text.replace(regex, (match) => `<span class="bg-red-100 text-red-600 border border-red-300 rounded-sm p-0.5">${match}</span>`);
 }
 
 const openItemEditDialog = () => {
@@ -74,6 +74,6 @@ const openLink = (url) => {
 
 <style scoped>
 .link-card {
-  transition: all 0.6s ease;
+  transition: all 0.3s ease;
 }
 </style>
