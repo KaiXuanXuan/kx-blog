@@ -201,7 +201,7 @@
               <DialogTitle>所有待办</DialogTitle>
               <DialogDescription></DialogDescription>
             </DialogHeader>
-            <div class="flex-1 overflow-auto">
+            <div class="flex-1 overflow-auto flex justify-center">
               <TodoTable :records="historyTodos" />
             </div>
           </DialogContent>
