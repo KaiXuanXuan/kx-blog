@@ -46,7 +46,7 @@
             :key="blog.id"
             @click="openDialog(index)"
             @openDeleteDialog="openDeleteDialog"
-            class="card cursor-pointer hover:shadow-md"
+            class="card cursor-pointer"
             :title="blog.title"
             :cover_image="blog.cover_image"
             :author="blog.author"
