@@ -1,5 +1,5 @@
 <template>
-  <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6 p-4 max-w-7xl mx-auto bg-white dark:bg-gray-900">
+  <div class="grid w-full lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 grid-cols-1 gap-6 p-2 sm:p-4 max-w-7xl mx-auto bg-white dark:bg-gray-900">
     <div class="bg-white rounded-lg p-4 shadow-md relative overflow-visible dark:bg-gray-800 dark:shadow-lg dark:border dark:border-gray-700">
       <div class="absolute -top-3 right-4 z-10">
         <span class="inline-block px-3 py-1 text-xs font-bold text-white bg-orange-400 rounded-b-lg shadow">微博</span>
