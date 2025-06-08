@@ -9,7 +9,7 @@
           <Card class="text-center gap-2 p-0 overflow-hidden">
             <div class="head h-32 flex items-center relative">
               <Avatar class="w-22 h-22 rounded-full mx-auto absolute left-4 -bottom-10 box-content border-5 border-gray-100">
-                <AvatarImage src="/avatar.png" alt="Avatar" />
+                <AvatarImage src="/avatar.webp" alt="Avatar" />
                 <AvatarFallback>KX</AvatarFallback>
               </Avatar>
               <p class="absolute text-2xl text-white font-bold left-40 bottom-6">KaiXuan</p>
