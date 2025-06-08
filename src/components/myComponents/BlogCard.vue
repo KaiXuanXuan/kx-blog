@@ -2,7 +2,7 @@
   <Card class="p-4 px-6 rounded-sm">
     <div class="flex items-center justify-between">
       <div class="flex items-center">
-        <img :src="formateUrl(cover_image)" loading="lazy" class="w-24 h-24 rounded-sm object-cover mr-10" />
+        <img alt="cover" :src="formateUrl(cover_image)" loading="lazy" class="w-24 h-24 rounded-sm object-cover mr-10" />
         <div class="flex-1 flex flex-col gap-3">
           <div class="text-2xl font-medium mb-2 text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer">{{ title }}</div>
           <div class="flex items-center text-sm gap-4">

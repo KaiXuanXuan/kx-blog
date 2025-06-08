@@ -9,7 +9,7 @@
           <Card class="text-center gap-2 p-0 overflow-hidden">
             <div class="head h-32 flex items-center relative">
               <Avatar class="w-22 h-22 rounded-full mx-auto absolute left-4 -bottom-10 box-content border-5 border-gray-100">
-                <AvatarImage src="/avatar.webp" alt="Avatar" loading="lazy" />
+                <AvatarImage src="/avatar.webp" alt="Avatar" fetchpriority="high" />
                 <AvatarFallback>KX</AvatarFallback>
               </Avatar>
               <p class="absolute text-2xl text-white font-bold left-40 bottom-6">KaiXuan</p>
@@ -29,7 +29,7 @@
             <div class="flex items-center justify-center gap-2">
               <NextHoliday class="h-28" />
               <div class="h-28 w-28 flex-shrink-0">
-                <img src="/kaofish.webp" class="h-full w-full rounded-sm" loading="lazy" />
+                <img src="/kaofish.webp" alt="kao fish" class="h-full w-full rounded-sm" loading="lazy" />
               </div>
             </div>
             <div class="flex items-start justify-center gap-2 h-40">
