@@ -1,7 +1,7 @@
 @font-face
 {
     font-family: 'LXGW WenKai';
-    src: url('../fonts/LXGWWenKai-Regular.ttf');
+    src: url('./LXGWWenKai-Light.ttf');
     font-weight: normal;  
     font-style: normal;  
 }
