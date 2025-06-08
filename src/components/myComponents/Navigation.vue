@@ -2,23 +2,26 @@
   <div class="flex justify-between items-center xl:px-35 lg:px-30 md:px-15 sm:px-5 py-2 h-14 w-full">
     <!-- logo -->
     <div class="flex items-center">
-      <img src="/logo1.png" alt="logo" class="w-8 h-8" />
-      <span class="xl:ml-8 lg:ml-6 md:ml-4 sm:ml-2 font-semibold min-w-[2rem]">
+      <img src="/logo1.png" alt="logo" class="max-w-8 max-h-8 min-w-2 min-h-2" />
+      <span class="xl:ml-8 lg:ml-6 md:ml-4 sm:ml-2 font-semibold">
         <span class="hidden sm:block">KX</span>
       </span>
     </div>
     <!-- 导航 -->
-    <div class="relative flex items-center lg:gap-4 gap-1" ref="navItemsRef" @click="handleNavItemClick">
+    <div class="relative flex items-center md:gap-4 sm:gap-2" ref="navItemsRef" @click="handleNavItemClick">
       <div class="active-overlay rounded-lg" ref="activeOverlay"></div>
       <router-link
         v-for="(link, index) in links"
         :key="link.title"
         :to="link.path"
-        class="nav-item relative lg:px-6 lg:py-2 px-3 rounded-lg hover:bg-[#6874E8] hover:text-[#E8F0FF]"
+        class="nav-item relative md:px-6 md:py-2 px-2 py-1 rounded-lg hover:bg-[#6874E8] hover:text-[#E8F0FF]"
         :class="{ active: route.path === link.path }"
       >
-        <p class="active-text">{{ link.title }}</p>
-        <div class="opacity-0 active-icon absolute top-0 left-0 w-full h-full flex items-center justify-center">
+        <p class="active-text hidden sm:block">{{ link.title }}</p>
+        <div
+          class="flex items-center justify-center"
+          :class="['sm:absolute sm:top-0 sm:left-0 sm:w-full sm:h-full', route.path === link.path ? 'text-[#E8F0FF]' : 'text-black dark:text-white', route.path === link.path ? '' : 'sm:opacity-0']"
+        >
           <svg v-if="index == 0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
             <path
               stroke-linecap="round"
@@ -65,22 +68,22 @@
         <Login />
       </div>
       <div v-else class="flex items-center lg:gap-2 gap-0.5 lg:mr-10 md:mr-5 mr-2">
-        <Avatar class="mr-2">
+        <Avatar class="md:mr-2 sm:mr-1 mr-0.5 sm:size-8 size-6">
           <AvatarImage src="https://github.com/unovue.png" alt="Avatar" />
           <AvatarFallback>{{ userInfo.username.slice(0, 2) }}</AvatarFallback>
         </Avatar>
         <UserControl />
       </div>
       <!-- 亮暗模式 -->
-      <span class="lg:mr-4 md:mr-2 mr-0.5">
-        <svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+      <span class="lg:mr-4 md:mr-2 sm:mr-1 mr-0.5">
+        <svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sm:size-6 size-4">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
             d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
           />
         </svg>
-        <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sm:size-6 size-4">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -88,14 +91,14 @@
           />
         </svg>
       </span>
-      <DarkLightSwitch @change="debounceSwitch" :size="1.5" :modelValue="colorMode"></DarkLightSwitch>
+      <DarkLightSwitch @change="debounceSwitch" :size="switchSize" :modelValue="colorMode"></DarkLightSwitch>
     </div>
   </div>
 </template>
 
 <script setup>
 import DarkLightSwitch from '@/components/myComponents/DarkLightSwitch.vue';
-import { ref, onMounted, watch, nextTick } from 'vue';
+import { ref, onMounted, watch, nextTick, onUnmounted } from 'vue';
 import { useColorMode } from '@vueuse/core';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Register from '@/components/myComponents/Register.vue';
@@ -125,6 +128,19 @@ const links = routes.slice(1).map((route) => {
   };
 });
 
+const switchSize = ref(1.5);
+
+function updateSwitchSize() {
+  if (window.innerWidth < 768) {
+    // md断点
+    switchSize.value = 1.0;
+  } else if (window.innerWidth < 640) {
+    switchSize.value = 0.8;
+  } else {
+    switchSize.value = 1.5;
+  }
+}
+
 onMounted(() => {
   const token = localStorage.getItem('token');
   const tempToken = sessionStorage.getItem('token');
@@ -147,7 +163,23 @@ onMounted(() => {
     const activeNav = Array.from(navItemList.value).find((nav) => nav.classList.contains('active'));
     if (activeNav) updateOverlay(activeNav);
   });
+
+  // 监听窗口大小变化
+  window.addEventListener('resize', handleResize);
+  updateSwitchSize();
+  window.addEventListener('resize', updateSwitchSize);
 });
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+  window.removeEventListener('resize', updateSwitchSize);
+});
+
+function handleResize() {
+  navItemList.value = navItemsRef.value.querySelectorAll('.nav-item');
+  const activeNav = Array.from(navItemList.value).find((nav) => nav.classList.contains('active'));
+  if (activeNav) updateOverlay(activeNav);
+}
 
 watch(
   () => route.path,
