@@ -78,15 +78,15 @@ import { Card } from '@/components/ui/card';
 import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ref, computed, onMounted, nextTick, onUnmounted } from 'vue';
+import { ref, computed, onMounted, nextTick, onUnmounted, defineAsyncComponent } from 'vue';
 import { getLocalTimeZone, today } from '@internationalized/date';
 import BlogCard from '@/components/myComponents/BlogCard.vue';
-import AudioPlayer from '@/components/myComponents/AudioPlayer.vue';
-import WorkTimeProgress from '@/components/myComponents/WorkTimeProgress.vue';
-import WeatherReport from '@/components/myComponents/WeatherReport.vue';
-import NextHoliday from '@/components/myComponents/NextHoliday.vue';
+// import AudioPlayer from '@/components/myComponents/AudioPlayer.vue';
+// import WorkTimeProgress from '@/components/myComponents/WorkTimeProgress.vue';
+// import WeatherReport from '@/components/myComponents/WeatherReport.vue';
+// import NextHoliday from '@/components/myComponents/NextHoliday.vue';
 import BlogDialog from '@/components/myComponents/BlogDialog.vue';
-import HeaderBanner from '@/components/myComponents/HeaderBanner.vue';
+// import HeaderBanner from '@/components/myComponents/HeaderBanner.vue';
 import { getBlogList } from '@/api/blog';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -176,6 +176,11 @@ const songList = [
   { src: '/mp3/zrryytjdf.mp3', title: '做讓人远远聽見的風', index: 0 },
   { src: '/mp3/Die_For_You.mp3', title: 'Die For You', index: 1 },
 ];
+
+const AudioPlayer = defineAsyncComponent(() => import('@/components/myComponents/AudioPlayer.vue'));
+const WorkTimeProgress = defineAsyncComponent(() => import('@/components/myComponents/WorkTimeProgress.vue'));
+const WeatherReport = defineAsyncComponent(() => import('@/components/myComponents/WeatherReport.vue'));
+const NextHoliday = defineAsyncComponent(() => import('@/components/myComponents/NextHoliday.vue'));
 </script>
 
 <style scoped>
