@@ -85,17 +85,17 @@ import BlogCard from '@/components/myComponents/BlogCard.vue';
 // import WorkTimeProgress from '@/components/myComponents/WorkTimeProgress.vue';
 // import WeatherReport from '@/components/myComponents/WeatherReport.vue';
 // import NextHoliday from '@/components/myComponents/NextHoliday.vue';
-import BlogDialog from '@/components/myComponents/BlogDialog.vue';
 // import HeaderBanner from '@/components/myComponents/HeaderBanner.vue';
+import BlogDialog from '@/components/myComponents/BlogDialog.vue';
 import { getBlogList } from '@/api/blog';
-import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Motion } from 'motion-v';
 import { deleteBlog } from '@/api/blog';
 import { toast } from 'vue-sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 
-gsap.registerPlugin(ScrollTrigger);
+// import { gsap } from 'gsap';
+// gsap.registerPlugin(ScrollTrigger);
 
 const todayValue = ref(today(getLocalTimeZone()));
 const song = ref({});
@@ -129,27 +129,27 @@ const deleteBlogCard = () => {
 
 onMounted(() => {
   init();
-  animateOnScroll(leftAside.value, 0.2);
+  // animateOnScroll(leftAside.value, 0.2);
 });
 
-// 定义通用动画函数
-const animateOnScroll = (element, delay = 0.3, stagger = 0.1) => {
-  gsap.from(element, {
-    scrollTrigger: {
-      trigger: element,
-      start: 'top bottom', // 元素顶部进入视口底部时触发
-      end: 'bottom top',
-      scrub: false,
-      once: false,
-    },
-    y: 40,
-    opacity: 0,
-    duration: 0.6,
-    delay,
-    stagger,
-    ease: 'power2.out',
-  });
-};
+// // 定义通用动画函数
+// const animateOnScroll = (element, delay = 0.3, stagger = 0.1) => {
+//   gsap.from(element, {
+//     scrollTrigger: {
+//       trigger: element,
+//       start: 'top bottom', // 元素顶部进入视口底部时触发
+//       end: 'bottom top',
+//       scrub: false,
+//       once: false,
+//     },
+//     y: 40,
+//     opacity: 0,
+//     duration: 0.6,
+//     delay,
+//     stagger,
+//     ease: 'power2.out',
+//   });
+// };
 
 function init() {
   changeSong(0);
