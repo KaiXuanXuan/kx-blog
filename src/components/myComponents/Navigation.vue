@@ -8,7 +8,7 @@
       </span>
     </div>
     <!-- 导航 -->
-    <div class="relative flex items-center md:gap-4 sm:gap-2" ref="navItemsRef" @click="handleNavItemClick">
+    <div class="relative flex items-center 2xl:gap-4 sm:gap-1" ref="navItemsRef" @click="handleNavItemClick">
       <div class="active-overlay rounded-lg" ref="activeOverlay"></div>
       <router-link
         v-for="(link, index) in links"
