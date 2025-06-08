@@ -40,7 +40,7 @@
         </aside>
 
         <!-- 主内容区（添加ref） -->
-        <TransitionGroup name="card" tag="div" ref="mainContent" class="lg:col-span-5 space-y-4" appear>
+        <div ref="mainContent" class="lg:col-span-5 space-y-4">
           <BlogCard
             v-for="(blog, index) in blogs"
             :key="blog.id"
@@ -55,7 +55,7 @@
             :id="blog.id"
             :style="{ '--delay': `${index * 0.1 + 0.2}s` }"
           />
-        </TransitionGroup>
+        </div>
         <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" @closeDialog="closeDialog" />
         <Dialog v-model:open="deleteDialogOpen">
           <DialogContent>
@@ -194,20 +194,5 @@ const songList = [
   z-index: -1;
   transform: skewY(-4deg);
   transform-origin: 0 0;
-}
-
-.card-enter-from {
-  opacity: 0;
-  transform: translateY(50px);
-}
-
-.card-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.card {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  transition-delay: var(--delay);
 }
 </style>
