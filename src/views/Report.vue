@@ -1,8 +1,8 @@
 <template>
   <Tabs default-value="todo">
     <TabsList class="mx-auto mt-2 w-60">
-      <TabsTrigger value="todo" class="cursor-pointer"> 每日待办 </TabsTrigger>
-      <TabsTrigger value="agent" class="cursor-pointer"> 报告助手 </TabsTrigger>
+      <TabsTrigger value="todo" class="cursor-pointer" @click="activeTab = 'todo'"> 每日待办 </TabsTrigger>
+      <TabsTrigger value="agent" class="cursor-pointer" @click="activeTab = 'agent'"> 报告助手 </TabsTrigger>
     </TabsList>
     <TabsContent value="todo">
       <div class="max-w-7xl mx-auto px-4 py-8 bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 rounded-sm">
@@ -208,7 +208,7 @@
         </Dialog>
       </div>
     </TabsContent>
-    <TabsContent value="agent">
+    <TabsContent value="agent" v-if="activeTab === 'agent'">
       <div class="max-w-7xl mx-auto px-4 py-8">
         <!-- 打字机文本显示容器 -->
         <div v-if="chatList.length > 0" class="pb-36 bottom-[calc(100% + 20px)] left-0 right-0 mx-auto max-w-7xl px-4">
@@ -278,9 +278,8 @@
   </Tabs>
 </template>
 <script setup>
-import { ref, nextTick, onMounted } from 'vue';
+import { ref, nextTick, onMounted, defineAsyncComponent } from 'vue';
 import { addTodo, getTodayTodos, updateTodoStatus, updateTodoContent, deleteTodo, sendMessageToAgent, getTodoList } from '@/api/todo';
-import TodoTable from '@/components/myComponents/TodoTable.vue';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -306,6 +305,9 @@ const text = ref('');
 const textareaRef = ref(null);
 const isTyping = ref(false); // 标记是否在打字中
 const chatList = ref([]);
+const activeTab = ref('todo');
+
+const TodoTable = defineAsyncComponent(() => import('@/components/myComponents/TodoTable.vue'));
 
 // 获取历史待办
 const getHistoryTodos = async () => {
