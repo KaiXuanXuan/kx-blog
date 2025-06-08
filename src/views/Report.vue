@@ -6,9 +6,9 @@
     </TabsList>
     <TabsContent value="todo">
       <div class="max-w-7xl mx-auto px-4 py-8 bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 rounded-sm">
-        <div class="mb-4 flex items-center justify-between">
-          <div class="text-xl font-medium">🔊:今天也要加油鸭💪</div>
-          <div class="flex gap-4">
+        <div class="mb-4 flex flex-col sm:flex-row items-center justify-between">
+          <div class="text-xl font-medium mb-2 sm:mb-0 w-full sm:w-auto text-center sm:text-left">🔊:今天也要加油鸭💪</div>
+          <div class="flex gap-4 w-full sm:w-auto justify-center sm:justify-end">
             <Button @click="listOpen = true" variant="outline">所有待办</Button>
             <Button @click="openEditDialog">编辑待办</Button>
             <Button @click="isOpen = true">新增待办</Button>

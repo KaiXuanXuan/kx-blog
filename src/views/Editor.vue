@@ -1,24 +1,26 @@
 <template>
-  <div class="p-4">
-    <div class="space-x-2 mb-4 inline-flex items-center">
-      <div class="space-x-4 mr-30 items-center inline-flex">
-        <Label class="inline-flex text-xl font-bold items-center">标题</Label>
-        <Input class="inline w-80" v-model="formData.title" placeholder="请输入标题" />
-        <Label class="inline-flex text-xl font-bold items-center ml-8">自动保存间隔</Label>
-        <NumberField class="w-25" :default-value="timeInterval" :step="1" :min="30" v-model="timeInterval">
-          <NumberFieldContent>
-            <NumberFieldDecrement />
-            <NumberFieldInput :disabled="editDisabled" />
-            <NumberFieldIncrement />
-          </NumberFieldContent>
-        </NumberField>
-        <Button @click="confirmTimeInterval" v-if="!editDisabled">确认</Button>
-        <Button @click="editTimeInterval" v-else>编辑</Button>
+  <div class="p-4 w-full">
+    <div class="gap-2 mb-4 flex-col sm:flex-row inline-flex items-center">
+      <div class="space-x-4 sm:mr-30 items-center inline-flex">
+        <div class="flex items-center flex-col sm:flex-row gap-2">
+          <Label class="inline-flex text-xl font-bold items-center w-full sm:w-auto mb-2 sm:mb-0">标题</Label>
+          <Input class="w-full sm:w-80" v-model="formData.title" placeholder="请输入标题" />
+          <Label class="inline-flex text-xl font-bold items-center ml-0 sm:ml-8 w-full sm:w-auto mb-2 sm:mb-0">自动保存间隔</Label>
+          <NumberField class="w-full sm:w-25" :default-value="timeInterval" :step="1" :min="30" v-model="timeInterval">
+            <NumberFieldContent>
+              <NumberFieldDecrement />
+              <NumberFieldInput :disabled="editDisabled" />
+              <NumberFieldIncrement />
+            </NumberFieldContent>
+          </NumberField>
+          <Button @click="confirmTimeInterval" v-if="!editDisabled" class="w-full sm:w-auto">确认</Button>
+          <Button @click="editTimeInterval" v-else class="w-full sm:w-auto">编辑</Button>
+        </div>
       </div>
-      <Button variant="outline">导入markdown</Button>
+      <Button variant="outline" class="w-full sm:w-auto">导入markdown</Button>
       <Sheet v-model:open="open">
         <SheetTrigger as-child>
-          <Button> 发布文章 </Button>
+          <Button class="w-full sm:w-auto"> 发布文章 </Button>
         </SheetTrigger>
         <SheetContent class="p-10">
           <SheetHeader class="p-0 mb-4">
@@ -67,7 +69,13 @@
         </SheetContent>
       </Sheet>
     </div>
-    <v-md-editor v-model="formData.markdown_content" left-toolbar="undo redo clear | image table link code | hr bold italic strikethrough | quote  tip emoji mermaid " height="45rem" @save="handleSave('保存成功')" @copy-code-success="handleCopySuccess" />
+    <v-md-editor
+      v-model="formData.markdown_content"
+      left-toolbar="undo redo clear | image table link code | hr bold italic strikethrough | quote  tip emoji mermaid "
+      height="45rem"
+      @save="handleSave('保存成功')"
+      @copy-code-success="handleCopySuccess"
+    />
   </div>
 </template>
 
