@@ -1,18 +1,20 @@
 <template>
-  <div class="flex justify-between items-center xl:px-35 lg:px-30 md:px-15 sm:px-5  py-2 h-14 w-full">
+  <div class="flex justify-between items-center xl:px-35 lg:px-30 md:px-15 sm:px-5 py-2 h-14 w-full">
     <!-- logo -->
     <div class="flex items-center">
       <img src="/logo1.png" alt="logo" class="w-8 h-8" />
-      <span class="ml-8 font-semibold">KX</span>
+      <span class="xl:ml-8 lg:ml-6 md:ml-4 sm:ml-2 font-semibold min-w-[2rem]">
+        <span class="hidden sm:block">KX</span>
+      </span>
     </div>
     <!-- 导航 -->
-    <div class="relative flex items-center gap-4" ref="navItemsRef" @click="handleNavItemClick">
+    <div class="relative flex items-center lg:gap-4 gap-1" ref="navItemsRef" @click="handleNavItemClick">
       <div class="active-overlay rounded-lg" ref="activeOverlay"></div>
       <router-link
         v-for="(link, index) in links"
         :key="link.title"
         :to="link.path"
-        class="nav-item relative px-6 py-2 rounded-lg hover:bg-[#6874E8] hover:text-[#E8F0FF]"
+        class="nav-item relative lg:px-6 lg:py-2 px-3 rounded-lg hover:bg-[#6874E8] hover:text-[#E8F0FF]"
         :class="{ active: route.path === link.path }"
       >
         <p class="active-text">{{ link.title }}</p>
@@ -58,11 +60,11 @@
     <!-- 切换主题与用户 -->
     <div class="flex items-center">
       <!-- 登录与注册 -->
-      <div v-if="!isLogin" class="flex items-center gap-2 mr-8 text-sm">
+      <div v-if="!isLogin" class="flex items-center lg:gap-2 gap-0.5 lg:mr-8 md:mr-4 mr-1 text-sm">
         <Register />
         <Login />
       </div>
-      <div v-else class="flex items-center gap-2 mr-10">
+      <div v-else class="flex items-center lg:gap-2 gap-0.5 lg:mr-10 md:mr-5 mr-2">
         <Avatar class="mr-2">
           <AvatarImage src="https://github.com/unovue.png" alt="Avatar" />
           <AvatarFallback>{{ userInfo.username.slice(0, 2) }}</AvatarFallback>
@@ -70,7 +72,7 @@
         <UserControl />
       </div>
       <!-- 亮暗模式 -->
-      <span class="mr-4">
+      <span class="lg:mr-4 md:mr-2 mr-0.5">
         <svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
           <path
             stroke-linecap="round"
