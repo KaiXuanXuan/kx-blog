@@ -7,7 +7,7 @@
         <aside ref="leftAside" class="lg:col-span-2 space-y-6">
           <!-- 头像卡片 -->
           <Card class="text-center gap-2 p-0 overflow-hidden">
-            <div class="head h-32 flex items-center relative">
+            <div class="head h-32 flex items-center relative" fetchpriority="high">
               <Avatar class="w-22 h-22 rounded-full mx-auto absolute left-4 -bottom-10 box-content border-5 border-gray-100">
                 <AvatarImage src="/avatar.webp" alt="Avatar" fetchpriority="high" />
                 <AvatarFallback>KX</AvatarFallback>
