@@ -71,6 +71,7 @@
 <script setup>
 import { getHotSearch } from '@/api/relax';
 import { onMounted, ref, computed } from 'vue';
+// import { getVtbsFullInfo } from '@/api/vtb';
 
 const hotSearchList = ref([]);
 
@@ -102,9 +103,23 @@ const formatHeat = (heat) => {
   return '🔥' + heat;
 };
 
+
+const getHotSeachList = () =>{
+  getHotSearch().then((res) => {
+    hotSearchList.value = res.data;
+  })
+}
+
+// const vtbsInfo = ref([]);
+// const getVtbs = () =>{
+//   getVtbsFullInfo().then((res) => {
+//     vtbsInfo.value = res.data;
+//   })
+// }
+
 onMounted(async () => {
-  const res = await getHotSearch();
-  hotSearchList.value = res.data;
+  getHotSeachList();
+  // getVtbs();
 });
 </script>
 
