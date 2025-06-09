@@ -30,6 +30,9 @@ VueMarkdownPreview.use(vuepressTheme, {
   // VueMarkdownEditor.use(createMermaidPlugin());
   Prism,
 });
+VueMarkdownPreview.use(createEmojiPlugin());
+VueMarkdownPreview.use(createLineNumbertPlugin());
+VueMarkdownPreview.use(createCopyCodePlugin());
 
 const app = createApp(App);
 
