@@ -86,7 +86,7 @@
       </div>
     </div>
     <div class="w-full mt-4">
-      <EchartsRank />
+      <!-- <EchartsRank /> -->
     </div>
   </div>
 </template>
