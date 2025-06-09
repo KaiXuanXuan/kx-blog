@@ -2,7 +2,7 @@
   <div class="flex justify-between items-center xl:px-35 lg:px-30 md:px-15 sm:px-5 py-2 h-14 w-full">
     <!-- logo -->
     <div class="flex items-center cursor-pointer" @click="handleLogoClick">
-      <img src="/logo1.png" alt="logo" class="max-w-8 max-h-8 min-w-2 min-h-2" />
+      <img src="/logo1.png" alt="logo" class="max-w-8 max-h-8 min-w-2 min-h-2 hidden sm:block" />
       <span class="xl:ml-8 lg:ml-6 md:ml-4 sm:ml-2 font-semibold">
         <span class="hidden sm:block">KX</span>
       </span>

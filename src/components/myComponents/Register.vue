@@ -1,7 +1,7 @@
 <template>
   <Dialog v-model:open="open">
     <DialogTrigger as-child @click="console.log(open)">
-      <button class="px-4 py-1 rounded-md bg-white border border-blue-200 text-blue-400 hover:bg-blue-50 dark:border-0 dark:bg-gray-600 dark:text-white cursor-pointer">注册</button>
+      <button class="sm:px-4 sm:py-1 px-1 py-0.5 rounded-md bg-white border border-blue-200 text-blue-400 hover:bg-blue-50 dark:border-0 dark:bg-gray-600 dark:text-white cursor-pointer">注册</button>
     </DialogTrigger>
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>

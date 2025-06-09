@@ -40,7 +40,7 @@
         </aside>
 
         <!-- 主内容区（添加ref） -->
-        <div ref="mainContent" class="lg:col-span-5 space-y-4 sm:mt-0 mt-8">
+        <div ref="mainContent" class="lg:col-span-5 space-y-4 lg:mt-0 mt-8">
           <BlogCard
             v-for="(blog, index) in blogs"
             :key="blog.id"

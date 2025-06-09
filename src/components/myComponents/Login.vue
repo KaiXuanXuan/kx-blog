@@ -1,10 +1,10 @@
 <template>
   <Dialog v-model:open="open">
-    <DialogTrigger as-child> <button class="px-4 py-1 rounded-md bg-linear-to-r from-cyan-500 to-blue-500 text-white cursor-pointer">登录</button> </DialogTrigger>
+    <DialogTrigger as-child> <button class="sm:px-4 sm:py-1 px-1 py-0.5 rounded-md bg-linear-to-r from-cyan-500 to-blue-500 text-white cursor-pointer">登录</button> </DialogTrigger>
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle>登录</DialogTitle>
-        <DialogDescription></DialogDescription> 
+        <DialogDescription></DialogDescription>
       </DialogHeader>
       <form @submit="onSubmit" class="space-y-4">
         <FormField v-slot="{ componentField }" name="username" :validate-on-blur="!form.isFieldDirty">
@@ -72,7 +72,7 @@ const form = useForm({
   validationSchema: formSchema,
 });
 
-const toastMessage = (username, message='登录成功') => {
+const toastMessage = (username, message = '登录成功') => {
   toast.success(message, {
     description: `欢迎回来：${username}`,
   });
@@ -91,7 +91,7 @@ const onSubmit = form.handleSubmit((values) => {
       // 设置登录状态
       const loginStore = useLoginStore();
       loginStore.setLogin(true);
-      loginStore.setUserInfo({username, id});
+      loginStore.setUserInfo({ username, id });
       // 显示登陆成功消息
       toastMessage(username, message);
       open.value = false;
