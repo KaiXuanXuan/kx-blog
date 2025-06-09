@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between items-center xl:px-35 lg:px-30 md:px-15 sm:px-5 py-2 h-14 w-full">
     <!-- logo -->
-    <div class="flex items-center">
+    <div class="flex items-center cursor-pointer" @click="handleLogoClick">
       <img src="/logo1.png" alt="logo" class="max-w-8 max-h-8 min-w-2 min-h-2" />
       <span class="xl:ml-8 lg:ml-6 md:ml-4 sm:ml-2 font-semibold">
         <span class="hidden sm:block">KX</span>
@@ -14,7 +14,7 @@
         v-for="(link, index) in links"
         :key="link.title"
         :to="link.path"
-        class="nav-item relative md:px-6 md:py-2 px-2 py-1 rounded-lg hover:bg-[#6874E8] hover:text-[#E8F0FF]"
+        class="nav-item relative md:px-6 md:py-2 px-2 py-1 rounded-lg hover:bg-[#6874E8] hover:text-[#E8F0FF] transition-all duration-300"
         :class="{ active: route.path === link.path }"
       >
         <p class="active-text hidden sm:block">{{ link.title }}</p>
@@ -109,8 +109,9 @@ import { storeToRefs } from 'pinia';
 import { connect } from '@/api/connect.js';
 import { toast } from 'vue-sonner';
 import routes from '@/router/routes';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
+const router = useRouter();
 const isDark = ref(false);
 const navItemsRef = ref(null);
 const activeOverlay = ref(null);
@@ -130,7 +131,11 @@ const links = routes.slice(1).map((route) => {
 
 const switchSize = ref(1.5);
 
-function updateSwitchSize() {
+const handleLogoClick = () => {
+  router.push('/');
+}
+
+const updateSwitchSize = () => {
   if (window.innerWidth < 768) {
     // md断点
     switchSize.value = 1.0;
@@ -175,7 +180,7 @@ onUnmounted(() => {
   window.removeEventListener('resize', updateSwitchSize);
 });
 
-function handleResize() {
+const handleResize = () => {
   navItemList.value = navItemsRef.value.querySelectorAll('.nav-item');
   const activeNav = Array.from(navItemList.value).find((nav) => nav.classList.contains('active'));
   if (activeNav) updateOverlay(activeNav);
@@ -203,7 +208,7 @@ const debounce = (fn, delay) => {
   };
 };
 
-function updateOverlay(target) {
+const updateOverlay = (target) => {
   const rect = target.getBoundingClientRect();
   const parentRect = target.parentElement.getBoundingClientRect();
 
@@ -211,7 +216,7 @@ function updateOverlay(target) {
   activeOverlay.value.style.left = `${rect.left - parentRect.left}px`;
 }
 
-function handleNavItemClick(e) {
+const handleNavItemClick = (e) => {
   const target = e.target;
   if (!target.classList.contains('nav-item')) return;
 
