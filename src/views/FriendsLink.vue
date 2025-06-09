@@ -210,7 +210,7 @@
                 v-for="(item, itemIdx) in folder.items"
                 :key="itemIdx"
                 :item="item"
-                :delay="itemIdx * 0.1"
+                :delay="itemIdx * 0.05"
                 :categoryList="categoryList"
                 :keyword="searchKeyword"
                 @openItemEditDialog="openItemEditDialog"
