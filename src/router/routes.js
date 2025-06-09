@@ -33,7 +33,7 @@ const routes = [
     path: '/report',
     name: 'Report',
     component: () => import('@/views/Report.vue'),
-    meta: { title: '待办', hideNav: false },
+    meta: { title: 'Agent', hideNav: false },
   },
 ];
 
