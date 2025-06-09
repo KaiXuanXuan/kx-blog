@@ -88,6 +88,21 @@
     <div class="w-full mt-4">
       <!-- <EchartsRank /> -->
     </div>
+    <!-- 开发中... -->
+    <div class="w-full mt-4 flex items-center justify-center">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="mr-2" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <circle cx="12" cy="12" r="3" fill="#ccc" />
+          <path
+            d="M19.4 13c.04-.33.06-.66.06-1s-.02-.67-.06-1l2.11-1.65a.5.5 0 0 0 .12-.64l-2-3.46a.5.5 0 0 0-.6-.22l-2.49 1a7.03 7.03 0 0 0-1.73-1l-.38-2.65A.5.5 0 0 0 14 2h-4a.5.5 0 0 0-.5.42l-.38 2.65a7.03 7.03 0 0 0-1.73 1l-2.49-1a.5.5 0 0 0-.6.22l-2 3.46a.5.5 0 0 0 .12.64L4.6 11c-.04.33-.06.66-.06 1s.02.67.06 1l-2.11 1.65a.5.5 0 0 0-.12.64l2 3.46a.5.5 0 0 0 .6.22l2.49-1c.54.42 1.12.77 1.73 1l.38 2.65A.5.5 0 0 0 10 22h4a.5.5 0 0 0 .5-.42l.38-2.65a7.03 7.03 0 0 0 1.73-1l2.49 1a.5.5 0 0 0 .6-.22l2-3.46a.5.5 0 0 0-.12-.64L19.4 13z"
+            stroke="#ccc"
+            stroke-width="1.5"
+            fill="none"
+          />
+        </g>
+      </svg>
+      <span class="text-gray-500">开发中...</span>
+    </div>
   </div>
 </template>
 
