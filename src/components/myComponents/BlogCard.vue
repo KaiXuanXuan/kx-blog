@@ -5,9 +5,9 @@
         <img alt="cover" :src="formateUrl(cover_image)" loading="lazy" class="w-24 h-24 rounded-sm object-cover mr-10" />
         <div class="flex-1 flex flex-col gap-3">
           <div class="text-2xl font-medium mb-2 text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer">{{ title }}</div>
-          <div class="flex items-center text-sm gap-4">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center text-sm gap-2 sm:gap-4">
             <span class="text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 mr-1">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -16,8 +16,8 @@
               </svg>
               {{ author }}
             </span>
-            <span class="text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer flex items-center"
-              ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+            <span class="text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 mr-1">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -27,7 +27,7 @@
               {{ formateDate(update_time) }}
             </span>
             <span class="text-[#00323c] dark:text-gray-300 hover:text-[#11A8CD] dark:hover:text-[#11A8CD] cursor-pointer flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 mr-1">
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
