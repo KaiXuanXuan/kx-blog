@@ -35,6 +35,12 @@ const routes = [
     component: () => import('@/views/Report.vue'),
     meta: { title: 'Agent', hideNav: false },
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('@/views/404.vue'),
+    meta: { title: '404', hideNav: true },
+  },
 ];
 
 export default routes;
