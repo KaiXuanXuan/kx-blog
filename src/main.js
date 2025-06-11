@@ -16,8 +16,8 @@ import '@kangc/v-md-editor/lib/plugins/emoji/emoji.css';
 import createLineNumbertPlugin from '@kangc/v-md-editor/lib/plugins/line-number/index';
 import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
 import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
-// import createMermaidPlugin from '@kangc/v-md-editor/lib/plugins/mermaid/cdn';
-// import '@kangc/v-md-editor/lib/plugins/mermaid/mermaid.css';
+import createMermaidPlugin from '@kangc/v-md-editor/lib/plugins/mermaid/cdn';
+import '@kangc/v-md-editor/lib/plugins/mermaid/mermaid.css';
 import Prism from 'prismjs';
 
 VueMarkdownEditor.use(vuepressTheme, {
@@ -26,13 +26,14 @@ VueMarkdownEditor.use(vuepressTheme, {
 VueMarkdownEditor.use(createEmojiPlugin());
 VueMarkdownEditor.use(createLineNumbertPlugin());
 VueMarkdownEditor.use(createCopyCodePlugin());
+VueMarkdownEditor.use(createMermaidPlugin());
 VueMarkdownPreview.use(vuepressTheme, {
-  // VueMarkdownEditor.use(createMermaidPlugin());
   Prism,
 });
 VueMarkdownPreview.use(createEmojiPlugin());
 VueMarkdownPreview.use(createLineNumbertPlugin());
 VueMarkdownPreview.use(createCopyCodePlugin());
+VueMarkdownPreview.use(createMermaidPlugin());
 
 const app = createApp(App);
 
