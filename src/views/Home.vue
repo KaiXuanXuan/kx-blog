@@ -32,7 +32,7 @@
                 <img src="/kaofish.webp" alt="kao fish" class="h-full w-full rounded-sm" loading="lazy" />
               </div>
             </div>
-            <div class="flex items-start justify-center gap-2 h-40">
+            <div class="flex items-start justify-center gap-2 h-41">
               <WeatherReport class="h-full" />
               <WorkTimeProgress :size="90" :strokeWidth="10" class="h-full" />
             </div>
@@ -81,11 +81,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ref, computed, onMounted, nextTick, onUnmounted, defineAsyncComponent } from 'vue';
 import { getLocalTimeZone, today } from '@internationalized/date';
 import BlogCard from '@/components/myComponents/BlogCard.vue';
-// import AudioPlayer from '@/components/myComponents/AudioPlayer.vue';
-// import WorkTimeProgress from '@/components/myComponents/WorkTimeProgress.vue';
-// import WeatherReport from '@/components/myComponents/WeatherReport.vue';
-// import NextHoliday from '@/components/myComponents/NextHoliday.vue';
-// import HeaderBanner from '@/components/myComponents/HeaderBanner.vue';
 import BlogDialog from '@/components/myComponents/BlogDialog.vue';
 import { getBlogList } from '@/api/blog';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
