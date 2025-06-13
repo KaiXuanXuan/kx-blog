@@ -7,7 +7,7 @@
   >
     <div class="flex items-center gap-2">
       <img :src="formateUrl(item.icon)" class="w-12 h-12 rounded-sm" />
-      <div class="flex-1 text-nowrap">
+      <div class="flex-1 text-nowrap overflow-hidden">
         <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 p-0.25" v-html="highlightKeyword(item.title)"></h3>
         <p class="text-sm text-gray-600 dark:text-gray-400 truncate p-0.25" v-html="highlightKeyword(item.item_desc)"></p>
       </div>
