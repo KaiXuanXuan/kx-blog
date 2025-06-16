@@ -56,7 +56,7 @@
             :id="blog.id"
             :style="{ '--delay': `${index * 0.1 + 0.2}s` }"
           />
-          
+
           <!-- 加载状态 -->
           <div v-if="isLoading" class="flex justify-center items-center py-8">
             <div class="flex items-center space-x-2 text-gray-500">
@@ -64,7 +64,7 @@
               <span>加载中...</span>
             </div>
           </div>
-          
+
           <!-- 没有更多数据 -->
           <div v-else-if="!hasMore && blogs.length > 0" class="flex justify-center items-center py-8">
             <div class="text-gray-500 text-sm">
@@ -115,7 +115,7 @@ const blogs = ref([]);
 const page = ref({
   current: 1,
   pageSize: 8,
-})
+});
 
 const dialogOpen = ref(false);
 const deleteDialogOpen = ref(false);
@@ -128,6 +128,7 @@ const mainContent = ref(null);
 // 无限滚动相关状态
 const isLoading = ref(false);
 const hasMore = ref(true);
+const isInitialized = ref(false); // 标记是否已初始化完成
 
 const skillList = ['HTML', 'CSS', 'JavaScript', 'Vue', 'React', 'Three', 'Element'];
 
@@ -135,37 +136,37 @@ const resetPage = () => {
   page.value.current = 1;
   page.value.pageSize = 8;
   hasMore.value = true;
+  isInitialized.value = false;
 };
 
 const getNextPage = async () => {
-  if (isLoading.value || !hasMore.value) return;
-  
+  if (isLoading.value || !hasMore.value || !isInitialized.value) {
+    return;
+  }
   isLoading.value = true;
-  try {
-    page.value.current++;
-    const res = await getBlogPage(page.value.current, page.value.pageSize);
-    
-    if (res.data && res.data.list.length > 0) {
-      blogs.value.push(...res.data.list);
-      // 如果返回的数据少于pageSize，说明没有更多数据了
-      if (res.data.list.length < page.value.pageSize) {
-        hasMore.value = false;
-      }
-    } else {
+  page.value.current++;
+  const res = await getBlogPage(page.value.current, page.value.pageSize);
+
+  if (res.data && res.data.list.length > 0) {
+    blogs.value.push(...res.data.list);
+    // 如果返回的数据少于pageSize，说明没有更多数据了
+    if (res.data.list.length < page.value.pageSize) {
       hasMore.value = false;
     }
-  } catch (error) {
-    console.error('加载数据失败:', error);
-    toast.error('加载失败，请重试');
-  } finally {
-    isLoading.value = false;
+  } else {
+    hasMore.value = false;
   }
+
+  isLoading.value = false;
 };
 
-const getCurrentPage = () => {
-  getBlogPage(page.value.current, page.value.pageSize).then((res) => {
-    blogs.value = res.data.list;
-  });
+const getCurrentPage = async () => {
+  isLoading.value = true;
+  const res = await getBlogPage(page.value.current, page.value.pageSize);
+  blogs.value = res.data.list;
+  // 标记初始化完成
+  isInitialized.value = true;
+  isLoading.value = false;
 };
 
 const openDeleteDialog = (id) => {
@@ -194,11 +195,15 @@ useInfiniteScroll(
   window, // 滚动容器（可以是具体元素的ref）
   () => {
     // 滚动到底部时的回调函数
+    console.log('触发无限滚动加载');
     getNextPage();
   },
   {
     distance: 100, // 距离底部100px时触发
-    canLoadMore: () => hasMore.value && !isLoading.value, // 是否可以加载更多
+    canLoadMore: () => {
+      const canLoad = isInitialized.value && hasMore.value && !isLoading.value;
+      return canLoad;
+    }, // 只有初始化完成后才允许加载更多
   }
 );
 
