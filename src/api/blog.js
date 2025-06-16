@@ -7,6 +7,17 @@ const getBlogList = () => {
   });
 };
 
+const getBlogPage = (page, pageSize) => {
+  return request({
+    url: '/blog/page',
+    method: 'get',
+    params: {
+      page,
+      pageSize,
+    },
+  });
+};
+
 const getBlogDetail = (id) => {
   return request({
     url: '/blog/detail',
@@ -51,4 +62,4 @@ const deleteBlog = (id) => {
   });
 };
 
-export { getBlogList, getBlogDetail, addBlog, updateBlog, deleteBlog };
+export { getBlogList, getBlogPage, getBlogDetail, addBlog, updateBlog, deleteBlog };

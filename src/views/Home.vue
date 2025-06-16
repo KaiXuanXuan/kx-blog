@@ -41,6 +41,7 @@
 
         <!-- 主内容区（添加ref） -->
         <div ref="mainContent" class="lg:col-span-5 space-y-4 lg:mt-0 mt-8 mb-4">
+          <!-- 滑到最底部自动加载下一页 -->
           <BlogCard
             v-for="(blog, index) in blogs"
             :key="blog.id"
@@ -55,6 +56,21 @@
             :id="blog.id"
             :style="{ '--delay': `${index * 0.1 + 0.2}s` }"
           />
+          
+          <!-- 加载状态 -->
+          <div v-if="isLoading" class="flex justify-center items-center py-8">
+            <div class="flex items-center space-x-2 text-gray-500">
+              <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-[#11A8CD]"></div>
+              <span>加载中...</span>
+            </div>
+          </div>
+          
+          <!-- 没有更多数据 -->
+          <div v-else-if="!hasMore && blogs.length > 0" class="flex justify-center items-center py-8">
+            <div class="text-gray-500 text-sm">
+              <span>没有更多内容了 ~</span>
+            </div>
+          </div>
         </div>
         <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" @closeDialog="closeDialog" />
         <Dialog v-model:open="deleteDialogOpen">
@@ -79,10 +95,11 @@ import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ref, computed, onMounted, nextTick, onUnmounted, defineAsyncComponent } from 'vue';
+import { useInfiniteScroll } from '@vueuse/core';
 import { getLocalTimeZone, today } from '@internationalized/date';
 import BlogCard from '@/components/myComponents/BlogCard.vue';
 import BlogDialog from '@/components/myComponents/BlogDialog.vue';
-import { getBlogList } from '@/api/blog';
+import { getBlogPage } from '@/api/blog';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Motion } from 'motion-v';
 import { deleteBlog } from '@/api/blog';
@@ -95,13 +112,62 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 const todayValue = ref(today(getLocalTimeZone()));
 const song = ref({});
 const blogs = ref([]);
+const page = ref({
+  current: 1,
+  pageSize: 8,
+})
+
 const dialogOpen = ref(false);
 const deleteDialogOpen = ref(false);
 const deleteId = ref('');
 const dialogId = ref('');
+
 const leftAside = ref(null);
 const mainContent = ref(null);
+
+// 无限滚动相关状态
+const isLoading = ref(false);
+const hasMore = ref(true);
+
 const skillList = ['HTML', 'CSS', 'JavaScript', 'Vue', 'React', 'Three', 'Element'];
+
+const resetPage = () => {
+  page.value.current = 1;
+  page.value.pageSize = 8;
+  hasMore.value = true;
+};
+
+const getNextPage = async () => {
+  if (isLoading.value || !hasMore.value) return;
+  
+  isLoading.value = true;
+  try {
+    page.value.current++;
+    const res = await getBlogPage(page.value.current, page.value.pageSize);
+    
+    if (res.data && res.data.list.length > 0) {
+      blogs.value.push(...res.data.list);
+      // 如果返回的数据少于pageSize，说明没有更多数据了
+      if (res.data.list.length < page.value.pageSize) {
+        hasMore.value = false;
+      }
+    } else {
+      hasMore.value = false;
+    }
+  } catch (error) {
+    console.error('加载数据失败:', error);
+    toast.error('加载失败，请重试');
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const getCurrentPage = () => {
+  getBlogPage(page.value.current, page.value.pageSize).then((res) => {
+    blogs.value = res.data.list;
+  });
+};
+
 const openDeleteDialog = (id) => {
   deleteDialogOpen.value = true;
   deleteId.value = id;
@@ -116,11 +182,25 @@ const deleteBlogCard = () => {
     })
     .then(() => {
       deleteDialogOpen.value = false;
-      getBlogList().then((res) => {
-        blogs.value = res.data;
-      });
+      // 重置分页和状态
+      blogs.value = [];
+      resetPage();
+      getCurrentPage();
     });
 };
+
+// 使用 @vueuse/core 的无限滚动
+useInfiniteScroll(
+  window, // 滚动容器（可以是具体元素的ref）
+  () => {
+    // 滚动到底部时的回调函数
+    getNextPage();
+  },
+  {
+    distance: 100, // 距离底部100px时触发
+    canLoadMore: () => hasMore.value && !isLoading.value, // 是否可以加载更多
+  }
+);
 
 onMounted(() => {
   init();
@@ -148,9 +228,7 @@ onMounted(() => {
 
 function init() {
   changeSong(0);
-  getBlogList().then((res) => {
-    blogs.value = res.data;
-  });
+  getCurrentPage();
 }
 
 const openDialog = (index) => {
