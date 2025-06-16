@@ -43,7 +43,7 @@
       </DialogHeader>
       <div class="grid gap-4 py-4 overflow-y-auto px-6">
         <div class="flex flex-col justify-between">
-          <img :src="formateUrl(blog.cover_image)" alt="封面" class="w-full h-60 object-cover rounded-lg" />
+          <img :src="formateUrl(blog.cover_image)" alt="封面" class="w-full h-80 object-cover rounded-lg" />
           <v-md-preview :text="blog.markdown_content" />
         </div>
       </div>
