@@ -50,7 +50,7 @@
           <template v-else>
             <div class="mb-2">
               <label class="block text-base font-medium mb-1">封面</label>
-              <img :src="formateUrl(formData.cover)" alt="封面" class="w-full h-80 object-cover rounded-lg mb-2" />
+              <img :src="formateUrl(formData.cover_image)" alt="封面" class="w-full h-80 object-cover rounded-lg mb-2" />
               <input type="file" @change="handleCoverChange" class="w-full mb-2" />
             </div>
             <form @submit="onSubmit" class="space-y-4">
@@ -100,14 +100,7 @@ const props = defineProps({
 const emits = defineEmits(['closeDialog', 'publishSuccess']);
 
 const isLoading = ref(false);
-const formData = ref({
-  title: '',
-  markdown_content: '',
-  category: '',
-  cover: '',
-  coverType: '',
-  coverName: '',
-});
+const formData = ref({});
 
 watch(
   () => props.dialogOpen,
@@ -118,15 +111,6 @@ watch(
 watch(
   () => props.dialogId,
   (newValue) => {
-    // 每次切换博客时重置formData，防止内容残留
-    formData.value = {
-      title: '',
-      markdown_content: '',
-      category: '',
-      cover: '',
-      coverType: '',
-      coverName: '',
-    };
     getBlogData(newValue);
   }
 );
@@ -145,31 +129,10 @@ watch(
   }
 );
 
-watch(
-  () => blog.value,
-  (newValue) => {
-    if (props.mode === 'editor' && newValue) {
-      formData.value.title = newValue.title || '';
-      formData.value.markdown_content = newValue.markdown_content || '';
-      formData.value.category = newValue.category || '';
-      formData.value.cover = newValue.cover_image || '';
-      // coverType/coverName 可根据需要补充
-    }
-  },
-  { immediate: true }
-);
-
-const mockData = {
-  title: 'Vue3 组件库开发',
-  markdown_content: '',
-  cover_image: '/blog1.jpg',
-  author: 'KaiXuanXuan',
-  update_time: '2024-07-11',
-  category: 'Vue3',
-};
 const getBlogData = (id) => {
   getBlogDetail(id).then((res) => {
     blog.value = res.data;
+    formData.value = res.data;
   });
 };
 
