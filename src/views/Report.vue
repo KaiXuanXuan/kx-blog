@@ -7,7 +7,10 @@
     <TabsContent value="todo">
       <div class="max-w-7xl mx-auto px-4 py-8 bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 rounded-sm">
         <div class="mb-4 flex flex-col sm:flex-row items-center justify-between">
-          <div class="text-xl font-medium mb-2 sm:mb-0 w-full sm:w-auto text-center sm:text-left">🔊:今天也要加油鸭💪</div>
+          <div class="text-xl font-medium mb-2 sm:mb-0 w-full sm:w-auto text-center sm:text-left flex flex-col md:flex-row items-center justify-center gap-8">
+            <p class="text-gray-200 bg-purple-600 rounded-2xl px-2 py-1">🚀点击"报告助手"，帮你自动总结报告</p>
+            <p>🔊:今天也要加油鸭💪</p>
+          </div>
           <div class="flex gap-4 w-full sm:w-auto justify-center sm:justify-end">
             <Button @click="listOpen = true" variant="outline">所有待办</Button>
             <Button @click="openEditDialog">编辑待办</Button>
@@ -246,7 +249,7 @@
             <span class="text-blue-400 cursor-pointer hover:underline select-auto" @click="handleKeywordClick('本周周报')">本周周报</span>
             、
             <span class="text-blue-400 cursor-pointer hover:underline select-auto" @click="handleKeywordClick('昨日日报')">本日日报</span>
-            ，即可自动总结与输出
+            ，即可根据历史待办自动总结与输出
           </div>
         </div>
         <!-- textarea输入容器 -->
