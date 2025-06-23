@@ -43,8 +43,31 @@
       </DialogHeader>
       <div class="grid gap-4 py-4 overflow-y-auto px-6">
         <div class="flex flex-col justify-between">
-          <img :src="formateUrl(blog.cover_image)" alt="封面" class="w-full h-80 object-cover rounded-lg" />
-          <v-md-preview :text="blog.markdown_content" />
+          <template v-if="props.mode === 'preview'">
+            <img :src="formateUrl(blog.cover_image)" alt="封面" class="w-full h-80 object-cover rounded-lg mb-2" />
+            <v-md-preview :text="blog.markdown_content" />
+          </template>
+          <template v-else>
+            <div class="mb-2">
+              <label class="block text-base font-medium mb-1">封面</label>
+              <img :src="formateUrl(formData.cover)" alt="封面" class="w-full h-80 object-cover rounded-lg mb-2" />
+              <input type="file" @change="handleCoverChange" class="w-full mb-2" />
+            </div>
+            <form @submit="onSubmit" class="space-y-4">
+              <div class="flex flex-col sm:flex-row gap-4 items-end">
+                <div class="w-full sm:flex-1">
+                  <label class="block text-base font-medium mb-1">标题</label>
+                  <input v-model="formData.title" placeholder="请输入标题" class="w-full border rounded p-2" />
+                </div>
+                <div class="w-full sm:flex-1">
+                  <label class="block text-base font-medium mb-1">分类</label>
+                  <input v-model="formData.category" placeholder="请输入分类" class="w-full border rounded p-2" />
+                </div>
+              </div>
+              <v-md-editor v-model="formData.markdown_content" height="30rem" />
+              <Button :disabled="isLoading" type="submit" class="w-full">{{ isLoading ? '发布中...' : '确认发布' }}</Button>
+            </form>
+          </template>
         </div>
       </div>
       <DialogFooter class="p-6 pt-0"> </DialogFooter>
@@ -56,18 +79,35 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { ref, onMounted, watch } from 'vue';
-import { getBlogDetail } from '@/api/blog';
+import { getBlogDetail, updateBlog } from '@/api/blog';
 import { formateUrl, formateDate } from '@/utils/helper';
+import { toast } from 'vue-sonner';
 
 const blog = ref({});
 const open = ref(false);
+const markdown = ref('');
 
 const props = defineProps({
   dialogOpen: Boolean,
   dialogId: String,
+  mode: {
+    type: String,
+    default: 'preview', // 'preview' or 'editor'
+    validator: (val) => ['preview', 'editor'].includes(val),
+  },
 });
 
-const emits = defineEmits(['closeDialog']);
+const emits = defineEmits(['closeDialog', 'publishSuccess']);
+
+const isLoading = ref(false);
+const formData = ref({
+  title: '',
+  markdown_content: '',
+  category: '',
+  cover: '',
+  coverType: '',
+  coverName: '',
+});
 
 watch(
   () => props.dialogOpen,
@@ -87,6 +127,29 @@ watch(open, (newValue) => {
   }
 });
 
+watch(
+  () => blog.value.markdown_content,
+  (newValue) => {
+    if (props.mode === 'editor' && newValue) {
+      markdown.value = newValue;
+    }
+  }
+);
+
+watch(
+  () => blog.value,
+  (newValue) => {
+    if (props.mode === 'editor' && newValue) {
+      formData.value.title = newValue.title || '';
+      formData.value.markdown_content = newValue.markdown_content || '';
+      formData.value.category = newValue.category || '';
+      formData.value.cover = newValue.cover_image || '';
+      // coverType/coverName 可根据需要补充
+    }
+  },
+  { immediate: true }
+);
+
 const mockData = {
   title: 'Vue3 组件库开发',
   markdown_content: '',
@@ -99,6 +162,42 @@ const getBlogData = (id) => {
   getBlogDetail(id).then((res) => {
     blog.value = res.data;
   });
+};
+
+const handleCoverChange = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (!file.type.startsWith('image/')) {
+    // 这里可用toast或alert
+    return;
+  }
+  formData.value.coverType = file.type;
+  formData.value.coverName = file.name;
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const base64 = event.target.result;
+    formData.value.cover = base64;
+  };
+  reader.readAsDataURL(file);
+};
+
+const onSubmit = async (e) => {
+  e.preventDefault && e.preventDefault();
+  if (!formData.value.title) return;
+  if (!formData.value.markdown_content) return;
+  if (!formData.value.category) return;
+  if (!formData.value.cover) return;
+  isLoading.value = true;
+  try {
+    const { title, markdown_content, category, cover, coverType, coverName } = formData.value;
+    const file = coverType && coverName ? new File([cover], coverName, { type: coverType }) : undefined;
+    const res = await updateBlog({ id: props.dialogId, title, markdown_content, category }, file);
+    toast.success(res.message || '更新成功');
+    emits('publishSuccess', res.message || '更新成功');
+    open.value = false;
+  } finally {
+    isLoading.value = false;
+  }
 };
 </script>
 

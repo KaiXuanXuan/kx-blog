@@ -47,6 +47,7 @@
             :key="blog.id"
             @click="openDialog(index)"
             @openDeleteDialog="openDeleteDialog"
+            @openEditDialog="openEditDialog"
             class="card cursor-pointer"
             :title="blog.title"
             :cover_image="blog.cover_image"
@@ -72,7 +73,7 @@
             </div>
           </div>
         </div>
-        <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" @closeDialog="closeDialog" />
+        <BlogDialog :dialogOpen="dialogOpen" :dialogId="dialogId" :mode="dialogMode" @closeDialog="closeDialog" @publishSuccess="handleBlogUpdate" />
         <Dialog v-model:open="deleteDialogOpen">
           <DialogContent>
             <DialogHeader>
@@ -121,6 +122,7 @@ const dialogOpen = ref(false);
 const deleteDialogOpen = ref(false);
 const deleteId = ref('');
 const dialogId = ref('');
+const dialogMode = ref('preview');
 
 const leftAside = ref(null);
 const mainContent = ref(null);
@@ -236,10 +238,18 @@ function init() {
   getCurrentPage();
 }
 
+const openEditDialog = (id) => {
+  dialogMode.value = 'editor';
+  dialogOpen.value = true;
+  dialogId.value = String(id);
+};
+
 const openDialog = (index) => {
+  dialogMode.value = 'preview';
   dialogOpen.value = true;
   dialogId.value = String(blogs.value[index].id);
 };
+
 const closeDialog = () => {
   dialogOpen.value = false;
 };
@@ -259,6 +269,13 @@ const AudioPlayer = defineAsyncComponent(() => import('@/components/myComponents
 const WorkTimeProgress = defineAsyncComponent(() => import('@/components/myComponents/WorkTimeProgress.vue'));
 const WeatherReport = defineAsyncComponent(() => import('@/components/myComponents/WeatherReport.vue'));
 const NextHoliday = defineAsyncComponent(() => import('@/components/myComponents/NextHoliday.vue'));
+
+const handleBlogUpdate = (msg) => {
+  blogs.value = [];
+  resetPage();
+  getCurrentPage();
+  dialogId.value = '';
+};
 </script>
 
 <style scoped>
