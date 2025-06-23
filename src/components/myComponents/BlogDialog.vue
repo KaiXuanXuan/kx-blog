@@ -111,6 +111,7 @@ watch(
 watch(
   () => props.dialogId,
   (newValue) => {
+    if (!newValue) return;
     getBlogData(newValue);
   }
 );
@@ -155,15 +156,11 @@ const handleCoverChange = async (e) => {
 
 const onSubmit = async (e) => {
   e.preventDefault && e.preventDefault();
-  if (!formData.value.title) return;
-  if (!formData.value.markdown_content) return;
-  if (!formData.value.category) return;
-  if (!formData.value.cover) return;
   isLoading.value = true;
   try {
-    const { title, markdown_content, category, cover, coverType, coverName } = formData.value;
-    const file = coverType && coverName ? new File([cover], coverName, { type: coverType }) : undefined;
-    const res = await updateBlog({ id: props.dialogId, title, markdown_content, category }, file);
+    const { title, markdown_content, category, cover_image, coverType, coverName } = formData.value;
+    const file = coverType && coverName ? new File([cover_image], coverName, { type: coverType }) : undefined;
+    const res = await updateBlog({ id: props.dialogId, title, markdown_content, category, cover_image }, file);
     toast.success(res.message || '更新成功');
     emits('publishSuccess', res.message || '更新成功');
     open.value = false;
