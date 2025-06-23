@@ -118,6 +118,15 @@ watch(
 watch(
   () => props.dialogId,
   (newValue) => {
+    // 每次切换博客时重置formData，防止内容残留
+    formData.value = {
+      title: '',
+      markdown_content: '',
+      category: '',
+      cover: '',
+      coverType: '',
+      coverName: '',
+    };
     getBlogData(newValue);
   }
 );
