@@ -84,6 +84,9 @@ let animationFrameId = null;
 
 const canEnter = ref(false);
 
+let dragStartY = null;
+let dragging = false;
+
 const handleMouseMove = (e) => {
   // 以窗口中心为原点，计算鼠标偏移，最大偏移量20px
   const { innerWidth, innerHeight } = window;
@@ -111,6 +114,27 @@ const handleEnter = () => {
   }
 };
 
+const handleMouseDown = (e) => {
+  if (!canEnter.value) return;
+  dragStartY = e.clientY;
+  dragging = true;
+};
+
+const handleMouseUp = (e) => {
+  if (!canEnter.value || !dragging) return;
+  const dragDistance = e.clientY - dragStartY;
+  if (Math.abs(dragDistance) > 80) {
+    handleEnter();
+  }
+  dragging = false;
+  dragStartY = null;
+};
+
+const handleMouseLeave = () => {
+  dragging = false;
+  dragStartY = null;
+};
+
 onMounted(() => {
   setTimeout(() => {
     canEnter.value = true;
@@ -120,6 +144,9 @@ onMounted(() => {
   }, 2000);
 
   window.addEventListener('mousemove', handleMouseMove);
+  window.addEventListener('mousedown', handleMouseDown);
+  window.addEventListener('mouseup', handleMouseUp);
+  window.addEventListener('mouseleave', handleMouseLeave);
   animate();
 });
 
@@ -128,6 +155,9 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleEnter);
   window.removeEventListener('touchmove', handleEnter);
   window.removeEventListener('mousemove', handleMouseMove);
+  window.removeEventListener('mousedown', handleMouseDown);
+  window.removeEventListener('mouseup', handleMouseUp);
+  window.removeEventListener('mouseleave', handleMouseLeave);
   cancelAnimationFrame(animationFrameId);
 });
 </script>
