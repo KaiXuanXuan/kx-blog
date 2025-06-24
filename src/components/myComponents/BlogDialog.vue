@@ -65,7 +65,7 @@
                 </div>
               </div>
               <v-md-editor v-model="formData.markdown_content" height="30rem" />
-              <Button :disabled="isLoading" type="submit" class="w-full">{{ isLoading ? '发布中...' : '确认发布' }}</Button>
+              <Button :disabled="isLoading" type="submit" class="w-full">{{ isLoading ? '发布中...' : '确认修改' }}</Button>
             </form>
           </template>
         </div>
