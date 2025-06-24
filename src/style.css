@@ -123,3 +123,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* 彻底防止全局抖动：body始终显示滚动条 */
+html, body {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+
+/* 保留弹窗内容区最大高度和内部滚动 */
+.dialog-content,
+.sheet-content,
+.drawer-content,
+.alert-dialog-content {
+  max-height: 100vh;
+  overflow-y: auto;
+}
