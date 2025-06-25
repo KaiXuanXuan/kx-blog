@@ -141,7 +141,7 @@ const handleCoverChange = async (e) => {
   const file = e.target.files[0];
   if (!file) return;
   if (!file.type.startsWith('image/')) {
-    // 这里可用toast或alert
+    toast.error('请选择图片文件');
     return;
   }
   formData.value.coverType = file.type;
@@ -149,7 +149,7 @@ const handleCoverChange = async (e) => {
   const reader = new FileReader();
   reader.onload = (event) => {
     const base64 = event.target.result;
-    formData.value.cover = base64;
+    formData.value.cover_image = base64;
   };
   reader.readAsDataURL(file);
 };
