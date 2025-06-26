@@ -33,8 +33,8 @@
               </div>
             </div>
             <div class="flex items-start justify-center gap-2 h-41">
-              <WeatherReport class="h-full" />
-              <WorkTimeProgress :size="90" :strokeWidth="10" class="h-full" />
+              <WeatherReport class="h-full flex-1 min-w-0" />
+              <WorkTimeProgress :size="90" :strokeWidth="10" class="h-full flex-1 min-w-0" />
             </div>
           </div>
         </aside>

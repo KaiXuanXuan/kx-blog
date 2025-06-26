@@ -39,28 +39,28 @@
         </Card>
       </CollapsibleTrigger>
       <!-- 上下班时间设置 -->
-      <CollapsibleContent class="mt-2">
-        <Card class="pb-0">
+      <CollapsibleContent class="mt-2 w-full overflow-hidden">
+        <Card class="pb-0 w-full">
           <CardHeader>
             <CardTitle> 设置 </CardTitle>
           </CardHeader>
-          <CardContent>
-            <form>
+          <CardContent class="w-full">
+            <form class="w-full">
               <div class="grid items-center w-full gap-4">
-                <div class="flex flex-col space-y-1.5">
-                  <NumberField id="goWork" :default-value="goWorkTime" :min="7" :max="12" v-model="goWorkTime">
+                <div class="flex flex-col space-y-1.5 w-full">
+                  <NumberField id="goWork" :default-value="goWorkTime" :min="7" :max="12" v-model="goWorkTime" class="w-full">
                     <Label for="goWork">💼上班时间</Label>
-                    <NumberFieldContent>
+                    <NumberFieldContent class="w-full">
                       <NumberFieldDecrement class="cursor-pointer" />
-                      <NumberFieldInput />
+                      <NumberFieldInput class="flex-1 min-w-0" />
                       <NumberFieldIncrement class="cursor-pointer" />
                     </NumberFieldContent>
                   </NumberField>
-                  <NumberField id="offWork" :default-value="offWorkTime" :min="16" :max="21" v-model="offWorkTime">
+                  <NumberField id="offWork" :default-value="offWorkTime" :min="16" :max="21" v-model="offWorkTime" class="w-full">
                     <Label for="offWork">🚇下班时间</Label>
-                    <NumberFieldContent>
+                    <NumberFieldContent class="w-full">
                       <NumberFieldDecrement class="cursor-pointer" />
-                      <NumberFieldInput />
+                      <NumberFieldInput class="flex-1 min-w-0" />
                       <NumberFieldIncrement class="cursor-pointer" />
                     </NumberFieldContent>
                   </NumberField>
