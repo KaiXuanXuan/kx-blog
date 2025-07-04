@@ -212,10 +212,10 @@
       </div>
     </TabsContent>
     <TabsContent value="agent" v-if="activeTab === 'agent'">
-      <div class="max-w-7xl mx-auto px-4 py-8">
-        <!-- 打字机文本显示容器 -->
-        <div v-if="chatList.length > 0" class="pb-36 bottom-[calc(100% + 20px)] left-0 right-0 mx-auto max-w-7xl px-4">
-          <div class="flex flex-col gap-3">
+      <div class="max-w-7xl mx-auto px-4 py-8 h-[calc(100vh-120px)] flex flex-col">
+        <!-- 聊天消息容器 -->
+        <div class="flex-1 overflow-y-auto mb-4 pr-2">
+          <div v-if="chatList.length > 0" class="flex flex-col gap-3 pb-4">
             <div
               v-for="(msg, idx) in chatList"
               :key="idx"
@@ -240,20 +240,21 @@
               <div v-else class="whitespace-pre-line">{{ msg.content }}</div>
             </div>
           </div>
-        </div>
-        <div v-else class="pt-36 pb-36 flex flex-col items-center justify-center text-gray-400 h-80 select-none">
-          <div class="mb-2 text-4xl">🙂</div>
-          <div class="text-lg font-semibold mb-2">请输入报告提示词</div>
-          <div class="text-base">
-            如：
-            <span class="text-blue-400 cursor-pointer hover:underline select-auto" @click="handleKeywordClick('本周周报')">本周周报</span>
-            、
-            <span class="text-blue-400 cursor-pointer hover:underline select-auto" @click="handleKeywordClick('昨日日报')">本日日报</span>
-            ，即可根据历史待办自动总结与输出
+          <div v-else class="flex flex-col items-center justify-center text-gray-400 h-full select-none">
+            <div class="mb-2 text-4xl">🙂</div>
+            <div class="text-lg font-semibold mb-2">请输入报告提示词</div>
+            <div class="text-base">
+              如：
+              <span class="text-blue-400 cursor-pointer hover:underline select-auto" @click="handleKeywordClick('本周周报')">本周周报</span>
+              、
+              <span class="text-blue-400 cursor-pointer hover:underline select-auto" @click="handleKeywordClick('昨日日报')">本日日报</span>
+              ，即可根据历史待办自动总结与输出
+            </div>
           </div>
         </div>
-        <!-- textarea输入容器 -->
-        <div class="fixed bottom-5 left-0 right-0 mx-auto max-w-7xl px-4 z-20">
+        
+        <!-- 输入框容器 -->
+        <div class="flex-shrink-0">
           <div class="relative bg-gray-100 rounded-2xl shadow-md p-4 flex items-end">
             <textarea
               ref="textareaRef"
